@@ -1,3 +1,4 @@
+@import '~antd/dist/antd.css';
 .App {
   text-align: center;
 }
@@ -14,8 +15,8 @@
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  background-color: #bab3fa;
+  min-height: 30vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -35,4 +36,12 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.App-header a{
+  margin-right: 2em;
+}
+.carousel{
+  /* width: 80%; */
+  margin: 0 auto;
 }
