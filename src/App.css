@@ -13,16 +13,21 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
-
+.top{
+  background-color: #b7c7fd;
+  text-align:right;
+}
+.top a{
+  margin-right: 2em;
+}
 .App-header {
-  background-color: #bab3fa;
+  background-color: #a1b6face;
   min-height: 30vh;
   display: flex;
-  flex-direction: column;
+  flex-direction:row;
   align-items: center;
-  justify-content: center;
+  justify-content:space-around;
   font-size: calc(10px + 2vmin);
-  color: white;
 }
 
 .App-link {
@@ -40,8 +45,4 @@
 
 .App-header a{
   margin-right: 2em;
-}
-.carousel{
-  /* width: 80%; */
-  margin: 0 auto;
 }
