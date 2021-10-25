@@ -1,15 +1,14 @@
 import './App.css';
 import MyNavLink from './components/MyNavLink'
-import MyCarousel from './components/MyCarousel';
 import Home from './pages/Home/Home'
 import Contact from './pages/Contact/Contact'
 import Download from './pages/Download/Download'
 import Question from './pages/Question/Question'
-import Login from './pages/Login/index'
-import Register from './pages/Register/index'
-import { layout } from 'antd'
+import Login from './pages/Login/Login'
+import Register from './pages/Register/Register'
 import { Route, Switch } from 'react-router-dom'
 import img1 from './imgs/scut0.png'
+import PersonalCenter from './pages/PersonalCenter/PersonalCenter';
 
 function App() {
   return (
@@ -19,14 +18,13 @@ function App() {
         <div className="router-link">
           <MyNavLink to="/login">登录</MyNavLink>
           <MyNavLink to="/register">注册</MyNavLink>
+          {/* 占用一下地方 */}
+          <MyNavLink to='/personalcenter'>个人中心</MyNavLink>
         </div>
-        <Switch>
-          <Route path='/login' component={Login} />
-          <Route path="/register" component={Register} />
-        </Switch>
+       
       </div>
-
-      <header className="App-header">
+      
+      <header className="App-header" >
 
         {/* <div className="register-router"> */}
         <div className="club_title">
@@ -35,7 +33,7 @@ function App() {
             华南理工大学智能系统未来创新实验室
           </div>
         </div>
-        <div className="router-link">
+        <div className="router-link2">
           <MyNavLink to="/home">首页</MyNavLink>
           <MyNavLink to="/question">更多问题</MyNavLink>
           <MyNavLink to="/download">资源下载</MyNavLink>
@@ -51,6 +49,9 @@ function App() {
           <Route path="/question" component={Question} />
           <Route path="/download" component={Download} />
           <Route path="/contact" component={Contact} />
+          <Route path='/login' component={Login} />
+          <Route path="/register" component={Register} />
+          <Route path="/personalcenter" component={PersonalCenter}/>
         </Switch>
       </div>
       <footer>

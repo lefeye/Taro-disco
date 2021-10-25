@@ -13,7 +13,7 @@ export default function Mycarousel() {
         background: '#364d79',
     };
     return (
-        <div>
+        <div >
             <Carousel autoplay>
                 <div>
                     <h3 style={contentStyle}><img src={img1} alt="1" /></h3>
