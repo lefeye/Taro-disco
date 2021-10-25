@@ -1,11 +1,14 @@
 import React from 'react'
 import { Carousel } from 'antd';
+import img1 from '../imgs/lab1.jpg'
+import img2 from '../imgs/scut2.jpg'
+import img3 from '../imgs/gd1.jpg'
 
 export default function Mycarousel() {
     const contentStyle = {
-        height: '260px',
+        height: '50vh',
         color: '#fff',
-        lineHeight: '260px',
+        lineHeight: '50vh',
         textAlign: 'center',
         background: '#364d79',
     };
@@ -13,13 +16,13 @@ export default function Mycarousel() {
         <div>
             <Carousel autoplay>
                 <div>
-                    <h3 style={contentStyle}>1</h3>
+                    <h3 style={contentStyle}><img src={img1} alt="1" /></h3>
                 </div>
                 <div>
-                    <h3 style={contentStyle}>2</h3>
+                    <h3 style={contentStyle}><img src={img2} alt="2" /></h3>
                 </div>
                 <div>
-                    <h3 style={contentStyle}>3</h3>
+                    <h3 style={contentStyle}><img src={img3} alt="3" /></h3>
                 </div>
                 <div>
                     <h3 style={contentStyle}>4</h3>

@@ -1,4 +1,5 @@
 @import '~antd/dist/antd.css';
+
 .App {
   text-align: center;
 }
@@ -14,20 +15,22 @@
   }
 }
 .top{
-  background-color: #b7c7fd;
+  /* background-color: #b7c7fd; */
   text-align:right;
 }
 .top a{
   margin-right: 2em;
 }
 .App-header {
-  background-color: #a1b6face;
-  min-height: 30vh;
+  /* background-color: #a1b6face; */
+  background-image: url("./imgs/logo_right.jpg");
+  /* min-height: 30vh; */
+  height: 20vh;
   display: flex;
   flex-direction:row;
-  align-items: center;
+  align-items: end;
   justify-content:space-around;
-  font-size: calc(10px + 2vmin);
+  font-size: calc(8px + 2vmin);
 }
 
 .App-link {
@@ -45,4 +48,19 @@
 
 .App-header a{
   margin-right: 2em;
+}
+.App-header img{
+  height: 20vh;
+}
+.club_title{
+  display: flex;
+  flex-direction:row;
+  align-items:end;
+  font-size: 32px;
+  font-style:inherit;
+  font-family:unset;
+  color: rgb(59, 122, 240);
+}
+.router-link{
+  bottom: 5px;
 }

@@ -9,6 +9,7 @@ import Login from './pages/Login/index'
 import Register from './pages/Register/index'
 import { layout } from 'antd'
 import { Route, Switch } from 'react-router-dom'
+import img1 from './imgs/scut0.png'
 
 function App() {
   return (
@@ -28,10 +29,12 @@ function App() {
       <header className="App-header">
 
         {/* <div className="register-router"> */}
-        <img src='F:/workspace_forend/portal_system/img/scut.jpg' alt="scut" />
-        <header>
-          华南理工大学智能机器人实验室
-        </header>
+        <div className="club_title">
+          <img src={img1} alt="scut" />
+          <div>
+            华南理工大学智能系统未来创新实验室
+          </div>
+        </div>
         <div className="router-link">
           <MyNavLink to="/home">首页</MyNavLink>
           <MyNavLink to="/question">更多问题</MyNavLink>
@@ -51,7 +54,7 @@ function App() {
         </Switch>
       </div>
       <footer>
-
+        <a href=""></a>
       </footer>
     </div >
   );
