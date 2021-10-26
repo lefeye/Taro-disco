@@ -36,12 +36,13 @@ const tailFormItemLayout = {
 const RegistrationForm = () => {
   const [form] = Form.useForm();
   const [value,setValue]=useState(1);
+  
   const onFinish = (values) => {
     console.log('Received values of form: ', values);
   };
 
   const onChangeEmail=e=>{
-    console.log(e.target.value)
+    //console.log(e.target.value)
   }
 
   const onSendEmail=()=>{
@@ -87,7 +88,7 @@ const RegistrationForm = () => {
       </Form.Item>
 
         <Form.Item
-          name="email"
+          name="stu_email"
           label="邮箱"
           rules={[
             {
@@ -100,12 +101,12 @@ const RegistrationForm = () => {
             },
           ]}
         >
-          <Input id='haha' onChange={onChangeEmail}/>
-          <Button 
+          <Input id='haha' />
+          {/* <Button 
             className="emailButton"
             onClick={onSendEmail}
             >获取
-            </Button>
+            </Button> */}
         </Form.Item>
 
         <Form.Item 
@@ -120,7 +121,7 @@ const RegistrationForm = () => {
           <Input style={{width:'110px'}}/> 
         </Form.Item>
         <Form.Item
-        name="studentNo"
+        name="stu_no"
         label={value===1?'学号':'公司名称'}
         rules={[
           {required:true,
@@ -130,14 +131,14 @@ const RegistrationForm = () => {
         </Form.Item>
 
         <Form.Item
-        name="college"
+        name="stu_college"
         label={value===1?'学院':'公司简介'}
         >
           <Input/>
         </Form.Item>
 
         <Form.Item
-        name="name"
+        name="stu_name"
         rules={[
             {required:true}
         ]}
@@ -147,7 +148,7 @@ const RegistrationForm = () => {
         </Form.Item>
 
         <Form.Item
-          name="password"
+          name="stu_password"
           label="密码"
           rules={[
             {
