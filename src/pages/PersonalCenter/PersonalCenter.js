@@ -1,7 +1,8 @@
 import './PersonalCenter.css'
 import Info from './Information';
 import Contest from './Contest';
-import MyNavLink from '../../components/MyNavLink'
+import MyNavLink from '../../components/MyNavLink';
+import ReleaseCompetition from './ReleaseCompetition';
 import { Menu } from 'antd';
 import {
   IdcardOutlined,
@@ -16,8 +17,9 @@ const PersonalCenter = () => {
     <div className="father">
         <div className="info">
             <Switch>
-                <Route path='/personalcenter/information' component={Info}/>
+                <Route path='/personalcenter/information' component={Info} />
                 <Route path='/personalcenter/contest' component={Contest} />
+                <Route path='/personalcenter/competition' component={ReleaseCompetition} />
             </Switch>
         </div>
         <div className="menu">
@@ -34,7 +36,7 @@ const PersonalCenter = () => {
                 <MyNavLink to='/personalcenter/contest'>比赛信息</MyNavLink>
             </Menu.Item>
             <Menu.Item key="3" icon={<CalendarOutlined />}>
-                另一个
+                <MyNavLink to='/personalcenter/competition'> 发布比赛</MyNavLink>
             </Menu.Item>
             <Menu.Item key="link" icon={<LinkOutlined />}>
             <a href="https://ant.design" target="_blank" rel="noopener noreferrer">

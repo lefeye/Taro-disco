@@ -5,9 +5,11 @@ import React from 'react';
 import { useState } from 'react';
 import {
   Form,
-  Input,
   Button,
-  Radio
+  Input,
+  Radio,
+  Row,
+  Col
 } from 'antd';
 
 const formItemLayout = {
@@ -39,25 +41,43 @@ const RegistrationForm = () => {
   
   const onFinish = (values) => {
     console.log('Received values of form: ', values);
+    axios.post("http://localhost:8080/register",{
+      stu_no:values.stu_no,
+      email:values.email,
+      stu_college:values.stu_college,
+      name:values.name,
+      password:values.password,
+      stu_grade:values.stu_grade,
+    }).then(data=>{
+        console.log(data)
+    }).catch(err=>{
+      console.log(err)
+    })
   };
 
-  const onChangeEmail=e=>{
-    //console.log(e.target.value)
-  }
 
-  const onSendEmail=()=>{
-    let email=document.getElementById('haha').value;
-    if(email.indexOf('@'&&email.indexOf('.com'))){
-      axios.post('http://127.0.0.1:4000/register',{
-        em:email
-      }).then(res=>{
-        console.log(res);
-      }).catch(e=>{
-        console.log(e);
-      })
-    }
-    
-  }
+  const company=(<><Form.Item
+    name="stu_college"
+    label="学院"
+    >
+      <Input/>
+    </Form.Item>
+    <Form.Item
+    name="stu_grade"
+    label='年级'
+    >
+      <Input/>
+    </Form.Item>
+
+    <Form.Item
+    name="name"
+    rules={[
+        {required:true,message:'请输入姓名！'}
+    ]}
+    label='姓名'
+    >
+      <Input/>
+    </Form.Item></>)
 
   const onChange=(e)=>{
     setValue(e.target.value)
@@ -76,19 +96,19 @@ const RegistrationForm = () => {
         <Form.Item
         name="radio"
         label="用户类型"
-        wrapperCol={{pull:1}}
+        wrapperCol={{pull:2}}
         rules={[
           {required:true}
         ]}
         >
         <Radio.Group onChange={onChange} value={value}>
           <Radio value={1}>学生</Radio>
-          <Radio value={2}>管理人员</Radio>
+          <Radio value={2}>企业</Radio>
         </Radio.Group>
       </Form.Item>
 
         <Form.Item
-          name="stu_email"
+          name="email"
           label="邮箱"
           rules={[
             {
@@ -102,53 +122,43 @@ const RegistrationForm = () => {
           ]}
         >
           <Input id='haha' />
-          {/* <Button 
-            className="emailButton"
-            onClick={onSendEmail}
-            >获取
-            </Button> */}
         </Form.Item>
-
         <Form.Item 
-          name="confirmcode"
+          name='yanzhengma'
           label="验证码"
-          wrapperCol={{offset:0,span:2}}
           rules={[
             {required:true,message:'请输入验证码！'}
-          ]}
-          
-        >
-          <Input style={{width:'110px'}}/> 
-        </Form.Item>
-        <Form.Item
-        name="stu_no"
-        label={value===1?'学号':'公司名称'}
-        rules={[
-          {required:true,
-          message:"请输入学号！"}
-        ]}>
-          <Input/>
-        </Form.Item>
-
-        <Form.Item
-        name="stu_college"
-        label={value===1?'学院':'公司简介'}
-        >
-          <Input/>
+          ]}>
+          <Row gutter={8} >
+            <Col span={15}>
+            <Form.Item 
+              noStyle
+              name="confirmcode" 
+            >
+              <Input/> 
+            </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Button style={{width:'70px'}}>获取</Button>
+            </Col>
+          </Row>
         </Form.Item>
 
         <Form.Item
-        name="stu_name"
-        rules={[
-            {required:true}
-        ]}
-        label={value===1?'姓名':'用户名称'}
-        >
-          <Input/>
+          name="stu_no"
+          label={value===1?'学号':'公司名称'}
+          rules={[
+            {required:true,
+            message:`请输入${value===1?'学号':'公司名称'}`}
+          ]}>
+            <Input/>
         </Form.Item>
+        
+        {value===1?company:''}
+        
 
         <Form.Item
-          name="stu_password"
+          name="password"
           label="密码"
           rules={[
             {

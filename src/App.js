@@ -55,7 +55,7 @@ function App() {
         </Switch>
       </div>
       <footer>
-        <a href=""></a>
+        {/* <a href=""></a> */}
       </footer>
     </div >
   );
