@@ -6,7 +6,8 @@ import img3 from '../imgs/gd1.jpg'
 
 export default function Mycarousel() {
     const contentStyle = {
-        height: '50vh',
+        height: '584px',
+        width: '1519px',
         color: '#fff',
         lineHeight: '50vh',
         textAlign: 'center',
