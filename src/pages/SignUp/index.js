@@ -46,15 +46,15 @@ export default function SignUp() {
                 span: 24,
             },
             sm: {
-                span: 8,
+                span: 8
             },
         },
         wrapperCol: {
             xs: {
-                span: 24,
+                span: 10,
             },
             sm: {
-                span: 16,
+                span: 8,
             },
         },
     };
@@ -62,11 +62,11 @@ export default function SignUp() {
         wrapperCol: {
             xs: {
                 span: 24,
-                offset: 0,
+                offset: 8,
             },
             sm: {
-                span: 16,
-                offset: 8,
+                span: 12,
+                offset: 0,
             },
         },
     };
@@ -163,7 +163,7 @@ export default function SignUp() {
             >
                 <Input />
             </Form.Item>
-            <Form.List name="teamMember" style={{}}>
+            <Form.List name="teamMember" style={{}} >
                 {(fields, { add, remove }) => (
                     <>
                         {fields.map(({ key, name, fieldKey, ...restField }) => (
@@ -187,7 +187,7 @@ export default function SignUp() {
                                 <MinusCircleOutlined onClick={() => remove(name)} />
                             </Space>
                         ))}
-                        <Form.Item>
+                        <Form.Item >
                             <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
                                 添加队员（队伍最多不超过3人）
                             </Button>

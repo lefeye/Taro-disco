@@ -6,28 +6,30 @@ import Download from '../pages/Download/Download'
 import Question from '../pages/Question/Question'
 import User from '../pages/User/index'
 import SignUp from '../pages/SignUp/index'
-
+import img2 from '../imgs/lab.png'
 import MyNavLink from '../components/MyNavLink'
 import img1 from '../imgs/scut0.png'
+import PersonalCenter from './personalCenter/PersonalCenter'
 
 export default function home() {
     return (
         <div>
-            <div className="router-link">
+            <div className="top">
                 <MyNavLink to="/login">登录</MyNavLink>
                 <MyNavLink to="/register">注册</MyNavLink>
-                <MyNavLink to="/home/user">个人中心</MyNavLink>
+                <MyNavLink to="/home/personalcenter">个人中心</MyNavLink>
                 <MyNavLink to="/home/signUp">比赛报名</MyNavLink>
+
             </div>
             <header className="App-header">
                 <div className="club_title">
                     <img src={img1} alt="scut" />
                     <div>
-                        华南理工大学智能系统未来创新实验室
+                        <img src={img2} alt="lab" style={{height:'30%'}}/>
                     </div>
                 </div>
             </header >
-            <div className="router-link">
+            <div className="top">
                 <MyNavLink to="/home/home">首页</MyNavLink>
                 <MyNavLink to="/home/question">更多问题</MyNavLink>
                 <MyNavLink to="/home/download">资源下载</MyNavLink>
@@ -42,7 +44,8 @@ export default function home() {
                     <Route path="/home/download" component={Download} />
                     <Route path="/home/contact" component={Contact} />
                     <Route path="/home/signUp" component={SignUp} />
-                    <Route path="/home/user" component={User} />
+                    {/* <Route path="/home/user" component={User} /> */}
+                    <Route path='/home/personalcenter' component={PersonalCenter} />
                 </Switch>
             </div>
         </div>

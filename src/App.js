@@ -1,24 +1,22 @@
 import './App.css';
 import { Route, Switch } from 'react-router-dom'
-// import User from './pages/User/index'
-// import SignUp from './pages/SignUp/index'
-
+// import PersonalCenter from './containers/personalCenter/PersonalCenter'
 import Home from './containers/home'
-import Login from './containers/login'
-import Register from './containers/register'
+import Login from './containers/Login/index'
+import Register from './containers/register/Register'
+
 
 function App() {
   return (
     <div className="App">
-      <div className="top">
+      <div >
         <Switch>
-          <Route path='/' component={Home} />
+          <Route exact path='/' component={Home} />
           <Route path='/home' component={Home} />
           <Route path='/login' component={Login} />
           <Route path="/register" component={Register} />
-          <Route path="/admin" component={Register} />
-          {/* <Route path='/user' component={User} />
-          <Route path='/signUp' component={SignUp} /> */}
+          {/* <Route path="/admin" component={Register} /> */}
+          {/* <Route path='/personalcenter' component={PersonalCenter} /> */}
         </Switch>
       </div>
 

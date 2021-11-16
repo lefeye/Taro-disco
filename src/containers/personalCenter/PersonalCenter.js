@@ -1,0 +1,48 @@
+import './PersonalCenter.css'
+import Info from './Information';
+import Contest from './Contest';
+import MyNavLink from '../../components/MyNavLink';
+import ReleaseCompetition from './ReleaseCompetition';
+import { Menu } from 'antd';
+import {
+  IdcardOutlined,
+  CalendarOutlined,
+} from '@ant-design/icons';
+import {Route,Switch} from 'react-router-dom';
+
+const PersonalCenter = () => {
+
+  return (
+    <div className="father">
+        <div className="info">
+            <Switch>
+                <Route path='/home/personalcenter/information' component={Info} />
+                <Route path='/home/personalcenter/contest' component={Contest} />
+                <Route path='/home/personalcenter/competition' component={ReleaseCompetition} />
+            </Switch>
+        </div>
+        <div className="menu">
+            <Menu
+            style={{ width: 260,height:'100%' }}
+            defaultOpenKeys={['sub1']}
+            mode='vertical'
+            theme='light'
+            >
+            <Menu.Item key="1" icon={<IdcardOutlined />}>
+                <MyNavLink to='/home/personalcenter/information'>个人信息</MyNavLink>
+            </Menu.Item>
+            <Menu.Item key="2" icon={<CalendarOutlined />}>
+                <MyNavLink to='/home/personalcenter/contest'>比赛信息</MyNavLink>
+            </Menu.Item>
+            <Menu.Item key="3" icon={<CalendarOutlined />}>
+                <MyNavLink to='/home/personalcenter/competition'> 发布比赛</MyNavLink>
+            </Menu.Item>
+        </Menu>
+        </div>
+        
+      
+    </div>
+  );
+};
+
+export default PersonalCenter;
