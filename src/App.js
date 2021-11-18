@@ -2,8 +2,8 @@ import './App.css';
 import { Route, Switch } from 'react-router-dom'
 // import PersonalCenter from './containers/personalCenter/PersonalCenter'
 import Home from './containers/home'
-import Login from './containers/Login/index'
-import Register from './containers/register/Register'
+import Login from './containers/Login/Login'
+import Register from './containers/Register/Register'
 
 
 function App() {

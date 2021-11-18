@@ -1,9 +1,12 @@
 // eslint-disable-next-line
-import './index.css';
+import './Login.css';
 import {Form,Button,Input, message,} from 'antd';
 import React, { useState }from 'react';
 import axios from 'axios';
 import {useHistory} from 'react-router-dom';
+import url from '../../server/api/url';
+import { ChangeUserInfo } from '../../redux/action';
+import store from '../../redux/store'
 import {
   LoadingOutlined,
 } from '@ant-design/icons';
@@ -13,23 +16,27 @@ function Login() {
   message.config({
     maxCount:1
   })
-
+  
   const onFinish = (values) => {
     setLoading(true);
-    console.log('Success:', values);
-    axios.post("http://localhost:8080/login",{
+    axios.post(`${url}/login`,{
+      header:{ 'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8;application/json' },
       email:values.email,
       password:values.password
-    }).then(data=>{
+    }).then( data => {
       console.log(data)
-      localStorage.setItem(`token`,data.data.data.Token)
-      history.push('/');
-    }).catch(err=>{
+      if(data.data.status==='BS2001'){
+        localStorage.setItem(`token`,data.data.data.Token)
+        setLoading(false);
+        // store.dispatch(ChangeUserInfo);
+        history.push('/home/home');
+      }
+      else message.error('登录失败！')
+    }).catch( err => {
       console.log(err)
+      setLoading(false);
       // message.destroy();
       message.error('登录失败，请检查您的邮箱和密码是否正确！');
-    }).finally(()=>{
-      setLoading(false);
     })
   };
 
@@ -91,10 +98,10 @@ function Login() {
           >
             {loading?'登录中':'登录'}
           </Button>
-          <Button type="primary" 
-          style={{borderRadius:'10px',height:'40px',width:'200px'}} 
+          <Button type="link" 
+
           onClick={()=>{ history.push('/register') }}
-            >注册
+            >去注册
           </Button>
         </Form.Item>
       </Form>

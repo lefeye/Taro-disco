@@ -163,7 +163,7 @@ export default function SignUp() {
             >
                 <Input />
             </Form.Item>
-            <Form.List name="teamMember" style={{}} >
+            {/* <Form.List name="teamMember" style={{}} >
                 {(fields, { add, remove }) => (
                     <>
                         {fields.map(({ key, name, fieldKey, ...restField }) => (
@@ -194,7 +194,7 @@ export default function SignUp() {
                         </Form.Item>
                     </>
                 )}
-            </Form.List>
+            </Form.List> */}
 
 
 

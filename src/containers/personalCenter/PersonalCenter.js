@@ -3,6 +3,7 @@ import Info from './Information';
 import Contest from './Contest';
 import MyNavLink from '../../components/MyNavLink';
 import ReleaseCompetition from './ReleaseCompetition';
+import Released from './Released';
 import { Menu } from 'antd';
 import {
   IdcardOutlined,
@@ -19,6 +20,7 @@ const PersonalCenter = () => {
                 <Route path='/home/personalcenter/information' component={Info} />
                 <Route path='/home/personalcenter/contest' component={Contest} />
                 <Route path='/home/personalcenter/competition' component={ReleaseCompetition} />
+                <Route path='/home/personalcenter/released' component={Released} />
             </Switch>
         </div>
         <div className="menu">
@@ -35,7 +37,10 @@ const PersonalCenter = () => {
                 <MyNavLink to='/home/personalcenter/contest'>比赛信息</MyNavLink>
             </Menu.Item>
             <Menu.Item key="3" icon={<CalendarOutlined />}>
-                <MyNavLink to='/home/personalcenter/competition'> 发布比赛</MyNavLink>
+                <MyNavLink to='/home/personalcenter/competition'>发布比赛</MyNavLink>
+            </Menu.Item>
+            <Menu.Item key="4" icon={<CalendarOutlined />}>
+                <MyNavLink to='/home/personalcenter/released'>已发布</MyNavLink>
             </Menu.Item>
         </Menu>
         </div>

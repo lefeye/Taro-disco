@@ -3,20 +3,63 @@ import React, { useState } from "react";
 import 'moment/locale/zh-cn';
 import locale from 'antd/lib/date-picker/locale/zh_CN';
 import {DatePicker, Form, Button, Input as BInput, message} from 'antd';
+import axios from 'axios';
+import '../../server/api/dateChange';
 const ReleaseCompetition=()=>{
     const [firstTime,setFirstTime] = useState(null);
     const [secondTime,setSecondTime] = useState(null);
-    const { RangePicker } = DatePicker;
-
+    
     const onSubmit = ( value ) => {
-        if(firstTime>=secondTime){
+
+        if(firstTime>secondTime){
             message.error('比赛时间早于报名截止时间，请检查时间设定！')
         }
+        else{
+            axios({
+                method:"POST",
+                url:"http://localhost:8080/api/v1/setting/competition",
+                data:{
+                    title:value.title,
+                    description:value.description,
+                    reward:value.reward,
+                    entry_requirement:value.entry_requirement,
+                    work_requirement:value.work_requirement,
+                    signup_deadline:firstTime,
+                    submit_deadline:secondTime
+                },
+                headers:{
+                    'token':localStorage.getItem('token')
+                }
+            })
+            // axios.post('http://localhost:8080/api/v1/setting/',
+            // {
+            //     headers:{
+            //         'token':localStorage.getItem('token'),
+            //     }
+            // },
+            // {
+            //     title:value.title,
+            //     description:value.description,
+            //     reward:value.reward,
+            //     entry_requirement:value.entry_requirement,
+            //     work_requirement:value.work_requirement,
+            //     signup_deadline:value.signup_deadline,
+            //     submit_deadline:value.submit_deadline
+            // })
+            .then(value=>{
+                if(value.data.status==='BS2003')
+                message.info('发布成功！');
+                else message.error('发布失败');
+                console.log(value);
+            }).catch(e=>{
+                console.log(e);
+            })
+        }
+
     }
     const onHandleChange = ( date ) => {
         try{
-            setFirstTime(date[1]._d);
-            console.log(firstTime);
+            setFirstTime(date._d.Format("yyyy-MM-dd hh:mm:ss"));
         }
         catch(e){
             console.log(e);
@@ -24,8 +67,7 @@ const ReleaseCompetition=()=>{
     }
     const onHandleChange2 = ( date ) => {
         try{
-            setSecondTime(date[0]._d);
-            console.log(secondTime);
+            setSecondTime(date._d.Format("yyyy-MM-dd hh:mm:ss"));
         }
         catch(e){
             console.log(e);
@@ -96,7 +138,7 @@ const ReleaseCompetition=()=>{
                 ]}
                 >
                    
-                        <RangePicker showTime={{ format: 'HH:mm' }} locale={locale} onChange={onHandleChange} format="YYYY-MM-DD HH:mm"/>                   
+                        <DatePicker showTime={{ format: 'HH:mm' }} locale={locale} onChange={onHandleChange} format="YYYY-MM-DD HH:mm"/>                   
                 </Form.Item>
 
                 <Form.Item
@@ -106,7 +148,7 @@ const ReleaseCompetition=()=>{
                     {required:true,message:'请输入比赛起止时间!'}
                 ]}
                 >
-                    <RangePicker showTime={{ format: 'HH:mm' }}  locale={locale} onChange={onHandleChange2} format="YYYY-MM-DD HH:mm"/>
+                    <DatePicker showTime={{ format: 'HH:mm' }}  locale={locale} onChange={onHandleChange2} format="YYYY-MM-DD HH:mm"/>
                 </Form.Item>
 
                 <Form.Item

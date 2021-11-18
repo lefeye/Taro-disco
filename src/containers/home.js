@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import Home from '../pages/Home/Home'
 import Contact from '../pages/Contact/Contact'
@@ -10,8 +10,11 @@ import img2 from '../imgs/lab.png'
 import MyNavLink from '../components/MyNavLink'
 import img1 from '../imgs/scut0.png'
 import PersonalCenter from './personalCenter/PersonalCenter'
+import store from '../redux/store'
 
-export default function home() {
+export default function Home1() {
+
+    const [isLogin]=useState(store.getState().status);
     return (
         <div>
             <div className="top">
@@ -23,9 +26,9 @@ export default function home() {
             </div>
             <header className="App-header">
                 <div className="club_title">
-                    <img src={img1} alt="scut" />
+                    <img src={img1} alt="scut" style={{width:'15%'}}/>
                     <div>
-                        <img src={img2} alt="lab" style={{height:'30%'}}/>
+                        <img src={img2} alt="lab" style={{height:'20%',width:'100%'}}/>
                     </div>
                 </div>
             </header >

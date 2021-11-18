@@ -1,14 +1,12 @@
-button{
-    width:200px;
-    border-radius: 5px;;
-  }
 .form_Reg{
+  
   margin:0 auto;
   width:300px;
   height: auto;
   position: relative;
   top:20px;
   overflow: hidden;
+  margin-top: 50px;
 }
 .send{
   position: absolute;
