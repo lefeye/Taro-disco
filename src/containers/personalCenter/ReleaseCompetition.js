@@ -15,7 +15,8 @@ const ReleaseCompetition=()=>{
             message.error('比赛时间早于报名截止时间，请检查时间设定！')
         }
         else{
-            axios({
+            //催的太急，axios没有配置拦截器，后续的同学可以配置，不然使用axios请求数据都得添加一个头部，比较麻烦
+            axios({    
                 method:"POST",
                 url:"http://localhost:8080/api/v1/setting/competition",
                 data:{
@@ -31,21 +32,6 @@ const ReleaseCompetition=()=>{
                     'token':localStorage.getItem('token')
                 }
             })
-            // axios.post('http://localhost:8080/api/v1/setting/',
-            // {
-            //     headers:{
-            //         'token':localStorage.getItem('token'),
-            //     }
-            // },
-            // {
-            //     title:value.title,
-            //     description:value.description,
-            //     reward:value.reward,
-            //     entry_requirement:value.entry_requirement,
-            //     work_requirement:value.work_requirement,
-            //     signup_deadline:value.signup_deadline,
-            //     submit_deadline:value.submit_deadline
-            // })
             .then(value=>{
                 if(value.data.status==='BS2003')
                 message.info('发布成功！');
