@@ -1,7 +1,7 @@
 import React from 'react'
 import MyCarousel from '../../components/MyCarousel'
-import MyNavLink from '../../components/MyNavLink/index'
-import './Home.css'
+import './index.css'
+
 export default function Home() {
     return (
         <div>

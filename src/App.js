@@ -15,8 +15,6 @@ function App() {
           <Route path='/home' component={Home} />
           <Route path='/login' component={Login} />
           <Route path="/register" component={Register} />
-          {/* <Route path="/admin" component={Register} /> */}
-          {/* <Route path='/personalcenter' component={PersonalCenter} /> */}
         </Switch>
       </div>
 
