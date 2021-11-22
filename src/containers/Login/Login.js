@@ -5,8 +5,6 @@ import React, { useState }from 'react';
 import axios from 'axios';
 import {useHistory} from 'react-router-dom';
 import url from '../../server/api/url';
-import { ChangeUserInfo } from '../../redux/action';
-import store from '../../redux/store'
 import {
   LoadingOutlined,
 } from '@ant-design/icons';
@@ -31,12 +29,17 @@ function Login() {
         // store.dispatch(ChangeUserInfo);
         history.push('/home/home');
       }
-      else message.error('登录失败！')
+      else {
+        if(data.data.msg==='record not found'){
+          message.error('登录失败,用户未注册');
+        }
+        setLoading(false);
+      }
     }).catch( err => {
       console.log(err)
       setLoading(false);
       // message.destroy();
-      message.error('登录失败，请检查您的邮箱和密码是否正确！');
+      message.error('登录失败，网络错误！');
     })
   };
 
