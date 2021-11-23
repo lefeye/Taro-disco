@@ -8,17 +8,18 @@ import Question from '../pages/Question/Question'
 import Competition from '../pages/Competition/Competition'
 import MyNavLink from '../components/MyNavLink'
 import PersonalCenter from './personalCenter/PersonalCenter'
-
+import store from '../redux/store'
 import imgleft from '../imgs/logo_left.png'
 
 export default function Home() {
-    const [isLogin] = useState(0);
+    const isLogin = store.getState().status;
     return (
         <div>
             <div className="top">
                 <MyNavLink to="/login">登录</MyNavLink>
                 <MyNavLink to="/register">注册</MyNavLink>
-                <MyNavLink to="/home/personalcenter">个人中心</MyNavLink>
+                {isLogin ? <><MyNavLink to="/home/personalcenter">个人中心</MyNavLink></> : ''}
+
                 {/* <MyNavLink to="/home/signUp">比赛报名</MyNavLink> */}
 
             </div>
