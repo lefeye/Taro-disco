@@ -12,16 +12,14 @@ import store from '../redux/store'
 import imgleft from '../imgs/logo_left.png'
 
 export default function Home() {
-    const isLogin = store.getState().status;
+    const isLogin = store.getState().userInfo.status;
+    console.log(isLogin)
     return (
         <div>
             <div className="top">
-                <MyNavLink to="/login">登录</MyNavLink>
+                {isLogin ? <></> : <MyNavLink to="/login">登录</MyNavLink>}
                 <MyNavLink to="/register">注册</MyNavLink>
-                {isLogin ? <><MyNavLink to="/home/personalcenter">个人中心</MyNavLink></> : ''}
-
-                {/* <MyNavLink to="/home/signUp">比赛报名</MyNavLink> */}
-
+                {isLogin ? <MyNavLink to="/home/personalcenter">个人中心</MyNavLink> : ''}
             </div>
             <header className="App-header">
                 <div className="club_title">

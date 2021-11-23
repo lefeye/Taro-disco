@@ -8,6 +8,7 @@ import {
 import { useHistory } from 'react-router-dom'
 import './index.css'
 import axios from 'axios';
+import url from '../../server/api/url';
 
 export default function Competition() {
     const history = useHistory();
@@ -26,7 +27,7 @@ export default function Competition() {
         // console.log('Received stu_id of form: ', values.student_id);
         axios({
             method: "POST",
-            url: "http://localhost:8080/api/v1/user/competition/sign-up",
+            url: `${url}/api/v1/user/competition/sign-up`,
             data: {
                 competition_id: 1,
                 remark: teamMember
