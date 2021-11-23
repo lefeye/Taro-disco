@@ -40,7 +40,6 @@ function Info() {
 
                 </div>
             } */}
-            <h1 >个人信息啦，搞快点搞快点</h1>
             <Descriptions title="个人信息" className='useInformation'>
                 <Descriptions.Item label="用户姓名">Zhou Maomao</Descriptions.Item>
                 <Descriptions.Item label="用户学号">1810000000</Descriptions.Item>

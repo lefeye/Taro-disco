@@ -4,13 +4,15 @@ import axios from 'axios';
 import React from 'react';
 import { useState } from 'react';
 import url from '../../server/api/url';
+import { useHistory } from 'react-router-dom';
 import {
   Form,
   Button,
   Input,
   Radio,
   Row,
-  Col
+  Col,
+  message
 } from 'antd';
 
 const formItemLayout = {
@@ -37,6 +39,8 @@ const tailFormItemLayout = {
 };
 
 const RegistrationForm = () => {
+
+  const history = useHistory()
   const [form] = Form.useForm();
   const [value, setValue] = useState(1);
   
@@ -50,6 +54,29 @@ const RegistrationForm = () => {
       password:values.password,
       stu_grade:values.stu_grade,
     }).then( data => {
+        if(data.data.status==='BS2002'){
+          message.info('注册成功，为您自动登录！');
+          axios.post(`${url}/login`,{
+            email:values.email,
+            password:values.password
+          }).then( data => {
+            console.log(data)
+            if(data.data.status==='BS2001'){
+              localStorage.setItem(`token`,data.data.data.token)
+              // store.dispatch(ChangeUserInfo);
+              history.push('/home/homepage');
+            }
+            else {
+              if (data.data.msg === 'record not found') {
+                message.error('登录失败,用户未注册');
+              }
+            }
+          }).catch(err => {
+            console.log(err)
+            // message.destroy();
+            message.error('登录失败，网络错误！');
+          })
+        }
         console.log(data)
     }).catch( err => {
       console.log(err)
@@ -102,7 +129,7 @@ const RegistrationForm = () => {
           {required:true}
         ]}
         >
-        <Radio.Group onChange={onChange} defaultValue={value}>
+        <Radio.Group onChange={onChange}  value={value}>
           <Radio value={1}>学生</Radio>
           <Radio value={2}>企业</Radio>
         </Radio.Group>
