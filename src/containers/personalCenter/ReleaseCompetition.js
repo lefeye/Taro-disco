@@ -92,7 +92,7 @@ const ReleaseCompetition=()=>{
                     { required:true,message:'请输入比赛简介!' }
                 ]}
                 >
-                    <BInput/>
+                    <BInput.TextArea/>
                 </Form.Item>
 
                 <Form.Item
@@ -102,7 +102,7 @@ const ReleaseCompetition=()=>{
                     { required:true,message:'请输入参赛要求!' }
                 ]}
                 >
-                    <BInput/>
+                    <BInput.TextArea/>
 
                 </Form.Item>
                 <Form.Item
@@ -112,7 +112,7 @@ const ReleaseCompetition=()=>{
                     {required:true,message:'请输入比赛提交的作品要求!'}
                 ]}
                 >
-                    <BInput/>
+                    <BInput.TextArea/>
                 </Form.Item>
 
                 <Form.Item
@@ -141,7 +141,7 @@ const ReleaseCompetition=()=>{
                 name='reward'
                 label='比赛奖励'
                 >
-                    <BInput/>
+                    <BInput.TextArea/>
                 </Form.Item>
 
                 <Form.Item

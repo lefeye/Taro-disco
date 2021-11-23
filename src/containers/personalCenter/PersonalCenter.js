@@ -8,6 +8,7 @@ import { Menu } from 'antd';
 import {
   IdcardOutlined,
   CalendarOutlined,
+  DatabaseOutlined
 } from '@ant-design/icons';
 import {Route,Switch} from 'react-router-dom';
 
@@ -39,7 +40,7 @@ const PersonalCenter = () => {
             <Menu.Item key="3" icon={<CalendarOutlined />}>
                 <MyNavLink to='/home/personalcenter/competition'>发布比赛</MyNavLink>
             </Menu.Item>
-            <Menu.Item key="4" icon={<CalendarOutlined />}>
+            <Menu.Item key="4" icon={<DatabaseOutlined />}>
                 <MyNavLink to='/home/personalcenter/released'>已发布</MyNavLink>
             </Menu.Item>
         </Menu>

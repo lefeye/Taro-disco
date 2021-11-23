@@ -4,23 +4,20 @@ import Home from '../pages/Home/Home'
 import Contact from '../pages/Contact/Contact'
 import Download from '../pages/Download/Download'
 import Question from '../pages/Question/Question'
-import User from '../pages/User/index'
 import SignUp from '../pages/SignUp/index'
 import img2 from '../imgs/lab.png'
 import MyNavLink from '../components/MyNavLink'
 import img1 from '../imgs/scut0.png'
 import PersonalCenter from './personalCenter/PersonalCenter'
-import store from '../redux/store'
 
 export default function Home1() {
 
-    const [isLogin]=useState(store.getState().status);
     return (
         <div>
             <div className="top">
                 <MyNavLink to="/login">登录</MyNavLink>
                 <MyNavLink to="/register">注册</MyNavLink>
-                <MyNavLink to="/home/personalcenter">个人中心</MyNavLink>
+                <MyNavLink to="/home/personalcenter/information">个人中心</MyNavLink>
                 <MyNavLink to="/home/signUp">比赛报名</MyNavLink>
 
             </div>
