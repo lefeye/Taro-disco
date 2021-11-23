@@ -8,12 +8,11 @@ import Question from '../pages/Question/Question'
 import Competition from '../pages/Competition/Competition'
 import MyNavLink from '../components/MyNavLink'
 import PersonalCenter from './personalCenter/PersonalCenter'
-import store from '../redux/store'
 
 import imgleft from '../imgs/logo_left.png'
 
 export default function Home() {
-    const [isLogin] = useState(store.getState().status);
+    const [isLogin] = useState(0);
     return (
         <div>
             <div className="top">

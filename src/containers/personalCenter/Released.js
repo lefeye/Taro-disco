@@ -12,12 +12,14 @@ import { useState } from "react";
 import './Released.css'
 import url from "../../server/api/url";
 import moment from "moment";
+import { useHistory } from "react-router-dom";
 const Released = () => {
     const [load,setLoad] = useState(true);  //加载中
     const [element,setElement] = useState([]);  //展开成react对象后的数组
     const [visible,setVisible] = useState(false);  //抽屉可视化
     const [form] = Form.useForm();  //表单对象
     const [currentId,setCurrentId] = useState(10000);
+    const history=useHistory();
     message.config({
         maxCount:1
       })
@@ -35,7 +37,9 @@ const Released = () => {
                 for(const item of data1){
                     data3.push(
                         <Col span={8} key={item.id}>
-                            <Card title={item.title} className='card' extra={<Button type='link' onClick={()=>{viS(item)}}>详情</Button>}>
+                            <Card 
+                            title={item.title} className='card' 
+                            extra={<Button type='link' onClick={()=>{viS(item)}}>详情</Button>}>
                                 <p>主办方：{item.company_id}</p>
                                 <p>简介：{item.description}</p>
                                 <p>比赛要求：{item.entry_requirement}</p>
@@ -43,15 +47,17 @@ const Released = () => {
                                 <p>奖励：{item.reward}</p>
                                 <p>报名截止时间：{item.signup_deadline}</p>
                                 <p>比赛截止时间：{item.submit_deadline}</p>
+                                <Button onClick={()=>{console.log(1)}}>查看报名情况</Button>
                             </Card>
                         </Col>
                     )
                 }
-                setLoad(false);
+                setLoad(false);//把加载中图标取消掉
                 setElement(data3);
             }
-            else {
-                message.error('查询失败！')
+            else if(data.data.status===-1){
+                message.error('登录授权过期，请重新登录！');
+                history.push('/login');
             }
         }).catch( e => {
             console.log(e)
@@ -100,6 +106,7 @@ const Released = () => {
             }).then( data => {
                 if(data.data.status==='BS2004'){
                     message.info('更新比赛成功，请刷新页面查看结果！');
+                    history.push('/home/personalcenter/released');
                 }
                 else{
                     message.error('更新失败')
@@ -134,6 +141,7 @@ const Released = () => {
                 </Form.Item>
                 
             }
+            
             >
                 <Form layout="vertical" hideRequiredMark
                 form={form}

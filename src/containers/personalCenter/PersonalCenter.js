@@ -8,6 +8,7 @@ import { Menu } from 'antd';
 import {
     IdcardOutlined,
     CalendarOutlined,
+    DatabaseOutlined
 } from '@ant-design/icons';
 import { Route, Switch } from 'react-router-dom';
 import store from '../../redux/store';

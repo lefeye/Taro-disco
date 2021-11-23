@@ -19,16 +19,13 @@ function Login() {
 
   const onFinish = (values) => {
     setLoading(true);
-    axios.post(`${url}/login`, {
-      header: {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8;application/json'
-      },
-      email: values.email,
-      password: values.password
-    }).then(data => {
+    axios.post(`${url}/login`,{
+      email:values.email,
+      password:values.password
+    }).then( data => {
       console.log(data)
-      if (data.data.status === 'BS2001') {
-        localStorage.setItem(`token`, data.data.data.token)
+      if(data.data.status==='BS2001'){
+        localStorage.setItem(`token`,data.data.data.token)
         setLoading(false);
         //向redux的store中传递用户名和用户类型
         handleUserInfo(values.email, data.data.data.role);
