@@ -22,9 +22,9 @@ export default function SignUp() {
         console.log('userId', userId)
         axios({
             method: "POST",
-            url: "http://localhost:8080/api/v1/user/competition/sign-upREQUEST",
+            url: "http://localhost:8080/api/v1/user/competition/sign-up",
             data: {
-                competition_id: "1",
+                competition_id: 1,
                 remark: values.teamMember
             },
             headers: {
