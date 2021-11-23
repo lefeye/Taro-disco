@@ -10,16 +10,39 @@ import MyNavLink from '../components/MyNavLink'
 import PersonalCenter from './personalCenter/PersonalCenter'
 import store from '../redux/store'
 import imgleft from '../imgs/logo_left.png'
+import { Modal, Button } from 'antd'
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 export default function Home() {
-    const isLogin = store.getState().userInfo.status;
-    console.log(isLogin)
+    const [isLogin, setIsLogin] = useState(store.getState().userInfo.status);
+    const { confirm } = Modal;
+    const logout = () => {
+        confirm({
+            icon: <ExclamationCircleOutlined />,
+            content: <p>确认退出登录？</p>,
+            onOk() {
+                const action = {
+                    type: 'clear_userInfo',
+                }
+                store.dispatch(action)
+                setIsLogin(false)
+                console.log('OK');
+            },
+            onCancel() {
+                console.log('Cancel');
+            },
+        });
+
+        // console.log('logout   ', 'islogin:', store.getState().userInfo.status)
+    }
+
     return (
         <div>
             <div className="top">
                 {isLogin ? <></> : <MyNavLink to="/login">登录</MyNavLink>}
-                <MyNavLink to="/register">注册</MyNavLink>
+                {isLogin ? <></> : <MyNavLink to="/register">注册</MyNavLink>}
                 {isLogin ? <MyNavLink to="/home/personalcenter">个人中心</MyNavLink> : ''}
+                {isLogin ? <Button type="link" onClick={logout}>退出登录</Button> : ''}
             </div>
             <header className="App-header">
                 <div className="club_title">
