@@ -1,20 +1,20 @@
 // eslint-disable-next-line
 import './Login.css';
-import {Form,Button,Input, message,} from 'antd';
-import React, { useState }from 'react';
+import { Form, Button, Input, message, } from 'antd';
+import React, { useState } from 'react';
 import axios from 'axios';
-import {useHistory} from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import url from '../../server/api/url';
 import {
   LoadingOutlined,
 } from '@ant-design/icons';
 function Login() {
-  const history=useHistory();
-  const [loading,setLoading]=useState(false);
+  const history = useHistory();
+  const [loading, setLoading] = useState(false);
   message.config({
-    maxCount:1
+    maxCount: 1
   })
-  
+
   const onFinish = (values) => {
     setLoading(true);
     axios.post(`${url}/login`,{
@@ -29,12 +29,12 @@ function Login() {
         history.push('/home/home');
       }
       else {
-        if(data.data.msg==='record not found'){
+        if (data.data.msg === 'record not found') {
           message.error('登录失败,用户未注册');
         }
         setLoading(false);
       }
-    }).catch( err => {
+    }).catch(err => {
       console.log(err)
       setLoading(false);
       // message.destroy();
@@ -45,11 +45,11 @@ function Login() {
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
-  const wra={
-     offset: 4, span: 16 
+  const wra = {
+    offset: 4, span: 16
   }
 
-  const loadingSignal=(<LoadingOutlined/>)
+  const loadingSignal = (<LoadingOutlined />)
 
   return (
     <div>
@@ -60,50 +60,50 @@ function Login() {
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
-        
+
       >
-        <h2 style={{textAlign:'center',marginBottom:'20px'}}>账号登录</h2>
+        <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>账号登录</h2>
         <Form.Item wrapperCol={wra}
           name="email"
           rules={[
-            {required:true,message:'请输入账号！'}
+            { required: true, message: '请输入账号！' }
           ]}
         >
-          <Input 
-          placeholder="邮箱" 
-          id='username'
+          <Input
+            placeholder="邮箱"
+            id='username'
           />
         </Form.Item>
 
         <Form.Item wrapperCol={wra}
           name="password"
           rules={[
-            {required:true,message:'请输入密码！'}
+            { required: true, message: '请输入密码！' }
           ]}
         >
-          <Input.Password 
-          placeholder="密码" 
-          id='password'
+          <Input.Password
+            placeholder="密码"
+            id='password'
           />
         </Form.Item>
-        
-        <Form.Item wrapperCol={{offset:1,span:11}}>
+
+        <Form.Item wrapperCol={{ offset: 1, span: 11 }}>
           <p>忘记密码</p>
         </Form.Item>
 
         <Form.Item wrapperCol={wra}>
-          <Button type="primary" 
-          htmlType="submit" 
-          style={{borderRadius:'10px',height:'40px',width:'200px'}} 
-          icon={loading===true?loadingSignal:''}
-          disabled={loading}
+          <Button type="primary"
+            htmlType="submit"
+            style={{ borderRadius: '10px', height: '40px', width: '200px' }}
+            icon={loading === true ? loadingSignal : ''}
+            disabled={loading}
           >
-            {loading?'登录中':'登录'}
+            {loading ? '登录中' : '登录'}
           </Button>
-          <Button type="link" 
+          <Button type="link"
 
-          onClick={()=>{ history.push('/register') }}
-            >去注册
+            onClick={() => { history.push('/register') }}
+          >去注册
           </Button>
         </Form.Item>
       </Form>

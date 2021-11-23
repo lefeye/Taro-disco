@@ -1,6 +1,6 @@
 export const login = (user) => ({
     type: 'SET_USER',
-    user
+    user: user
 })
 
 export const changeProfile = (nickyname, gender) => ({

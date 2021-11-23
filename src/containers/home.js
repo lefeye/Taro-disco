@@ -1,51 +1,52 @@
 import React, { useEffect, useState } from 'react'
 import { Route, Switch } from 'react-router-dom'
-import Home from '../pages/Home/Home'
+import HomePage from '../pages/HomePage/index'
 import Contact from '../pages/Contact/Contact'
 import Download from '../pages/Download/Download'
 import Question from '../pages/Question/Question'
-import SignUp from '../pages/SignUp/index'
-import img2 from '../imgs/lab.png'
+import SignUp from '../pages/SignUp/SignUp'
+import Competition from '../pages/Competition/Competition'
 import MyNavLink from '../components/MyNavLink'
-import img1 from '../imgs/scut0.png'
 import PersonalCenter from './personalCenter/PersonalCenter'
 
-export default function Home1() {
+import imgleft from '../imgs/logo_left.png'
 
+export default function Home() {
+    const [isLogin] = useState(0);
     return (
         <div>
             <div className="top">
                 <MyNavLink to="/login">登录</MyNavLink>
                 <MyNavLink to="/register">注册</MyNavLink>
-                <MyNavLink to="/home/personalcenter/information">个人中心</MyNavLink>
-                <MyNavLink to="/home/signUp">比赛报名</MyNavLink>
+                <MyNavLink to="/home/personalcenter">个人中心</MyNavLink>
+                {/* <MyNavLink to="/home/signUp">比赛报名</MyNavLink> */}
 
             </div>
             <header className="App-header">
                 <div className="club_title">
-                    <img src={img1} alt="scut" style={{width:'15%'}}/>
-                    <div>
-                        <img src={img2} alt="lab" style={{height:'20%',width:'100%'}}/>
-                    </div>
+                    <img src={imgleft} alt="logo_left" style={{ height: '20%' }} />
+                    智能系统未来创新实验室
                 </div>
             </header >
-            <div className="top">
-                <MyNavLink to="/home/home">首页</MyNavLink>
-                <MyNavLink to="/home/question">更多问题</MyNavLink>
+            <div className="nav">
+                <MyNavLink to="/home/homepage">首页</MyNavLink>
+                <MyNavLink to="/home/competition">比赛资讯</MyNavLink>
                 <MyNavLink to="/home/download">资源下载</MyNavLink>
                 <MyNavLink to="/home/contact">联系我们</MyNavLink>
+                <MyNavLink to="/home/question">更多问题</MyNavLink>
 
             </div>
             <div className="router-content">
                 <Switch>
-                    <Route path='/home/' component={Home} exact />
-                    <Route path='/home/home' component={Home} />
+                    <Route exact path='/home/' component={HomePage} />
+                    <Route path='/home/homepage' component={HomePage} />
+                    <Route path='/home/competition' component={Competition} />
                     <Route path="/home/question" component={Question} />
                     <Route path="/home/download" component={Download} />
                     <Route path="/home/contact" component={Contact} />
                     <Route path="/home/signUp" component={SignUp} />
-                    {/* <Route path="/home/user" component={User} /> */}
                     <Route path='/home/personalcenter' component={PersonalCenter} />
+
                 </Switch>
             </div>
         </div>

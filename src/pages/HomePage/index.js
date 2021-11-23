@@ -1,6 +1,6 @@
 import React from 'react'
 import MyCarousel from '../../components/MyCarousel'
-import './Home.css'
+import './index.css'
 export default function Home() {
     return (
         <div>

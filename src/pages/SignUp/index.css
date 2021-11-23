@@ -1,4 +1,6 @@
 .signUpForm{
-
     width: 500px;
   }
+.signUpButton{
+  margin: 0 auto;
+}

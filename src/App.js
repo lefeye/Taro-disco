@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom'
 // import PersonalCenter from './containers/personalCenter/PersonalCenter'
 import Home from './containers/home'
 import Login from './containers/Login/Login'
-import Register from './containers/Register/Register'
+import Register from './containers/register/Register'
 
 
 function App() {
@@ -15,8 +15,6 @@ function App() {
           <Route path='/home' component={Home} />
           <Route path='/login' component={Login} />
           <Route path="/register" component={Register} />
-          {/* <Route path="/admin" component={Register} /> */}
-          {/* <Route path='/personalcenter' component={PersonalCenter} /> */}
         </Switch>
       </div>
 
