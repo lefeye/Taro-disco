@@ -5,7 +5,7 @@ export default class MyNavLink extends Component {
 	render() {
 		// console.log(this.props);
 		return (
-			<NavLink activeClassName="" className="list-group-item" {...this.props} />
+			<NavLink className="list-group-item" {...this.props} />
 		)
 	}
 }

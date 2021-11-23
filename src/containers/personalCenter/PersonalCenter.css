@@ -1,0 +1,26 @@
+@import '~antd/dist/antd.css';
+
+.halo{
+    margin:0;
+}
+
+.father{
+    overflow: hidden;
+    padding-left: 260px;;
+}
+
+.menu{
+    float: left;
+    width: 260px;
+    height: 700px;
+    margin-left: -100%;
+    position: relative;
+    left: -260px;
+}
+
+.info{
+    text-align: left;
+    float: left;
+    width: 100%;
+    /* height: 700px; */
+}
