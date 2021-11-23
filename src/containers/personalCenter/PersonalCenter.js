@@ -14,8 +14,8 @@ import { Route, Switch } from 'react-router-dom';
 import store from '../../redux/store';
 
 const PersonalCenter = () => {
-    const typeofUser = store.getState().typeofUser
-    // console.log(ifManager)
+    const typeofUser = store.getState().userInfo.typeofUser
+    console.log(typeofUser)
     return (
         <div className="father">
             <div className="info">

@@ -1,11 +1,8 @@
-import { change_userInfo } from "./action"
-import store from "./store"
-
 const OU = "user"
 const JU = "competition_manager"
 const AU = "admin"
 
-let storeState = {
+let defaultState = {
     userInfo: {
         email: "",
         status: false,//是否为登录状态
@@ -13,12 +10,13 @@ let storeState = {
     }
 }
 
-export default (state = storeState, actions) => {
+export default (state = defaultState, actions) => {
     switch (actions.type) {
-        case change_userInfo:
-            return { ...state, userInfo: actions.data }
+        case 'change_userInfo':
+            return { ...state, userInfo: JSON.parse(JSON.stringify(actions.data)) }
         default:
         // return state
     }
+    console.log(actions)
     return state;
 }

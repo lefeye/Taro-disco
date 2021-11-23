@@ -19,13 +19,14 @@ function Login() {
 
   const onFinish = (values) => {
     setLoading(true);
-    axios.post(`${url}/login`,{
-      email:values.email,
-      password:values.password
-    }).then( data => {
+    axios.post(`${url}/login`, {
+      email: values.email,
+      password: values.password
+    }).then(data => {
       console.log(data)
-      if(data.data.status==='BS2001'){
-        localStorage.setItem(`token`,data.data.data.token)
+      if (data.data.status === 'BS2001') {
+        console.log('success')
+        localStorage.setItem(`token`, data.data.data.token)
         setLoading(false);
         //向redux的store中传递用户名和用户类型
         handleUserInfo(values.email, data.data.data.role);
@@ -49,11 +50,11 @@ function Login() {
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
-  const handleUserInfo = (id, role) => {
+  const handleUserInfo = (email, role) => {
     const action = {
       type: 'change_userInfo',
       data: {
-        email: id,
+        email: email,
         status: true,
         typeofUser: role
       }
