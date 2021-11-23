@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import HomePage from '../pages/HomePage/index'
 import Contact from '../pages/Contact/Contact'
@@ -8,10 +8,12 @@ import SignUp from '../pages/SignUp/SignUp'
 import Competition from '../pages/Competition/Competition'
 import MyNavLink from '../components/MyNavLink'
 import PersonalCenter from './personalCenter/PersonalCenter'
+import store from '../redux/store'
 
 import imgleft from '../imgs/logo_left.png'
 
-export default function home() {
+export default function Home() {
+    const [isLogin] = useState(store.getState().status);
     return (
         <div>
             <div className="top">

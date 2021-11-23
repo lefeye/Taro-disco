@@ -6,39 +6,40 @@ import {
     Form,
     Input,
     Cascader,
-    Select,
-    Row,
-    Col,
-    Checkbox,
-    Button,
-    Space
+    Select
 } from 'antd';
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+// import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 
 export default function SignUp() {
     // const [userId, setUserId] = useState(store.getState())
     // const [status, setStatus] = useState()
     const userId = store.getState()
     const [form] = Form.useForm();
-    const { Option } = Select;
+    // const { Option } = Select;
     const onFinish = (values) => {
-        console.log('Received values of form: ', values);
+        console.log(' token ', localStorage.getItem('token'));
         console.log('Received stu_id of form: ', values.student_id);
         console.log('userId', userId)
-        axios.post("http://127.0.0.1:8080/api/v1/user/competition/sign-up", {
-            competition_id: "ght",
-            remark: values.teamMember
-        }).then(data => {
-            console.log(data)
-            //   localStorage.setItem(`token`,data.data.data.Token)
-            //   history.push('/');
-        }).catch(err => {
-            console.log(err)
-            // message.destroy();
-            console.error('提交失败');
-        }).finally(() => {
-            //   setLoading(false);
+        axios({
+            method: "POST",
+            url: "http://localhost:8080/api/v1/user/competition/sign-upREQUEST",
+            data: {
+                competition_id: "1",
+                remark: values.teamMember
+            },
+            headers: {
+                'token': localStorage.getItem('token'),
+                // 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8;application/json'
+            }
         })
+            .then(res => {
+                if (res.data.status == '200')
+                    console.log('报名成功')
+                else {
+                    console.log('报名失败，请检查是否登录')
+                    console.log(res)
+                }
+            }).catch(e => console.log(e))
     };
 
     const formItemLayout = {
@@ -123,22 +124,6 @@ export default function SignUp() {
                 scrollToFirstError
                 className="signUpForm"
             >
-                {/* <Form.Item
-                    name="email"
-                    label="联系邮箱"
-                    rules={[
-                        {
-                            type: 'email',
-                            message: 'The input is not valid E-mail!',
-                        },
-                        {
-                            required: true,
-                            message: 'Please input your E-mail!',
-                        },
-                    ]}
-                >
-                    <Input />
-                </Form.Item> */}
                 <Form.Item
                     name="leaderName"
                     label="队长姓名"
