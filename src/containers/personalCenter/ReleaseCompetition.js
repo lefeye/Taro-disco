@@ -15,7 +15,7 @@ const ReleaseCompetition=()=>{
             message.error('比赛时间早于报名截止时间，请检查时间设定！')
         }
         else{
-            //催的太急，axios没有配置拦截器，后续的同学可以配置，不然使用axios请求数据都得添加一个头部，比较麻烦
+            //催的太急，axios没有配置拦截器，后续的同学可以配置添加上token，不然使用axios请求数据都得添加
             axios({    
                 method:"POST",
                 url:"http://localhost:8080/api/v1/setting/competition",
