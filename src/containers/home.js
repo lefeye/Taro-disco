@@ -4,7 +4,7 @@ import HomePage from '../pages/HomePage/index'
 import Contact from '../pages/Contact/Contact'
 import Download from '../pages/Download/Download'
 import Question from '../pages/Question/Question'
-import SignUp from '../pages/SignUp/SignUp'
+// import SignUp from '../pages/SignUp/SignUp'
 import Competition from '../pages/Competition/Competition'
 import MyNavLink from '../components/MyNavLink'
 import PersonalCenter from './personalCenter/PersonalCenter'
@@ -45,7 +45,7 @@ export default function Home() {
                     <Route path="/home/question" component={Question} />
                     <Route path="/home/download" component={Download} />
                     <Route path="/home/contact" component={Contact} />
-                    <Route path="/home/signUp" component={SignUp} />
+                    {/* <Route path="/home/signUp" component={SignUp} /> */}
                     <Route path='/home/personalcenter' component={PersonalCenter} />
 
                 </Switch>

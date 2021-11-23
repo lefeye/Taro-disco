@@ -8,6 +8,8 @@ import url from '../../server/api/url';
 import {
   LoadingOutlined,
 } from '@ant-design/icons';
+import store from '../../redux/store';
+
 function Login() {
   const history = useHistory();
   const [loading, setLoading] = useState(false);
@@ -28,8 +30,10 @@ function Login() {
       if (data.data.status === 'BS2001') {
         localStorage.setItem(`token`, data.data.data.token)
         setLoading(false);
+        //向redux的store中传递用户名和用户类型
+        handleUserInfo(values.email, data.data.data.role);
         // store.dispatch(ChangeUserInfo);
-        history.push('/home/home');
+        history.push('/home/homepage');
       }
       else {
         if (data.data.msg === 'record not found') {
@@ -48,6 +52,20 @@ function Login() {
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
+  const handleUserInfo = (id, role) => {
+    const action = {
+      type: 'change_userInfo',
+      data: {
+        email: id,
+        status: true,
+        typeofUser: role
+      }
+    }
+    store.dispatch(action);
+    console.log('redux')
+  }
+
+
   const wra = {
     offset: 4, span: 16
   }

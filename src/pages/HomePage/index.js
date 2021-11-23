@@ -18,13 +18,13 @@ export default function Home() {
                     构建“智能系统”，让人类生活更加智能。</span>
             </div>
             <br />
-            <div className="home-title">
+            {/* <div className="home-title">
                 <i className="hr"></i>
                 <span className="title">比赛讯息</span>
             </div>
             <div className="home-content">
                 <span>  </span>
-            </div>
+            </div> */}
         </div>
     )
 }

@@ -6,16 +6,17 @@ import img3 from '../imgs/gd1.jpg'
 
 export default function Mycarousel() {
     const contentStyle = {
-        height: '584px',
-        width: '1519px',
+        height: '20em',
+        width: '100%',
         color: '#fff',
-        lineHeight: '50vh',
+        lineHeight: '45vh',
         textAlign: 'center',
         background: '#364d79',
+        marginBlockStart: '0'
     };
     return (
         <div>
-            <Carousel autoplay>
+            <Carousel autoplay >
                 <div>
                     <h3 style={contentStyle}><img src={img1} alt="1" /></h3>
                 </div>
@@ -29,6 +30,6 @@ export default function Mycarousel() {
                     <h3 style={contentStyle}>4</h3>
                 </div>
             </Carousel>
-        </div>
+        </div >
     )
 }

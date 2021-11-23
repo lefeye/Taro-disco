@@ -79,3 +79,6 @@
     /* text-align: right; */
     /* float: right; */
 }
+.carousel img{
+  height: 100%;
+}

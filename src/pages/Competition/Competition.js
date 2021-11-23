@@ -1,11 +1,78 @@
 import React, { useState } from 'react'
-import { Button } from 'antd'
+import {
+    Form,
+    Input,
+    Modal,
+    Button
+} from 'antd'
 import { useHistory } from 'react-router-dom'
 import './index.css'
+import axios from 'axios';
 
 export default function Competition() {
     const history = useHistory();
     const [publishTime, setPublishTime] = useState("")
+    const [teamMember, setTeamMember] = useState("")
+    const [visible, setVisible] = React.useState(false);
+    const [confirmLoading, setConfirmLoading] = React.useState(false);
+    const [form] = Form.useForm();
+
+    const showModal = () => {
+        setVisible(true);
+    };
+
+    const onFinish = (teamMember) => {
+        console.log(' token ', localStorage.getItem('token'));
+        // console.log('Received stu_id of form: ', values.student_id);
+        axios({
+            method: "POST",
+            url: "http://localhost:8080/api/v1/user/competition/sign-up",
+            data: {
+                competition_id: 1,
+                remark: teamMember
+            },
+            headers: {
+                'token': localStorage.getItem('token'),
+            }
+        })
+            .then(res => {
+                if (res.data.status == '200')
+                    console.log('报名成功')
+                else {
+                    console.log('报名失败，请检查是否登录')
+                    console.log(res)
+                }
+            }).catch(e => console.log(e))
+    };
+
+    const handleOk = () => {
+        if (teamMember.length) {
+            onFinish(teamMember);
+            setConfirmLoading(true);
+            setTimeout(() => {
+                setVisible(false);
+                setConfirmLoading(false);
+            }, 2000);
+        }
+    };
+
+    const handleCancel = () => {
+        console.log('Clicked cancel button');
+        setVisible(false);
+    };
+
+    const tailFormItemLayout = {
+        wrapperCol: {
+            xs: {
+                span: 24,
+                offset: 8,
+            },
+            sm: {
+                span: 12,
+                offset: 0,
+            },
+        },
+    };
     return (
         <div>
             <h3 class="content-title">2021年“广和通杯”华南理工大学计算机创意比赛</h3>
@@ -40,10 +107,45 @@ export default function Competition() {
 
                 *在程序设计赛道中，参赛者须以团队名义参赛。
             </p>
-            <Button type="primary"
+            {/*<Button type="primary"
                 style={{ borderRadius: '10px', height: '40px', width: '200px' }}
                 onClick={() => history.push('/home/signUp')}>立即报名</Button>
-            {/* <Button onClick={history.push('/')}>提交作品</Button> */}
-        </div>
+             <Button onClick={history.push('/')}>提交作品</Button> */}
+            <Button type="primary" onClick={showModal}>
+                立即报名
+            </Button>
+            <Modal
+                title="报名确认"
+                visible={visible}
+                onOk={handleOk}
+                confirmLoading={confirmLoading}
+                onCancel={handleCancel}
+            >
+                <Form onChange={(value) => setTeamMember(value.target.value)}>
+                    <Form.Item
+                        name="teamMember"
+                        label="队员信息"
+                        rules={[
+                            {
+                                required: true,
+                                message: '本赛事以组队形式参加，请务必填写队员信息',
+                            },
+                        ]}
+                    >
+                        <Input.TextArea showCount maxLength={100} placeholder="请输入队伍队员信息，例如201830600444-张三，如有多个请按行写" />
+                    </Form.Item>
+
+                    {/* <Form.Item {...tailFormItemLayout}>
+                        <button
+                            // type="primary" 
+                            type="submit"
+                            className="signUpButton"
+                            onClick={() => console.log(form)}>
+                            确认报名
+                        </button> 
+                </Form.Item>*/}
+                </Form>
+            </Modal>
+        </div >
     )
 }
