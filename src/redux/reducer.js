@@ -5,8 +5,8 @@ const AU = "admin"
 let defaultState = {
     userInfo: {
         email: "",
-        status: false,//是否为登录状态
-        typeofUser: OU//用户类型，默认下为普通用户
+        status: sessionStorage.getItem('status')?sessionStorage.getItem('status'):false,//是否为登录状态
+        typeofUser: sessionStorage.getItem('role')?sessionStorage.getItem('role'):OU//用户类型，默认下为普通用户
     }
 }
 

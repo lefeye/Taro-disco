@@ -12,7 +12,7 @@ import store from '../../redux/store';
 
 function Login() {
   const history = useHistory();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);     //是否点击登录，用于禁用按钮
   message.config({
     maxCount: 1
   })
@@ -31,6 +31,8 @@ function Login() {
         //向redux的store中传递用户名和用户类型
         handleUserInfo(values.email, data.data.data.role);
         // store.dispatch(ChangeUserInfo);
+        sessionStorage.setItem('status','true');
+        sessionStorage.setItem('role',`${data.data.data.role}`)
         history.push('/home/homepage');
       }
       else {

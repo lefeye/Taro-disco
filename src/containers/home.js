@@ -11,6 +11,7 @@ import PersonalCenter from './personalCenter/PersonalCenter'
 import store from '../redux/store'
 import imgleft from '../imgs/logo_left.png'
 import { Modal, Button } from 'antd'
+import SearchSignupInfo from './personalCenter/SearchSignupInfo'
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 export default function Home() {
@@ -27,6 +28,7 @@ export default function Home() {
                 store.dispatch(action)
                 setIsLogin(false)
                 localStorage.clear()
+                sessionStorage.clear()
                 console.log('OK');
             },
             onCancel() {
@@ -42,7 +44,7 @@ export default function Home() {
             <div className="top">
                 {isLogin ? <></> : <MyNavLink to="/login">登录</MyNavLink>}
                 {isLogin ? <></> : <MyNavLink to="/register">注册</MyNavLink>}
-                {isLogin ? <MyNavLink to="/home/personalcenter">个人中心</MyNavLink> : ''}
+                {isLogin ? <MyNavLink to="/home/personalcenter/information">个人中心</MyNavLink> : ''}
                 {isLogin ? <Button type="link" onClick={logout}>退出登录</Button> : ''}
             </div>
             <header className="App-header">

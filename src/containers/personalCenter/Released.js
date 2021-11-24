@@ -20,7 +20,7 @@ const Released = () => {
     const [visible, setVisible] = useState(false);                     //抽屉可视化
     const [form] = Form.useForm();                                    //表单对象
     const [currentId, setCurrentId] = useState(10000);                 //当前选中的比赛ID
-    const history = useHistory();                                       //路由操作  
+    const history = useHistory();                                       //路由操作 
     message.config({
         maxCount:1
       })
@@ -67,7 +67,7 @@ const Released = () => {
         }).catch(e => {
             console.log(e)
         })
-    })
+    },[])
 
     //点击按钮展开比赛信息
     const viS = item =>{
@@ -121,7 +121,8 @@ const Released = () => {
             }).then(data => {
                 if (data.data.status === 'BS2004') {
                     message.info('更新比赛成功！');
-                    history.push('/home/personalcenter/released');
+                    setVisible(false);
+                    window.location.reload();
                 }
                 else {
                     message.error('更新失败')
