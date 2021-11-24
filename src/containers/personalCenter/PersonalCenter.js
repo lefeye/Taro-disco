@@ -15,11 +15,10 @@ import store from '../../redux/store';
 
 const PersonalCenter = () => {
     const typeofUser = store.getState().userInfo.typeofUser
-    console.log(typeofUser)
     return (
         <div className="father">
             <div className="info">
-                <>占位，不然显示不出来，待解决</>
+               
                 <Switch>
                     <Route path='/home/personalcenter/information' component={Info} />
                     <Route path='/home/personalcenter/contest' component={Contest} />

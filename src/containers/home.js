@@ -10,16 +10,16 @@ import MyNavLink from '../components/MyNavLink'
 import PersonalCenter from './personalCenter/PersonalCenter'
 import store from '../redux/store'
 import imgleft from '../imgs/logo_left.png'
+import SearchSignupInfo from './personalCenter/SearchSignupInfo'
 
 export default function Home() {
     const isLogin = store.getState().userInfo.status;
-    console.log(isLogin)
     return (
         <div>
             <div className="top">
                 {isLogin ? <></> : <MyNavLink to="/login">登录</MyNavLink>}
                 <MyNavLink to="/register">注册</MyNavLink>
-                {isLogin ? <MyNavLink to="/home/personalcenter">个人中心</MyNavLink> : ''}
+                {isLogin ? <MyNavLink to="/home/personalcenter/information">个人中心</MyNavLink> : ''}
             </div>
             <header className="App-header">
                 <div className="club_title">
@@ -43,6 +43,7 @@ export default function Home() {
                     <Route path="/home/question" component={Question} />
                     <Route path="/home/download" component={Download} />
                     <Route path="/home/contact" component={Contact} />
+                    <Route path='/home/searchsignupinfo' component={SearchSignupInfo}></Route>
                     {/* <Route path="/home/signUp" component={SignUp} /> */}
                     <Route path='/home/personalcenter' component={PersonalCenter} />
 

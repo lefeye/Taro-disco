@@ -12,8 +12,7 @@ import { useEffect, useState } from "react";
 import './Released.css'
 import url from "../../server/api/url";
 import moment from "moment";
-import { useHistory, Switch, Route } from "react-router-dom";
-import SearchSignupInfo from "./SearchSignupInfo";
+import { useHistory } from "react-router-dom";
 const Released = () => {
     const [load,setLoad] = useState(true);                            //加载中
     const [element,setElement] = useState([]);                        //展开成react对象后的数组
@@ -26,6 +25,7 @@ const Released = () => {
       })
     
     useEffect(()=>{
+        //获取比赛数据
         axios({
             method:"GET",
             url:`${url}/api/v1/setting/competition/get-list`,
@@ -40,8 +40,10 @@ const Released = () => {
                     data3.unshift(
                         <Col span={8} key={item.id}>
                             <Card 
-                            title={item.title} className='card' 
-                            extra={<Button type='link' onClick={()=>{viS(item)}}>详情</Button>}>
+                            title={item.title} 
+                            className='card' 
+                            extra={ <Button type='link' onClick={()=>{viS(item)}}>详情</Button> } 
+                            >
                                 
                                 <p>简介：{item.description}</p>
                                 <p>比赛要求：{item.entry_requirement}</p>
@@ -49,7 +51,7 @@ const Released = () => {
                                 <p>奖励：{item.reward}</p>
                                 <p>报名截止时间：{item.signup_deadline}</p>
                                 <p>比赛截止时间：{item.submit_deadline}</p>
-                                <Button onClick={searchSignupInfo}>查看报名情况</Button>
+                                <Button onClick={ () =>{searchSignupInfo(item)}}>查看报名情况</Button>
                             </Card>
                         </Col>
                     )
@@ -66,6 +68,7 @@ const Released = () => {
         } )
     })
 
+    //点击按钮展开比赛信息
     const viS = item =>{
         setVisible(true)
         console.log(item);
@@ -81,11 +84,13 @@ const Released = () => {
         })
     }
 
-    const searchSignupInfo = () => {
-        localStorage.setItem('competition_id',`${currentId}`);
+    //跳转到参赛人员列表
+    const searchSignupInfo = item => {
+        localStorage.setItem('competition_id',`${item.id}`);
         history.push('/home/searchsignupinfo');
     }
 
+    //修改比赛
     const handleSubmit = () => {
         const values=form.getFieldsValue(true);
         let firstTime=values.signup_deadline._d.Format("yyyy-MM-dd hh:mm:ss");
@@ -131,9 +136,6 @@ const Released = () => {
 
     return (
         <div style={{margin:"2%"}}>
-            <Switch>
-                <Route path='/home/searchsignupinfo' component={SearchSignupInfo}></Route>
-            </Switch>
             <Row gutter={[16,16]}>
                 {   load===true?
                     <Spin indicator={spin} tip='loading' style={{margin:'30px auto'}}/>
