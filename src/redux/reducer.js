@@ -14,6 +14,8 @@ export default (state = defaultState, actions) => {
     switch (actions.type) {
         case 'change_userInfo':
             return { ...state, userInfo: JSON.parse(JSON.stringify(actions.data)) }
+        case 'clear_userInfo':
+            return defaultState
         default:
         // return state
     }
