@@ -36,7 +36,7 @@ const PersonalCenter = () => {
                     <Menu.Item key="1" icon={<IdcardOutlined />}>
                         <MyNavLink to='/home/personalcenter/information'>个人信息</MyNavLink>
                     </Menu.Item>
-                    {typeofUser == "user" ? <><Menu.Item key="2" icon={<CalendarOutlined />}>
+                    {typeofUser === "user" ? <><Menu.Item key="2" icon={<CalendarOutlined />}>
                         <MyNavLink to='/home/personalcenter/contest'>比赛信息</MyNavLink>
                     </Menu.Item></> : ''}
 
@@ -45,7 +45,7 @@ const PersonalCenter = () => {
                             <Menu.Item key="3" icon={<CalendarOutlined />}>
                                 <MyNavLink to='/home/personalcenter/competition'>发布比赛</MyNavLink>
                             </Menu.Item>
-                            <Menu.Item key="4" icon={<CalendarOutlined />}>
+                            <Menu.Item key="4" icon={<DatabaseOutlined />}>
                                 <MyNavLink to='/home/personalcenter/released'>已发布</MyNavLink>
                             </Menu.Item>
                         </> : ''}

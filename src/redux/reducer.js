@@ -5,8 +5,9 @@ const AU = "admin"
 let defaultState = {
     userInfo: {
         email: "",
-        status: sessionStorage.getItem('status')?sessionStorage.getItem('status'):false,//是否为登录状态
-        typeofUser: sessionStorage.getItem('role')?sessionStorage.getItem('role'):OU//用户类型，默认下为普通用户
+        //卧槽，试了一下sessionStorage为什么会出Bug
+        status: localStorage.getItem('status')?localStorage.getItem('status'):false,//是否为登录状态
+        typeofUser: localStorage.getItem('role')!==OU?localStorage.getItem('role'):OU//用户类型，默认下为普通用户
     }
 }
 

@@ -3,7 +3,8 @@ import React from 'react'
 export default function Question() {
     return (
         <div>
-            Question
+            <h1>网站刚搭，同学们将就着用吧，如果喜欢写代码欢迎来跟我们一起维护</h1>
+            <h2>前端后端设计测试大量招聘（福利：无）qwq</h2>
         </div>
     )
 }

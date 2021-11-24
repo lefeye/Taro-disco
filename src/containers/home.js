@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import HomePage from '../pages/HomePage/index'
 import Contact from '../pages/Contact/Contact'
@@ -24,11 +24,12 @@ export default function Home() {
             onOk() {
                 const action = {
                     type: 'clear_userInfo',
+
                 }
+                localStorage.clear()
+                console.log(localStorage)
                 store.dispatch(action)
                 setIsLogin(false)
-                localStorage.clear()
-                sessionStorage.clear()
                 console.log('OK');
             },
             onCancel() {

@@ -5,6 +5,7 @@ import React from 'react';
 import { useState } from 'react';
 import url from '../../server/api/url';
 import { useHistory } from 'react-router-dom';
+import store from '../../redux/store';
 import {
   Form,
   Button,
@@ -44,6 +45,19 @@ const RegistrationForm = () => {
   const [form] = Form.useForm();
   const [value, setValue] = useState(1);
 
+  const handleUserInfo = (email, role) => {
+    const action = {
+      type: 'change_userInfo',
+      data: {
+        email: email,
+        status: true,
+        typeofUser: role
+      }
+    }
+    store.dispatch(action);
+    console.log('redux')
+  }
+
   const onFinish = (values) => {
     console.log('Received values of form: ', values);
     axios.post(`${url}/register`, {
@@ -63,8 +77,12 @@ const RegistrationForm = () => {
           console.log(data)
           if (data.data.status === 'BS2001') {
             localStorage.setItem(`token`, data.data.data.token)
+            //向redux的store中传递用户名和用户类型
+            handleUserInfo(values.email, data.data.data.role);
             // store.dispatch(ChangeUserInfo);
-            history.push('/home/homepage');
+            localStorage.setItem('status','true');
+            localStorage.setItem('role',`${data.data.data.role}`)
+            history.push('/home/homepage')
           }
           else {
             if (data.data.msg === 'record not found') {
@@ -124,7 +142,6 @@ const RegistrationForm = () => {
         <Form.Item
           name="radio"
           label="用户类型"
-          wrapperCol={{ pull: 2 }}
           rules={[
             { required: true }
           ]}
