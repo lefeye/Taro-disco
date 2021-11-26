@@ -29,7 +29,7 @@ export default function Competition() {
             method: "POST",
             url: `${url}/api/v1/user/competition/sign-up`,
             data: {
-                competition_id: 1,
+                competition_id: 2,
                 remark: teamMember
             },
             headers: {
@@ -37,6 +37,7 @@ export default function Competition() {
             }
         })
             .then(res => {
+                console.log(res)
                 if (res.data.status == '200')
                     console.log('报名成功')
                 else {
@@ -62,18 +63,6 @@ export default function Competition() {
         setVisible(false);
     };
 
-    const tailFormItemLayout = {
-        wrapperCol: {
-            xs: {
-                span: 24,
-                offset: 8,
-            },
-            sm: {
-                span: 12,
-                offset: 0,
-            },
-        },
-    };
     return (
         <div>
             <h3 class="content-title">2021年“广和通杯”华南理工大学计算机创意比赛</h3>
@@ -112,9 +101,11 @@ export default function Competition() {
                 style={{ borderRadius: '10px', height: '40px', width: '200px' }}
                 onClick={() => history.push('/home/signUp')}>立即报名</Button>
              <Button onClick={history.push('/')}>提交作品</Button> */}
-            <Button type="primary" onClick={showModal}>
+            <div style={{textAlign:'center'}}>
+                <Button type="primary" onClick={showModal} >
                 立即报名
-            </Button>
+                </Button>
+            </div>
             <Modal
                 title="报名确认"
                 visible={visible}

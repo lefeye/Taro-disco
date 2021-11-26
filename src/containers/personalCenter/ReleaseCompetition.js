@@ -6,10 +6,11 @@ import { DatePicker, Form, Button, Input as BInput, message } from 'antd';
 import axios from 'axios';
 import '../../server/api/dateChange';
 import url from '../../server/api/url';
+import { useHistory } from 'react-router';
 const ReleaseCompetition = () => {
     const [firstTime, setFirstTime] = useState(null);
     const [secondTime, setSecondTime] = useState(null);
-
+    const history = useHistory();
     const onSubmit = (value) => {
 
         if (firstTime > secondTime) {
@@ -34,10 +35,11 @@ const ReleaseCompetition = () => {
                 }
             })
                 .then(value => {
-                    if (value.data.status === 'BS2003')
-                        message.info('发布成功！');
+                    if (value.data.status === 'BS2003'){
+                         message.info('发布成功！');
+                         history.push('/home/personalcenter/released')
+                    }
                     else message.error('发布失败');
-                    console.log(value);
                 }).catch(e => {
                     console.log(e);
                 })
