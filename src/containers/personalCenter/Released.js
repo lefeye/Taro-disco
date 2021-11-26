@@ -18,9 +18,9 @@ const Released = () => {
     const [load, setLoad] = useState(true);                            //加载中
     const [element, setElement] = useState([]);                        //展开成react对象后的数组
     const [visible, setVisible] = useState(false);                     //抽屉可视化
-    const [form] = Form.useForm();                                    //表单对象
+    const [form] = Form.useForm();                                     //表单对象
     const [currentId, setCurrentId] = useState(10000);                 //当前选中的比赛ID
-    const history = useHistory();                                       //路由操作 
+    const history = useHistory();                                      //路由操作 
     message.config({
         maxCount:1
       })
