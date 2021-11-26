@@ -14,7 +14,6 @@ let defaultState = {
 export default (state = defaultState, actions) => {
     switch (actions.type) {
         case 'change_userInfo': {
-            localStorage.setItem()
             return { ...state, userInfo: JSON.parse(JSON.stringify(actions.data)) }
         }
 
