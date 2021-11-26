@@ -11,11 +11,8 @@ import {
 // import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 
 export default function SignUp() {
-    // const [userId, setUserId] = useState(store.getState())
-    // const [status, setStatus] = useState()
-    const userId = store.getState()
     const [form] = Form.useForm();
-    // const { Option } = Select;
+
     const onFinish = (values) => {
         console.log(' token ', localStorage.getItem('token'));
         console.log('Received stu_id of form: ', values.student_id);
@@ -33,7 +30,27 @@ export default function SignUp() {
             }
         })
             .then(res => {
-                console.log(res)
+                if (res.data.status == '200')
+                    console.log('报名成功')
+                else {
+                    console.log('报名失败，请检查是否登录')
+                    console.log(res)
+                }
+            }).catch(e => console.log(e))
+
+        axios({
+            method: "GET",
+            url: `${url}/api/v1/user/own/competition`,
+            data: {
+                competition_id: 1,
+                remark: values.teamMember
+            },
+            headers: {
+                'token': localStorage.getItem('token'),
+                // 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8;application/json'
+            }
+        })
+            .then(res => {
                 if (res.data.status == '200')
                     console.log('报名成功')
                 else {
