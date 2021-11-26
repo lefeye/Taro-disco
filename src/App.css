@@ -1,8 +1,5 @@
 @import '~antd/dist/antd.css';
 
-.App {
-  text-align: center;
-}
 
 .App-logo {
   height: 40vmin;
@@ -81,4 +78,11 @@
 }
 .carousel img{
   height: 100%;
+}
+
+.signUpButton{
+  margin: 0 auto;
+}
+.ant-card-bordered .ant-card-cover{
+  width: 20%;
 }

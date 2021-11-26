@@ -25,20 +25,24 @@ export default function Competition() {
         setVisible(true);
     };
     useEffect(() => {
-        axios({
-            method: "GET",
-            url: `${url}/api/v1/user/own/competition`,
-            headers: {
-                'token': localStorage.getItem('token')
-            }
-        }).then(data => {
-            console.log(data.data.data)
-            data.data.data.forEach(element => {
-                if (element["id"] == competionId) {
-                    setIfparticipate(true);
+        if (localStorage.getItem('token')) {
+            axios({
+                method: "GET",
+                url: `${url}/api/v1/user/own/competition`,
+                headers: {
+                    'token': localStorage.getItem('token')
                 }
-            });
-        })
+            }).then(data => {
+                console.log(data)
+                const competitonList = data.data ? data.data['data'] : [];
+                competitonList.forEach(element => {
+                    if (element["id"] == competionId) {
+                        setIfparticipate(true);
+                    }
+                });
+            })
+        }
+
     }, [ifSignUp])
 
     const onFinish = (teamMember) => {
@@ -47,7 +51,7 @@ export default function Competition() {
             method: "POST",
             url: `${url}/api/v1/user/competition/sign-up`,
             data: {
-                competition_id: 1,
+                competition_id: 2,
                 remark: teamMember
             },
             headers: {
@@ -60,7 +64,7 @@ export default function Competition() {
                     console.log('报名成功');
                 }
                 else {
-                    console.log('报名失败，请检查是否登录')
+                    alert('报名失败，请检查是否登录')
                     console.log(res)
                 }
             }).catch(e => console.log(e))
@@ -119,10 +123,10 @@ export default function Competition() {
             </p>
 
             {ifparticipate ?
-                <Button type="primary" disabled>
+                <Button type="primary" disabled className='signUpButton'>
                     (您已报名)
                 </Button> : <>
-                    <Button type="primary" onClick={showModal}>
+                    <Button type="primary" onClick={showModal} className='signUpButton'>
                         立即报名
                     </Button>
                     <Modal
@@ -145,16 +149,6 @@ export default function Competition() {
                             >
                                 <Input.TextArea showCount maxLength={100} placeholder="请输入队伍队员信息，例如201830600444-张三，如有多个请按行写" />
                             </Form.Item>
-
-                            {/* <Form.Item {...tailFormItemLayout}>
-                        <button
-                            // type="primary" 
-                            type="submit"
-                            className="signUpButton"
-                            onClick={() => console.log(form)}>
-                            确认报名
-                        </button> 
-                </Form.Item>*/}
                         </Form>
                     </Modal>
                 </>}

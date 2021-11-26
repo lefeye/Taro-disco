@@ -12,7 +12,7 @@ import store from '../../redux/store';
 
 function Login() {
   const history = useHistory();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);     //是否点击登录，用于禁用按钮
   message.config({
     maxCount: 1
   })
@@ -31,6 +31,8 @@ function Login() {
         //向redux的store中传递用户名和用户类型
         handleUserInfo(values.email, data.data.data.role);
         // store.dispatch(ChangeUserInfo);
+        localStorage.setItem('status','true');
+        localStorage.setItem('role',`${data.data.data.role}`)
         history.push('/home/homepage');
       }
       else {
@@ -75,14 +77,14 @@ function Login() {
       <Form className="form"
         name="basic"
         labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
+        wrapperCol={wra}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
 
       >
         <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>账号登录</h2>
-        <Form.Item wrapperCol={wra}
+        <Form.Item 
           name="email"
           rules={[
             { required: true, message: '请输入账号！' }
@@ -94,7 +96,7 @@ function Login() {
           />
         </Form.Item>
 
-        <Form.Item wrapperCol={wra}
+        <Form.Item 
           name="password"
           rules={[
             { required: true, message: '请输入密码！' }
@@ -106,11 +108,11 @@ function Login() {
           />
         </Form.Item>
 
-        <Form.Item wrapperCol={{ offset: 1, span: 11 }}>
-          <p>忘记密码</p>
+        <Form.Item >
+          <p>忘记密码（先别忘）</p>
         </Form.Item>
 
-        <Form.Item wrapperCol={wra}>
+        <Form.Item >
           <Button type="primary"
             htmlType="submit"
             style={{ borderRadius: '10px', height: '40px', width: '200px' }}
@@ -119,11 +121,17 @@ function Login() {
           >
             {loading ? '登录中' : '登录'}
           </Button>
-          <Button type="link"
-
+          <div style={{textAlign:'center'}}>
+            <Button type="link"
             onClick={() => { history.push('/register') }}
-          >去注册
-          </Button>
+            >去注册
+            </Button>or
+            <Button type="link"
+            onClick={() => { history.push('/home/homepage') }}
+            >回首页
+            </Button>
+          </div>
+          
         </Form.Item>
       </Form>
     </div>

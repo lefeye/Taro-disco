@@ -33,6 +33,7 @@ export default function SignUp() {
             }
         })
             .then(res => {
+                console.log(res)
                 if (res.data.status == '200')
                     console.log('报名成功')
                 else {

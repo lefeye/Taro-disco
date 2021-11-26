@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import HomePage from '../pages/HomePage/index'
 import Contact from '../pages/Contact/Contact'
@@ -11,6 +11,7 @@ import PersonalCenter from './personalCenter/PersonalCenter'
 import store from '../redux/store'
 import imgleft from '../imgs/logo_left.png'
 import { Modal, Button } from 'antd'
+import SearchSignupInfo from './personalCenter/SearchSignupInfo'
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 export default function Home() {
@@ -23,7 +24,10 @@ export default function Home() {
             onOk() {
                 const action = {
                     type: 'clear_userInfo',
+
                 }
+                localStorage.clear()
+                console.log(localStorage)
                 store.dispatch(action)
                 setIsLogin(false)
                 console.log('OK');
@@ -41,7 +45,7 @@ export default function Home() {
             <div className="top">
                 {isLogin ? <></> : <MyNavLink to="/login">登录</MyNavLink>}
                 {isLogin ? <></> : <MyNavLink to="/register">注册</MyNavLink>}
-                {isLogin ? <MyNavLink to="/home/personalcenter">个人中心</MyNavLink> : ''}
+                {isLogin ? <MyNavLink to="/home/personalcenter/information">个人中心</MyNavLink> : ''}
                 {isLogin ? <Button type="link" onClick={logout}>退出登录</Button> : ''}
             </div>
             <header className="App-header">
@@ -66,6 +70,7 @@ export default function Home() {
                     <Route path="/home/question" component={Question} />
                     <Route path="/home/download" component={Download} />
                     <Route path="/home/contact" component={Contact} />
+                    <Route path='/home/searchsignupinfo' component={SearchSignupInfo}></Route>
                     {/* <Route path="/home/signUp" component={SignUp} /> */}
                     <Route path='/home/personalcenter' component={PersonalCenter} />
 

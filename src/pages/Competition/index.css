@@ -20,6 +20,10 @@ h3{
 }
 .content-title{
     color: #0C7ED9;
+    text-align: center;
+}
+.content-date{
+    text-align: center;
 }
 .content-body{
     display: block;
