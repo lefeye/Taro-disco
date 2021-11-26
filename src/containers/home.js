@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, useHistory } from 'react-router-dom'
 import HomePage from '../pages/HomePage/index'
 import Contact from '../pages/Contact/Contact'
 import Download from '../pages/Download/Download'
@@ -12,9 +12,11 @@ import store from '../redux/store'
 import imgleft from '../imgs/logo_left.png'
 import { Modal, Button } from 'antd'
 import SearchSignupInfo from './personalCenter/SearchSignupInfo'
+import DetailInfo from '../components/DetailInfo/DetailInfo'
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 export default function Home() {
+    const history = useHistory()
     const [isLogin, setIsLogin] = useState(store.getState().userInfo.status);
     const { confirm } = Modal;
     const logout = () => {
@@ -31,6 +33,7 @@ export default function Home() {
                 store.dispatch(action)
                 setIsLogin(false)
                 console.log('OK');
+                history.push('/home/homepage');
             },
             onCancel() {
                 console.log('Cancel');
@@ -70,7 +73,8 @@ export default function Home() {
                     <Route path="/home/question" component={Question} />
                     <Route path="/home/download" component={Download} />
                     <Route path="/home/contact" component={Contact} />
-                    <Route path='/home/searchsignupinfo' component={SearchSignupInfo}></Route>
+                    <Route path='/home/searchsignupinfo' component={SearchSignupInfo}/>
+                    <Route path='/home/detail' component={DetailInfo}/>
                     {/* <Route path="/home/signUp" component={SignUp} /> */}
                     <Route path='/home/personalcenter' component={PersonalCenter} />
 

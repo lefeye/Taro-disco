@@ -91,7 +91,6 @@ const RegistrationForm = () => {
           }
         }).catch(err => {
           console.log(err)
-          // message.destroy();
           message.error('登录失败，网络错误！');
         })
       }
@@ -113,7 +112,7 @@ const RegistrationForm = () => {
       name="stu_grade"
       label='年级'
     >
-      <Input />
+      <Input placeholder='18级/19级/20级/21级'/>
     </Form.Item>
 
     <Form.Item
@@ -123,7 +122,7 @@ const RegistrationForm = () => {
       ]}
       label='姓名'
     >
-      <Input />
+      <Input placeholder='请尽量输入真名'/>
     </Form.Item></>)
 
   const onChange = (e) => {
