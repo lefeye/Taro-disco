@@ -80,8 +80,8 @@ const RegistrationForm = () => {
             //向redux的store中传递用户名和用户类型
             handleUserInfo(values.email, data.data.data.role);
             // store.dispatch(ChangeUserInfo);
-            localStorage.setItem('status','true');
-            localStorage.setItem('role',`${data.data.data.role}`)
+            // sessionStorage.setItem('status', 'true');
+            // sessionStorage.setItem('role', `${data.data.data.role}`)
             history.push('/home/homepage')
           }
           else {
@@ -112,7 +112,7 @@ const RegistrationForm = () => {
       name="stu_grade"
       label='年级'
     >
-      <Input placeholder='18级/19级/20级/21级'/>
+      <Input placeholder='18级/19级/20级/21级' />
     </Form.Item>
 
     <Form.Item
@@ -122,7 +122,7 @@ const RegistrationForm = () => {
       ]}
       label='姓名'
     >
-      <Input placeholder='请尽量输入真名'/>
+      <Input placeholder='请尽量输入真名' />
     </Form.Item></>)
 
   const onChange = (e) => {

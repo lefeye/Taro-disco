@@ -31,8 +31,8 @@ function Login() {
         //向redux的store中传递用户名和用户类型
         handleUserInfo(values.email, data.data.data.role);
         // store.dispatch(ChangeUserInfo);
-        localStorage.setItem('status','true');
-        localStorage.setItem('role',`${data.data.data.role}`)
+        // sessionStorage.setItem('status', 'true');
+        // sessionStorage.setItem('role', `${data.data.data.role}`)
         history.push('/home/homepage');
       }
       else {
@@ -84,7 +84,7 @@ function Login() {
 
       >
         <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>账号登录</h2>
-        <Form.Item 
+        <Form.Item
           name="email"
           rules={[
             { required: true, message: '请输入账号！' }
@@ -96,7 +96,7 @@ function Login() {
           />
         </Form.Item>
 
-        <Form.Item 
+        <Form.Item
           name="password"
           rules={[
             { required: true, message: '请输入密码！' }
@@ -121,17 +121,17 @@ function Login() {
           >
             {loading ? '登录中' : '登录'}
           </Button>
-          <div style={{textAlign:'center'}}>
+          <div style={{ textAlign: 'center' }}>
             <Button type="link"
-            onClick={() => { history.push('/register') }}
+              onClick={() => { history.push('/register') }}
             >去注册
             </Button>or
             <Button type="link"
-            onClick={() => { history.push('/home/homepage') }}
+              onClick={() => { history.push('/home/homepage') }}
             >回首页
             </Button>
           </div>
-          
+
         </Form.Item>
       </Form>
     </div>

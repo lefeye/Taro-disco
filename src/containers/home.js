@@ -28,8 +28,7 @@ export default function Home() {
                     type: 'clear_userInfo',
 
                 }
-                localStorage.clear()
-                console.log(localStorage)
+                sessionStorage.clear();
                 store.dispatch(action)
                 setIsLogin(false)
                 console.log('OK');
@@ -73,8 +72,8 @@ export default function Home() {
                     <Route path="/home/question" component={Question} />
                     <Route path="/home/download" component={Download} />
                     <Route path="/home/contact" component={Contact} />
-                    <Route path='/home/searchsignupinfo' component={SearchSignupInfo}/>
-                    <Route path='/home/detail' component={DetailInfo}/>
+                    <Route path='/home/searchsignupinfo' component={SearchSignupInfo} />
+                    <Route path='/home/detail' component={DetailInfo} />
                     {/* <Route path="/home/signUp" component={SignUp} /> */}
                     <Route path='/home/personalcenter' component={PersonalCenter} />
 

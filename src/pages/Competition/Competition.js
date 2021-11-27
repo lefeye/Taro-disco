@@ -23,6 +23,7 @@ export default function Competition() {
         }).then(data => {
             if (data.data.status === 200) {
                 const data1 = data.data.data.reverse();
+                console.log(data.data)
                 setLoad(false);//把加载中图标取消掉
                 setElement(data1);
             }
@@ -33,24 +34,27 @@ export default function Competition() {
     )
 
     return (
-        <List className="list"
-            itemLayout="horizontal"
-            bordered
-            dataSource={element}
-            renderItem={item => (
-                <List.Item>
-                    <List.Item.Meta
-                        title={
-                            <Button
-                                type='link'
-                                onClick={() => { history.push('/home/detail'); localStorage.setItem('compId', `${item.id}`) }}>
-                                {item.title}
-                            </Button>
-                        }
-                        description={<p>奖励：{item.reward}</p>}
-                    />
-                </List.Item>
-            )}
-        />
+        <div>
+            <List className="list"
+                itemLayout="horizontal"
+                bordered
+                dataSource={element}
+                renderItem={item => (
+                    <List.Item>
+                        <List.Item.Meta
+                            title={
+                                <Button
+                                    type='link'
+                                    onClick={() => { history.push('/home/detail'); localStorage.setItem('compId', `${item.id}`) }}>
+                                    {item.title}
+                                </Button>
+                            }
+                            description={<p>奖励：{item.reward}</p>}
+                        />
+                    </List.Item>
+                )}
+            />
+            <p>nihao</p>
+        </div>
     )
 }

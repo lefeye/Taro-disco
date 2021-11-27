@@ -19,11 +19,11 @@ export default function DetailInfo() {
     const [visible, setVisible] = React.useState(false);
     const [confirmLoading, setConfirmLoading] = React.useState(false);
     const [form] = Form.useForm();
-    const [data,setData] = useState({});
-    useEffect(()=>{
+    const [data, setData] = useState({});
+    useEffect(() => {
         axios({
             method: "GET",
-            url:`${url}/api/v1/user/competition?competition_id=${localStorage.getItem('compId')}`,
+            url: `${url}/api/v1/user/competition?competition_id=${sessionStorage.getItem('compId')}`,
             headers: {
                 'token': localStorage.getItem('token')
             }
@@ -36,11 +36,11 @@ export default function DetailInfo() {
         }).catch(e => {
             console.log(e)
         })
-    },[])
-    
+    }, [])
+
     const showModal = () => {
-        if(localStorage.getItem('token'))
-        setVisible(true);
+        if (localStorage.getItem('token'))
+            setVisible(true);
         else {
             message.info('请先登录！');
         }
@@ -119,9 +119,9 @@ export default function DetailInfo() {
                 style={{ borderRadius: '10px', height: '40px', width: '200px' }}
                 onClick={() => history.push('/home/signUp')}>立即报名</Button>
              <Button onClick={history.push('/')}>提交作品</Button> */}
-            <div style={{textAlign:'center'}}>
+            <div style={{ textAlign: 'center' }}>
                 <Button type="primary" onClick={showModal} >
-                立即报名
+                    立即报名
                 </Button>
             </div>
             <Modal
@@ -158,4 +158,4 @@ export default function DetailInfo() {
             </Modal>
         </div >
     )
-            }
+}
