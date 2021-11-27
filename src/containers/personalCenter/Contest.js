@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import 'antd/dist/antd.css';
 import { Card } from 'antd';
 import url from './../../server/api/url';
@@ -8,7 +8,7 @@ import store from '../../redux/store';
 
 function Contest() {
     const competitionData = useRef();
-    let competitionList = [];
+    let [competitionList,setComp]=useState([]);
     const userID = store.getState().userInfo.email;
     const style = {
         'width': '90%',
@@ -27,18 +27,23 @@ function Contest() {
             // setCompetionData(data.data.data)
             competitionData.current = data.data.data
             // competitionList = []
-            console.log(localStorage.getItem('token'))
+            let data1=[]
             console.log(competitionData.current)
             competitionData.current.forEach(e => {
-                competitionList.push(<Card
+                data1.push(<Card
+                    key={e.id}
                     hoverable
                     style={style}
                     cover={<img alt="example" src={competion_1} />}
                 >
-                    <div><p >{e.id}</p></div>
+                    <div>
+                    <div><p >比赛名称：{e.title}</p></div>
+                    <div><p >作品提交截至日期：{e.submit_deadline}</p></div>
+                    <div><p >队伍信息：{'null'}</p></div>
+                </div>
                 </Card>)
             });
-            console.log(competitionList)
+            setComp(data1);
         }).catch(e => {
             console.log(e)
         })
@@ -59,6 +64,7 @@ function Contest() {
                 </div>
             </Card>
             {/* <p>lalala</p> */}
+            {competitionList}
         </div>
     )
 }

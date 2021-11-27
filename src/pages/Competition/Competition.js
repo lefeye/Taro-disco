@@ -1,8 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
-    Form,
-    Input,
-    Modal,
     Button,
     message,
     List
@@ -32,7 +29,9 @@ export default function Competition() {
         }).catch(e => {
             console.log(e)
         })
-    }, [])
+    }
+    )
+
     return (
         <List className="list"
             itemLayout="horizontal"
