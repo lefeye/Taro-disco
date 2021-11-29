@@ -7,11 +7,11 @@ import Question from '../pages/Question/Question'
 // import SignUp from '../pages/SignUp/SignUp'
 import Competition from '../pages/Competition/Competition'
 import MyNavLink from '../components/MyNavLink'
-import PersonalCenter from './personalCenter/PersonalCenter'
+import PersonalCenter from '../pages/personalCenter/PersonalCenter'
 import store from '../redux/store'
 import imgleft from '../imgs/logo_left.png'
 import { Modal, Button } from 'antd'
-import SearchSignupInfo from './personalCenter/SearchSignupInfo'
+import SearchSignupInfo from '../pages/personalCenter/company/SearchSignupInfo'
 import DetailInfo from '../components/DetailInfo/DetailInfo'
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 
@@ -28,6 +28,7 @@ export default function Home() {
                     type: 'clear_userInfo',
 
                 }
+                localStorage.clear();
                 sessionStorage.clear();
                 store.dispatch(action)
                 setIsLogin(false)

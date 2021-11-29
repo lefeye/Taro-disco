@@ -3,8 +3,8 @@ import React from 'react';
 import Info from './Information';
 import PersonalContest from './PersonanlContest';
 import MyNavLink from '../../components/MyNavLink';
-import ReleaseCompetition from './ReleaseCompetition';
-import Released from './Released';
+import ReleaseCompetition from './company/ReleaseCompetition';
+import Released from './company/Released';
 import { Menu } from 'antd';
 import {
     IdcardOutlined,

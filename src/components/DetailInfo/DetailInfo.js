@@ -20,10 +20,11 @@ export default function DetailInfo() {
     const [confirmLoading, setConfirmLoading] = React.useState(false);
     const [form] = Form.useForm();
     const [data, setData] = useState({});
+    const compId=sessionStorage.getItem('compId');
     useEffect(() => {
         axios({
             method: "GET",
-            url: `${url}/api/v1/user/competition?competition_id=${sessionStorage.getItem('compId')}`,
+            url: `${url}/api/v1/user/competition?competition_id=${compId}`,
             headers: {
                 'token': localStorage.getItem('token')
             }
@@ -53,7 +54,7 @@ export default function DetailInfo() {
             method: "POST",
             url: `${url}/api/v1/user/competition/sign-up`,
             data: {
-                competition_id: 2,
+                competition_id: parseInt(compId),
                 remark: teamMember
             },
             headers: {
@@ -63,9 +64,9 @@ export default function DetailInfo() {
             .then(res => {
                 console.log(res)
                 if (res.data.status == '200')
-                    console.log('报名成功')
+                    message.info('报名成功')
                 else {
-                    console.log('报名失败，请检查是否登录')
+                    message.error('报名失败，请检查是否登录')
                     console.log(res)
                 }
             }).catch(e => console.log(e))

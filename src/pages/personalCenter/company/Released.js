@@ -11,7 +11,7 @@ import { LoadingOutlined } from '@ant-design/icons';
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import './Released.css'
-import url from "../../server/api/url";
+import url from "../../../server/api/url";
 import moment from "moment";
 import { useHistory } from "react-router-dom";
 const Released = () => {
