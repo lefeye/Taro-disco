@@ -5,7 +5,7 @@ import {LeftOutlined, LoadingOutlined} from '@ant-design/icons'
 import './SearchSignupInfo.css'
 import { useEffect } from 'react';
 import axios from 'axios';
-import url from '../../server/api/url';
+import url from '../../../server/api/url';
 import { useState } from 'react';
 
 const SearchSignupInfo = () => {

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import {
     Button,
-    message,
     List
 } from 'antd'
 import { useHistory } from 'react-router-dom'
@@ -11,7 +10,7 @@ import url from '../../server/api/url';
 
 export default function Competition() {
     const history = useHistory()
-    const [load, setLoad] = useState(true);
+    // const [load, setLoad] = useState(true);
     const [element, setElement] = useState([]);
     useEffect(() => {
         axios({
@@ -24,13 +23,13 @@ export default function Competition() {
             if (data.data.status === 200) {
                 const data1 = data.data.data.reverse();
                 console.log(data.data)
-                setLoad(false);//把加载中图标取消掉
+                // setLoad(false);//把加载中图标取消掉
                 setElement(data1);
             }
         }).catch(e => {
             console.log(e)
         })
-    }
+    },[]
     )
 
     return (
@@ -45,7 +44,7 @@ export default function Competition() {
                             title={
                                 <Button
                                     type='link'
-                                    onClick={() => { history.push('/home/detail'); localStorage.setItem('compId', `${item.id}`) }}>
+                                    onClick={() => { history.push('/home/detail'); sessionStorage.setItem('compId', `${item.id}`) }}>
                                     {item.title}
                                 </Button>
                             }
@@ -54,7 +53,6 @@ export default function Competition() {
                     </List.Item>
                 )}
             />
-            <p>nihao</p>
         </div>
     )
 }
