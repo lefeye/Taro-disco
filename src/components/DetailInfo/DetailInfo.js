@@ -5,20 +5,19 @@ import {
     Modal,
     Button,
     message,
-    List
 } from 'antd'
-import { useHistory } from 'react-router-dom'
+// import { useHistory } from 'react-router-dom'
 import './DetailInfo.css'
 import axios from 'axios';
 import url from '../../server/api/url';
 
 export default function DetailInfo() {
-    const history = useHistory();
-    const [publishTime, setPublishTime] = useState("")
+    // const history = useHistory();
+    // const [publishTime, setPublishTime] = useState("")
     const [teamMember, setTeamMember] = useState("")
     const [visible, setVisible] = React.useState(false);
     const [confirmLoading, setConfirmLoading] = React.useState(false);
-    const [form] = Form.useForm();
+    // const [form] = Form.useForm();
     const [data, setData] = useState({});
     const compId=sessionStorage.getItem('compId');
     useEffect(() => {
@@ -63,7 +62,7 @@ export default function DetailInfo() {
         })
             .then(res => {
                 console.log(res)
-                if (res.data.status == '200')
+                if (res.data.status === '200')
                     message.info('报名成功')
                 else {
                     message.error('报名失败，请检查是否登录')

@@ -4,6 +4,7 @@ import 'moment/locale/zh-cn';
 import locale from 'antd/lib/date-picker/locale/zh_CN';
 import { DatePicker, Form, Button, Input as BInput, message } from 'antd';
 import axios from 'axios';
+import '../../../server/api/dateChange'
 import url from '../../../server/api/url';
 import { useHistory } from 'react-router';
 const ReleaseCompetition = () => {

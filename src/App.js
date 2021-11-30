@@ -12,9 +12,9 @@ function App() {
   message.config({
     maxCount:1
   })
-  useEffect(()=>{
-    history.push('/home/homepage')
-  })
+  // useEffect(()=>{
+  //   history.push('/home/homepage')
+  // })
   return (
     <div className="App">
       <div >
@@ -27,7 +27,7 @@ function App() {
       </div>
 
       <footer>
-        <a href=""></a>
+        {/* <a href=""></a> */}
       </footer>
     </div >
   );
