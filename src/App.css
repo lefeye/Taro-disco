@@ -86,3 +86,9 @@
 .ant-card-bordered .ant-card-cover{
   width: 20%;
 }
+.personalCompetitonList .ant-card-body{
+  display: flex;
+}
+.personalCompetitonList .ant-card-body button{
+  display: block;
+}
