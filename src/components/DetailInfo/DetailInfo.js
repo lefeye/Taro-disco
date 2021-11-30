@@ -19,7 +19,10 @@ export default function DetailInfo() {
     const [confirmLoading, setConfirmLoading] = React.useState(false);
     // const [form] = Form.useForm();
     const [data, setData] = useState({});
-    const compId=sessionStorage.getItem('compId');
+    const compId = sessionStorage.getItem('compId');
+    const [ifparticipate, setIfparticipate] = React.useState(false);
+    const [ifSignUp, setIfSignUp] = React.useState(false);
+
     useEffect(() => {
         axios({
             method: "GET",
@@ -37,6 +40,23 @@ export default function DetailInfo() {
             console.log(e)
         })
     }, [])
+
+    useEffect(() => {
+        axios({
+            method: "GET",
+            url: `${url}/api/v1/user/own/competition`,
+            headers: {
+                'token': localStorage.getItem('token')
+            }
+        }).then(data => {
+            console.log(data.data.data)
+            data.data.data.forEach(element => {
+                if (element["id"] == compId) {
+                    setIfparticipate(true);
+                }
+            });
+        })
+    }, [ifSignUp])
 
     const showModal = () => {
         if (localStorage.getItem('token'))
@@ -62,8 +82,11 @@ export default function DetailInfo() {
         })
             .then(res => {
                 console.log(res)
-                if (res.data.status === '200')
+                if (res.data.status === '200'){
                     message.info('报名成功')
+                    setIfparticipate(true);
+                }
+
                 else {
                     message.error('报名失败，请检查是否登录')
                     console.log(res)
@@ -115,47 +138,43 @@ export default function DetailInfo() {
                 <br />
                 {data.submit_deadline}
             </p>
-            {/*<Button type="primary"
-                style={{ borderRadius: '10px', height: '40px', width: '200px' }}
-                onClick={() => history.push('/home/signUp')}>立即报名</Button>
-             <Button onClick={history.push('/')}>提交作品</Button> */}
-            <div style={{ textAlign: 'center' }}>
-                <Button type="primary" onClick={showModal} >
-                    立即报名
-                </Button>
-            </div>
-            <Modal
-                title="报名确认"
-                visible={visible}
-                onOk={handleOk}
-                confirmLoading={confirmLoading}
-                onCancel={handleCancel}
-            >
-                <Form onChange={(value) => setTeamMember(value.target.value)}>
-                    <Form.Item
-                        name="teamMember"
-                        label="队员信息"
-                        rules={[
-                            {
-                                required: true,
-                                message: '本赛事以组队形式参加，请务必填写队员信息',
-                            },
-                        ]}
-                    >
-                        <Input.TextArea showCount maxLength={100} placeholder="请输入队伍队员信息，例如201830600444-张三，如有多个请按行写" />
-                    </Form.Item>
+            {ifparticipate ?
+                <Button type="primary" disabled
+                    style={{
+                        display: 'block', margin: 'auto',
+                        textAlign: 'center'
+                    }}>
+                    (您已报名)
+                </Button> : <>
 
-                    {/* <Form.Item {...tailFormItemLayout}>
-                        <button
-                            // type="primary" 
-                            type="submit"
-                            className="signUpButton"
-                            onClick={() => console.log(form)}>
-                            确认报名
-                        </button> 
-                </Form.Item>*/}
-                </Form>
-            </Modal>
+                    <div style={{ textAlign: 'center' }}>
+                        <Button type="primary" onClick={showModal} >
+                            立即报名
+                        </Button>
+                    </div>
+                    <Modal
+                        title="报名确认"
+                        visible={visible}
+                        onOk={handleOk}
+                        confirmLoading={confirmLoading}
+                        onCancel={handleCancel}
+                    >
+                        <Form onChange={(value) => setTeamMember(value.target.value)}>
+                            <Form.Item
+                                name="teamMember"
+                                label="队员信息"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: '本赛事以组队形式参加，请务必填写队员信息',
+                                    },
+                                ]}
+                            >
+                                <Input.TextArea showCount maxLength={100} placeholder="请输入队伍队员信息，例如201830600444-张三，如有多个请按行写" />
+                            </Form.Item>
+                        </Form>
+                    </Modal></>
+            }
         </div >
     )
 }
