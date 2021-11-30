@@ -37,6 +37,8 @@ export default function Home() {
             onCancel() {
                 console.log('Cancel');
             },
+            okText: "确认",
+            cancelText: "取消"
         });
 
         // console.log('logout   ', 'islogin:', store.getState().userInfo.status)
