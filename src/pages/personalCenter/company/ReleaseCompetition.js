@@ -32,7 +32,7 @@ const ReleaseCompetition = () => {
                     submit_deadline: secondTime
                 },
                 headers: {
-                    'token': localStorage.getItem('token')
+                    'token': sessionStorage.getItem('token')
                 }
             })
                 .then(value => {

@@ -21,7 +21,7 @@ function PersonalContest() {
             method: "GET",
             url: `${url}/api/v1/user/own/competition`,
             headers: {
-                'token': localStorage.getItem('token')
+                'token': sessionStorage.getItem('token')
             }
         }).then(data => {
             competitionData.current = data.data.data

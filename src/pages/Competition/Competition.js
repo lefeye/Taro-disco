@@ -24,7 +24,7 @@ export default function Competition() {
             method: "GET",
             url: `${url}/api/v1/user/competition/get-list`,
             headers: {
-                'token': localStorage.getItem('token')
+                'token': sessionStorage.getItem('token')
             }
         }).then(data => {
             if (data.data.status === 200) {
@@ -48,7 +48,7 @@ export default function Competition() {
     return (
         <div>
             {load === true ?
-                    <Spin indicator={spin} tip='loading' style={{ margin: '30px auto' }} />
+                    <Spin indicator={spin} tip='loading' style={{ margin: '0 auto' }} />
                     : element.length > 0 ?
                     <List className="list"
                     itemLayout="horizontal"
@@ -71,7 +71,7 @@ export default function Competition() {
                     )}
                     />
                     : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description='暂无数据' />}
-            <Pagination defaultCurrent={1} onChange={handleChange} total={total} style={{marginleft:'80%'}}/>
+            <Pagination defaultCurrent={1} onChange={handleChange} total={total} hideOnSinglePage style={{marginleft:'80%'}}/>
         </div>
     )
 }

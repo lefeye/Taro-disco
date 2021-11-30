@@ -35,7 +35,7 @@ const Released = () => {
             method: "GET",
             url: `${url}/api/v1/setting/competition/get-list`,
             headers: {
-                'token': localStorage.getItem('token')
+                'token': sessionStorage.getItem('token')
             }
         }).then(data => {
             if (data.data.status === 200) {
@@ -91,7 +91,7 @@ const Released = () => {
 
     //跳转到参赛人员列表
     const searchSignupInfo = item => {
-        localStorage.setItem('competition_id', `${item.id}`);
+        sessionStorage.setItem('competition_id', `${item.id}`);
         history.push('/home/searchsignupinfo');
     }
 
@@ -108,7 +108,7 @@ const Released = () => {
                 method: "PUT",
                 url: `${url}/api/v1/setting/competition/${currentId}`,
                 headers: {
-                    'token': localStorage.getItem('token')
+                    'token': sessionStorage.getItem('token')
                 },
                 data: {
                     title: values.title,

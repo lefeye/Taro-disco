@@ -28,7 +28,7 @@ export default function DetailInfo() {
             method: "GET",
             url: `${url}/api/v1/user/competition?competition_id=${compId}`,
             headers: {
-                'token': localStorage.getItem('token')
+                'token': sessionStorage.getItem('token')
             }
         }).then(data => {
             if (data.data.status === 200) {
@@ -46,7 +46,7 @@ export default function DetailInfo() {
             method: "GET",
             url: `${url}/api/v1/user/own/competition`,
             headers: {
-                'token': localStorage.getItem('token')
+                'token': sessionStorage.getItem('token')
             }
         }).then(data => {
             console.log(data.data.data)
@@ -59,7 +59,7 @@ export default function DetailInfo() {
     }, [ifSignUp])
 
     const showModal = () => {
-        if (localStorage.getItem('token'))
+        if (sessionStorage.getItem('token'))
             setVisible(true);
         else {
             message.info('请先登录！');
@@ -67,7 +67,7 @@ export default function DetailInfo() {
     };
 
     const onFinish = (teamMember) => {
-        console.log(' token ', localStorage.getItem('token'));
+        console.log(' token ', sessionStorage.getItem('token'));
         // console.log('Received stu_id of form: ', values.student_id);
         axios({
             method: "POST",
@@ -77,7 +77,7 @@ export default function DetailInfo() {
                 remark: teamMember
             },
             headers: {
-                'token': localStorage.getItem('token'),
+                'token': sessionStorage.getItem('token'),
             }
         })
             .then(res => {

@@ -8,7 +8,7 @@ export default function Download() {
     name: 'file',
     action: `${url}/api/v1/user/competition/post-work?competition_id=${1}`,
     headers: {
-      'token':localStorage.getItem('token'),
+      'token':sessionStorage.getItem('token'),
       'X-Requested-With':null
     },
     onChange(info) {

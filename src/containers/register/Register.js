@@ -76,7 +76,7 @@ const RegistrationForm = () => {
         }).then(data => {
           console.log(data)
           if (data.data.status === 'BS2001') {
-            localStorage.setItem(`token`, data.data.data.token)
+            sessionStorage.setItem(`token`, data.data.data.token)
             //向redux的store中传递用户名和用户类型
             handleUserInfo(values.email, data.data.data.role);
             // store.dispatch(ChangeUserInfo);
