@@ -8,12 +8,12 @@ import { useHistory } from 'react-router-dom'
 import { message } from 'antd';
 
 function App() {
-  const history=useHistory();
+  const history = useHistory();
   message.config({
-    maxCount:1
+    maxCount: 1
   })
-  useEffect(()=>{
-    history.push('/home/homepage')
+  useEffect(() => {
+    history.push('/home/homepage');
   })
   return (
     <div className="App">

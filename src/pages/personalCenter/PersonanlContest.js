@@ -24,9 +24,7 @@ function PersonalContest() {
                 'token': localStorage.getItem('token')
             }
         }).then(data => {
-            // setCompetionData(data.data.data)
             competitionData.current = data.data.data
-            // competitionList = []
             let data1 = []
             console.log(competitionData.current)
             competitionData.current.forEach(e => {
@@ -56,11 +54,17 @@ function PersonalContest() {
             console.log(e)
         })
     }, [])
-    return (
-        <div>
-            {competitionList}
-        </div>
-    )
+    if (competitionList.length)
+        return (
+            <div>
+                {competitionList}
+            </div>
+
+        )
+    else
+        return (
+            <div>暂无报名比赛</div>
+        )
 }
 
 export default PersonalContest;
