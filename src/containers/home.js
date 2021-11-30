@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, useHistory } from 'react-router-dom'
 import HomePage from '../pages/HomePage/index'
 import Contact from '../pages/Contact/Contact'
 import Download from '../pages/Download/Download'
@@ -7,14 +7,16 @@ import Question from '../pages/Question/Question'
 // import SignUp from '../pages/SignUp/SignUp'
 import Competition from '../pages/Competition/Competition'
 import MyNavLink from '../components/MyNavLink'
-import PersonalCenter from './personalCenter/PersonalCenter'
+import PersonalCenter from '../pages/personalCenter/PersonalCenter'
 import store from '../redux/store'
 import imgleft from '../imgs/logo_left.png'
 import { Modal, Button } from 'antd'
-import SearchSignupInfo from './personalCenter/SearchSignupInfo'
+import SearchSignupInfo from '../pages/personalCenter/company/SearchSignupInfo'
+import DetailInfo from '../components/DetailInfo/DetailInfo'
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 export default function Home() {
+    const history = useHistory()
     const [isLogin, setIsLogin] = useState(store.getState().userInfo.status);
     const { confirm } = Modal;
     const logout = () => {
@@ -26,15 +28,18 @@ export default function Home() {
                     type: 'clear_userInfo',
 
                 }
-                localStorage.clear()
-                console.log(localStorage)
+                localStorage.clear();
+                sessionStorage.clear();
                 store.dispatch(action)
                 setIsLogin(false)
                 console.log('OK');
+                history.push('/home/homepage');
             },
             onCancel() {
                 console.log('Cancel');
             },
+            okText: "确认",
+            cancelText: "取消"
         });
 
         // console.log('logout   ', 'islogin:', store.getState().userInfo.status)
@@ -70,7 +75,8 @@ export default function Home() {
                     <Route path="/home/question" component={Question} />
                     <Route path="/home/download" component={Download} />
                     <Route path="/home/contact" component={Contact} />
-                    <Route path='/home/searchsignupinfo' component={SearchSignupInfo}></Route>
+                    <Route path='/home/searchsignupinfo' component={SearchSignupInfo} />
+                    <Route path='/home/detail' component={DetailInfo} />
                     {/* <Route path="/home/signUp" component={SignUp} /> */}
                     <Route path='/home/personalcenter' component={PersonalCenter} />
 

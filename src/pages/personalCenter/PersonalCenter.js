@@ -1,9 +1,10 @@
 import './PersonalCenter.css'
+import React from 'react';
 import Info from './Information';
-import Contest from './Contest';
+import PersonalContest from './PersonanlContest';
 import MyNavLink from '../../components/MyNavLink';
-import ReleaseCompetition from './ReleaseCompetition';
-import Released from './Released';
+import ReleaseCompetition from './company/ReleaseCompetition';
+import Released from './company/Released';
 import { Menu } from 'antd';
 import {
     IdcardOutlined,
@@ -18,10 +19,9 @@ const PersonalCenter = () => {
     return (
         <div className="father">
             <div className="info">
-               
                 <Switch>
                     <Route path='/home/personalcenter/information' component={Info} />
-                    <Route path='/home/personalcenter/contest' component={Contest} />
+                    <Route path='/home/personalcenter/personalcontest' component={PersonalContest} />
                     <Route path='/home/personalcenter/competition' component={ReleaseCompetition} />
                     <Route path='/home/personalcenter/released' component={Released} />
                 </Switch>
@@ -37,7 +37,7 @@ const PersonalCenter = () => {
                         <MyNavLink to='/home/personalcenter/information'>个人信息</MyNavLink>
                     </Menu.Item>
                     {typeofUser === "user" ? <><Menu.Item key="2" icon={<CalendarOutlined />}>
-                        <MyNavLink to='/home/personalcenter/contest'>比赛信息</MyNavLink>
+                        <MyNavLink to='/home/personalcenter/personalcontest'>比赛信息</MyNavLink>
                     </Menu.Item></> : ''}
 
                     {typeofUser !== "user" ?

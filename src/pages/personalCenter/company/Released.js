@@ -9,23 +9,23 @@ import 'moment/locale/zh-cn';
 import locale from 'antd/lib/date-picker/locale/zh_CN';
 import { LoadingOutlined } from '@ant-design/icons';
 import axios from "axios";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import './Released.css'
-import url from "../../server/api/url";
+import url from "../../../server/api/url";
 import moment from "moment";
 import { useHistory } from "react-router-dom";
 const Released = () => {
     const [load, setLoad] = useState(true);                            //加载中
     const [element, setElement] = useState([]);                        //展开成react对象后的数组
     const [visible, setVisible] = useState(false);                     //抽屉可视化
-    const [form] = Form.useForm();                                    //表单对象
+    const [form] = Form.useForm();                                     //表单对象
     const [currentId, setCurrentId] = useState(10000);                 //当前选中的比赛ID
-    const history = useHistory();                                       //路由操作 
+    const history = useHistory();                                      //路由操作 
     message.config({
-        maxCount:1
-      })
-    
-    useEffect(()=>{
+        maxCount: 1
+    })
+
+    useEffect(() => {
         //获取比赛数据
         axios({
             method: "GET",
@@ -40,19 +40,19 @@ const Released = () => {
                 for (const item of data1) {
                     data3.unshift(
                         <Col span={8} key={item.id}>
-                            <Card 
-                            title={item.title} 
-                            className='card' 
-                            extra={ <Button type='link' onClick={()=>{viS(item)}}>详情</Button> } 
+                            <Card
+                                title={item.title}
+                                className='card'
+                                extra={<Button type='link' onClick={() => { viS(item) }}>详情</Button>}
                             >
-                                
+
                                 <p>简介：{item.description}</p>
                                 <p>比赛要求：{item.entry_requirement}</p>
                                 <p>作品要求：{item.work_requirement}</p>
                                 <p>奖励：{item.reward}</p>
                                 <p>报名截止时间：{item.signup_deadline}</p>
                                 <p>比赛截止时间：{item.submit_deadline}</p>
-                                <Button onClick={ () =>{searchSignupInfo(item)}}>查看报名情况</Button>
+                                <Button onClick={() => { searchSignupInfo(item) }}>查看报名情况</Button>
                             </Card>
                         </Col>
                     )
@@ -67,10 +67,10 @@ const Released = () => {
         }).catch(e => {
             console.log(e)
         })
-    },[])
+    }, [])
 
     //点击按钮展开比赛信息
-    const viS = item =>{
+    const viS = item => {
         setVisible(true)
         console.log(item);
         setCurrentId(item.id);
@@ -87,7 +87,7 @@ const Released = () => {
 
     //跳转到参赛人员列表
     const searchSignupInfo = item => {
-        localStorage.setItem('competition_id',`${item.id}`);
+        localStorage.setItem('competition_id', `${item.id}`);
         history.push('/home/searchsignupinfo');
     }
 
@@ -137,13 +137,13 @@ const Released = () => {
     const spin = (<LoadingOutlined style={{ fontSize: 24 }} spin />);
 
     return (
-        <div style={{margin:"2%"}}>
-            <Row gutter={[16,16]}>
-                {   load===true?
-                    <Spin indicator={spin} tip='loading' style={{margin:'30px auto'}}/>
-                    :element.length>0?
-                    element
-                    :<Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description='暂无数据' />   }
+        <div style={{ margin: "2%" }}>
+            <Row gutter={[16, 16]}>
+                {load === true ?
+                    <Spin indicator={spin} tip='loading' style={{ margin: '30px auto' }} />
+                    : element.length > 0 ?
+                        element
+                        : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description='暂无数据' />}
             </Row>
             <Drawer
                 title="查看/修改比赛数据"

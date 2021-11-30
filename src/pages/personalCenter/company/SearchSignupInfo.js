@@ -5,7 +5,7 @@ import {LeftOutlined, LoadingOutlined} from '@ant-design/icons'
 import './SearchSignupInfo.css'
 import { useEffect } from 'react';
 import axios from 'axios';
-import url from '../../server/api/url';
+import url from '../../../server/api/url';
 import { useState } from 'react';
 
 const SearchSignupInfo = () => {
@@ -52,7 +52,7 @@ const SearchSignupInfo = () => {
                 </Button>
                 <h2>参赛人员列表</h2>
                 {
-                    load?<Spin indicator={spin} tip='loading' style={{margin:'30px auto'}}/>:
+                    load?<Spin indicator={spin} tip='loading' style={{margin:'0 50%'}}/>:
 
                     <Table 
                     rowKey= 'email'
