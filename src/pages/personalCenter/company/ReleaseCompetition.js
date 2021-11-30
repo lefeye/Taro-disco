@@ -7,6 +7,7 @@ import axios from 'axios';
 import '../../../server/api/dateChange'
 import url from '../../../server/api/url';
 import { useHistory } from 'react-router';
+import '../../../server/api/dateChange.js'
 const ReleaseCompetition = () => {
     const [firstTime, setFirstTime] = useState(null);
     const [secondTime, setSecondTime] = useState(null);
@@ -35,9 +36,9 @@ const ReleaseCompetition = () => {
                 }
             })
                 .then(value => {
-                    if (value.data.status === 'BS2003'){
-                         message.info('发布成功！');
-                         history.push('/home/personalcenter/released')
+                    if (value.data.status === 'BS2003') {
+                        message.info('发布成功！');
+                        history.push('/home/personalcenter/released')
                     }
                     else message.error('发布失败');
                 }).catch(e => {
