@@ -4,7 +4,7 @@ import { Route, Switch } from 'react-router-dom'
 import Home from './containers/home'
 import Login from './containers/Login/Login'
 import Register from './containers/Register/Register'
-import { useHistory } from 'react-router-dom'
+import { useHistory, Redirect } from 'react-router-dom'
 import { message } from 'antd';
 
 function App() {
@@ -19,10 +19,10 @@ function App() {
     <div className="App">
       <div >
         <Switch>
-          <Route exact path='/' component={Home} />
           <Route path='/home' component={Home} />
           <Route path='/login' component={Login} />
           <Route path="/register" component={Register} />
+          <Redirect from='/' to='/home' />
         </Switch>
       </div>
 
