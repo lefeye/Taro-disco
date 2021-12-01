@@ -27,7 +27,7 @@
   height: 14vh;
   display: flex;
   flex-direction:row;
-  align-items: end;
+  align-items: flex-end;
   justify-content:flex-start;
   font-size: calc(8px + 2vmin);
 }

@@ -3,7 +3,8 @@ import {
     Button, message,
     Spin, Empty, Drawer,
     Form, Input,
-    DatePicker
+    DatePicker,
+    Pagination
 } from "antd";
 import 'moment/locale/zh-cn';
 import locale from 'antd/lib/date-picker/locale/zh_CN';
@@ -14,6 +15,7 @@ import './Released.css'
 import url from "../../../server/api/url";
 import moment from "moment";
 import { useHistory } from "react-router-dom";
+import '../../../server/api/dateChange'
 const Released = () => {
     const [load, setLoad] = useState(true);                            //加载中
     const [element, setElement] = useState([]);                        //展开成react对象后的数组
@@ -21,6 +23,8 @@ const Released = () => {
     const [form] = Form.useForm();                                     //表单对象
     const [currentId, setCurrentId] = useState(10000);                 //当前选中的比赛ID
     const history = useHistory();                                      //路由操作 
+    const [min,setMIn] = useState(0);
+    const [max,setMax] = useState(6);
     message.config({
         maxCount: 1
     })
@@ -31,7 +35,7 @@ const Released = () => {
             method: "GET",
             url: `${url}/api/v1/setting/competition/get-list`,
             headers: {
-                'token': localStorage.getItem('token')
+                'token': sessionStorage.getItem('token')
             }
         }).then(data => {
             if (data.data.status === 200) {
@@ -87,7 +91,7 @@ const Released = () => {
 
     //跳转到参赛人员列表
     const searchSignupInfo = item => {
-        localStorage.setItem('competition_id', `${item.id}`);
+        sessionStorage.setItem('competition_id', `${item.id}`);
         history.push('/home/searchsignupinfo');
     }
 
@@ -100,14 +104,11 @@ const Released = () => {
             message.error('比赛截止时间早于报名截止时间，请检查时间设定！');
         }
         else {
-            let urll = `${url}/api/v1/setting/competition/${currentId}`;
-            console.log(currentId);
-            console.log(urll);
             axios({
                 method: "PUT",
                 url: `${url}/api/v1/setting/competition/${currentId}`,
                 headers: {
-                    'token': localStorage.getItem('token')
+                    'token': sessionStorage.getItem('token')
                 },
                 data: {
                     title: values.title,
@@ -133,6 +134,10 @@ const Released = () => {
             })
         }
     }
+    const handlePageChange = value => {
+        setMIn((value-1)*6);
+        setMax(value*6);
+    }
 
     const spin = (<LoadingOutlined style={{ fontSize: 24 }} spin />);
 
@@ -140,10 +145,12 @@ const Released = () => {
         <div style={{ margin: "2%" }}>
             <Row gutter={[16, 16]}>
                 {load === true ?
-                    <Spin indicator={spin} tip='loading' style={{ margin: '30px auto' }} />
+                    <Spin indicator={spin} tip='loading' style={{ margin: '0 auto' }} />
                     : element.length > 0 ?
-                        element
+                        element.slice(min,max)
+                        
                         : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description='暂无数据' />}
+                <Pagination  style={{marginLeft:'80%'}} defaultCurrent={1} total={element.length} pageSize={6} hideOnSinglePage onChange={handlePageChange}/>
             </Row>
             <Drawer
                 title="查看/修改比赛数据"
@@ -229,12 +236,12 @@ const Released = () => {
                             <Form.Item
                                 name="reward"
                                 label="比赛奖励"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'please enter url description',
-                                    },
-                                ]}
+                                // rules={[
+                                //     {
+                                //         required: true,
+                                //         message: 'please enter url description',
+                                //     },
+                                // ]}
                             >
                                 <Input.TextArea rows={2} />
                             </Form.Item>

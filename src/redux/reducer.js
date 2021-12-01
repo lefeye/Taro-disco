@@ -1,6 +1,6 @@
 const OU = "user"
-const JU = "competition_manager"
-const AU = "admin"
+// const JU = "competition_manager"
+// const AU = "admin"
 
 let defaultState = {
     userInfo: {

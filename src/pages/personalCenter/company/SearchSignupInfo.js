@@ -17,9 +17,9 @@ const SearchSignupInfo = () => {
         //获取比赛数据
         axios({
             method: "GET",
-            url:`${url}/api/v1/setting/competition/user?competition_id=${localStorage.getItem('competition_id')}`,
+            url:`${url}/api/v1/setting/competition/user?competition_id=${sessionStorage.getItem('competition_id')}`,
             headers: {
-                'token': localStorage.getItem('token')
+                'token': sessionStorage.getItem('token')
             }
         }).then(data => {
             if (data.data.status === 200) {

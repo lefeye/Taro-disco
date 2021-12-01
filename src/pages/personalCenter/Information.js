@@ -15,7 +15,7 @@ function Info() {
             method: "GET",
             url: `${url}/api/v1/setting/competition/get-list`,
             headers: {
-                'token': localStorage.getItem('token')
+                'token': sessionStorage.getItem('token')
             }
         }).then(data => {
             if (data.data.status === 200) {

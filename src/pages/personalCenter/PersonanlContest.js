@@ -4,12 +4,12 @@ import { Card, Button } from 'antd';
 import url from '../../server/api/url';
 import axios from 'axios';
 import competion_1 from '../../imgs/competition_1.jpg'
-import store from '../../redux/store';
+// import store from '../../redux/store';
 
 function PersonalContest() {
     const competitionData = useRef();
     const [competitionList, setCompetitionList] = useState([]);
-    const userID = store.getState().userInfo.email;
+    // const userID = store.getState().userInfo.email;
     const style = {
         'width': '90%',
         'display': 'flex',
@@ -21,7 +21,7 @@ function PersonalContest() {
             method: "GET",
             url: `${url}/api/v1/user/own/competition`,
             headers: {
-                'token': localStorage.getItem('token')
+                'token': sessionStorage.getItem('token')
             }
         }).then(data => {
             competitionData.current = data.data.data

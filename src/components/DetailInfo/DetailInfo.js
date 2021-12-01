@@ -5,20 +5,19 @@ import {
     Modal,
     Button,
     message,
-    List
 } from 'antd'
-import { useHistory } from 'react-router-dom'
+// import { useHistory } from 'react-router-dom'
 import './DetailInfo.css'
 import axios from 'axios';
 import url from '../../server/api/url';
 
 export default function DetailInfo() {
-    const history = useHistory();
-    const [publishTime, setPublishTime] = useState("")
+    // const history = useHistory();
+    // const [publishTime, setPublishTime] = useState("")
     const [teamMember, setTeamMember] = useState("")
     const [visible, setVisible] = React.useState(false);
     const [confirmLoading, setConfirmLoading] = React.useState(false);
-    const [form] = Form.useForm();
+    // const [form] = Form.useForm();
     const [data, setData] = useState({});
     const compId = sessionStorage.getItem('compId');
     const [ifparticipate, setIfparticipate] = React.useState(false);
@@ -29,7 +28,7 @@ export default function DetailInfo() {
             method: "GET",
             url: `${url}/api/v1/user/competition?competition_id=${compId}`,
             headers: {
-                'token': localStorage.getItem('token')
+                'token': sessionStorage.getItem('token')
             }
         }).then(data => {
             if (data.data.status === 200) {
@@ -47,7 +46,7 @@ export default function DetailInfo() {
             method: "GET",
             url: `${url}/api/v1/user/own/competition`,
             headers: {
-                'token': localStorage.getItem('token')
+                'token': sessionStorage.getItem('token')
             }
         }).then(data => {
             console.log(data.data.data)
@@ -60,7 +59,7 @@ export default function DetailInfo() {
     }, [ifSignUp])
 
     const showModal = () => {
-        if (localStorage.getItem('token'))
+        if (sessionStorage.getItem('token'))
             setVisible(true);
         else {
             message.info('请先登录！');
@@ -68,7 +67,7 @@ export default function DetailInfo() {
     };
 
     const onFinish = (teamMember) => {
-        console.log(' token ', localStorage.getItem('token'));
+        console.log(' token ', sessionStorage.getItem('token'));
         // console.log('Received stu_id of form: ', values.student_id);
         axios({
             method: "POST",
@@ -78,12 +77,12 @@ export default function DetailInfo() {
                 remark: teamMember
             },
             headers: {
-                'token': localStorage.getItem('token'),
+                'token': sessionStorage.getItem('token'),
             }
         })
             .then(res => {
                 console.log(res)
-                if (res.data.status == '200') {
+                if (res.data.status === '200'){
                     message.info('报名成功')
                     setIfparticipate(true);
                 }
