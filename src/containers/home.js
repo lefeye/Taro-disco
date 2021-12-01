@@ -69,6 +69,7 @@ export default function Home() {
             </div>
             <div className="router-content">
                 <Switch>
+                    {/* <Redirect path='/home' to="/home/homepage" /> */}
                     <Route exact path='/home/' component={HomePage} />
                     <Route path='/home/homepage' component={HomePage} />
                     <Route path='/home/competition' component={Competition} />
@@ -77,7 +78,6 @@ export default function Home() {
                     <Route path="/home/contact" component={Contact} />
                     <Route path='/home/searchsignupinfo' component={SearchSignupInfo} />
                     <Route path='/home/detail' component={DetailInfo} />
-                    {/* <Route path="/home/signUp" component={SignUp} /> */}
                     <Route path='/home/personalcenter' component={PersonalCenter} />
 
                 </Switch>
