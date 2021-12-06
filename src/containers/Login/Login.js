@@ -22,6 +22,7 @@ function Login() {
     setLoading(true);
     axios.post(Url, {
       username: values.email,
+      email:values.email,
       password: values.password
     }).then(data => {
       console.log(data)
@@ -68,7 +69,7 @@ function Login() {
   const onChange = (e) =>{
     const value = e.target.value;
     if(value === 2){
-      setUrl(`${url}/admin/url`);
+      setUrl(`${url}/admin/login`);
     }
     console.log(Url);
   }

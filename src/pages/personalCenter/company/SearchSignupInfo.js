@@ -1,6 +1,6 @@
 import { useHistory } from 'react-router-dom';
 import React from 'react';
-import { Button, Table,Spin, Modal, Form, Input, InputNumber } from 'antd';
+import { Button, Table,Spin, Modal, Form, Input, InputNumber, message } from 'antd';
 import {LeftOutlined, LoadingOutlined} from '@ant-design/icons'
 import './SearchSignupInfo.css'
 import { useEffect } from 'react';
@@ -12,17 +12,20 @@ const SearchSignupInfo = () => {
     const history = useHistory()
     const [visible, setVisible] = useState(false);      //modal可视化
     const [load, setLoad] = useState(true);
+    const [submit,setSubmit] = useState(false);
     const [email,setEmail] = useState(''); 
     const [form] = Form.useForm();                      //表单对象
     const [element,setElement] = useState([]);          //数据存放
     const columns = [
-        { title: '姓名', dataIndex: 'stu_name'},
-        { title: '邮箱', dataIndex: 'stu_email'},
-        { title: '学院', dataIndex: 'stu_college'},
-        { title: '学号', dataIndex: 'stu_no' },
-        { title: '作品链接', dataIndex: 'work_link',
-        render:text => <a href={text}>{text}</a>},
-        { title: '评价作品', dataIndex: 'comment',
+        { title: '姓名', dataIndex: 'stu_name', key:'1'},
+        { title: '邮箱', dataIndex: 'stu_email', key:'2'},
+        { title: '学院', dataIndex: 'stu_college', key:'3'},
+        { title: '学号', dataIndex: 'stu_no', key:'4'},
+        { title: '作品链接', dataIndex: 'work_link', key:'5',
+        render:(text,record) => <a href={text}>{record.stu_name}的作品</a>},
+        { title: '状态', dataIndex: 'status', key:'7',
+        render:text => <p>{text?'已评价':'未评价'}</p>},
+        { title: '评价作品', dataIndex: 'comment',key:'6',
         render:(a,b) => <Button onClick={()=>{handleSetView(b.stu_email)}}>评价</Button>},
     ];
 
@@ -55,22 +58,30 @@ const SearchSignupInfo = () => {
     //提交评价信息
     const onOK= () => {
         const value = form .getFieldsValue(true);
-        console.log(value)
+        setSubmit(true);
         axios({
             method:'PUT',
-            url:`${url}/api/v1/setting/competition/jugde`,
+            url:`${url}/api/v1/setting/competition/judge`,
             headers:{
                 token:sessionStorage.getItem('token')
             },
             data:{
                 competition_id:parseInt(sessionStorage.getItem('competition_id')),
                 email:email,
-                status:'',
+                status:'1',
                 comment:value.comment,
                 score:value.score,
             }
         }).then( data => {
             console.log(data);
+            if(data.data.status==='200'){
+                message.info('评价已上传，如想查看评价后的状态请刷新页面')
+                setVisible(false);
+                setSubmit(false)
+            }
+            else {
+                message.error(data.data.msg);
+            }
         } ).catch( e => {
             console.log(e);
         } )
@@ -91,10 +102,9 @@ const SearchSignupInfo = () => {
                 load?<Spin indicator={spin} tip='loading' style={{margin:'0 50%'}}/>:
 
                 <Table 
-                rowKey= 'email'
+                rowKey= 'stu_email'
                 bordered
                 columns={columns}
-                
                 expandable={{
                 expandedRowRender: record => 
                 <div style={{ margin: 0 }}>
@@ -112,6 +122,7 @@ const SearchSignupInfo = () => {
             title='评价'
             cancelText={<p>取消</p>}
             okText={<p>提交</p>}
+            confirmLoading={submit}
             onOk={onOK}
             onCancel={()=>{setVisible(false)}}
             visible={visible}>

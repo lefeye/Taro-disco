@@ -21,6 +21,5 @@ export default (state = defaultState, actions) => {
         default:
         // return state
     }
-    console.log(actions)
     return state;
 }

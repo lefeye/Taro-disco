@@ -122,7 +122,7 @@ const RegistrationForm = () => {
       ]}
       label='姓名'
     >
-      <Input placeholder='请尽量输入真名' />
+      <Input placeholder='请输入真实名字' />
     </Form.Item></>)
 
   const onChange = (e) => {
