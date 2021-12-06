@@ -62,10 +62,10 @@ const RegistrationForm = () => {
     console.log('Received values of form: ', values);
     axios.post(`${url}/register`, {
       stu_no: values.stu_no,
-      email: values.email,
+      stu_email: values.email,
       stu_college: values.stu_college,
-      name: values.name,
-      password: values.password,
+      stu_name: values.name,
+      stu_password: values.password,
       stu_grade: values.stu_grade,
     }).then(data => {
       if (data.data.status === 'BS2002') {
@@ -137,8 +137,9 @@ const RegistrationForm = () => {
         name="register"
         onFinish={onFinish}
         scrollToFirstError
+        autoComplete="off"
       >
-        <Form.Item
+        {/* <Form.Item
           name="radio"
           label="用户类型"
           rules={[
@@ -149,7 +150,7 @@ const RegistrationForm = () => {
             <Radio value={1}>学生</Radio>
             <Radio value={2}>企业</Radio>
           </Radio.Group>
-        </Form.Item>
+        </Form.Item> */}
 
         <Form.Item
           name="email"

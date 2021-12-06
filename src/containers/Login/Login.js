@@ -1,6 +1,6 @@
 // eslint-disable-next-line
 import './Login.css';
-import { Form, Button, Input, message, } from 'antd';
+import { Form, Button, Input, message,Radio } from 'antd';
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
@@ -12,6 +12,7 @@ import store from '../../redux/store';
 
 function Login() {
   const history = useHistory();
+  const [Url,setUrl] = useState(`${url}/login`)
   const [loading, setLoading] = useState(false);     //是否点击登录，用于禁用按钮
   message.config({
     maxCount: 1
@@ -19,8 +20,8 @@ function Login() {
 
   const onFinish = (values) => {
     setLoading(true);
-    axios.post(`${url}/login`, {
-      email: values.email,
+    axios.post(Url, {
+      username: values.email,
       password: values.password
     }).then(data => {
       console.log(data)
@@ -64,6 +65,13 @@ function Login() {
     store.dispatch(action);
     console.log('redux')
   }
+  const onChange = (e) =>{
+    const value = e.target.value;
+    if(value === 2){
+      setUrl(`${url}/admin/url`);
+    }
+    console.log(Url);
+  }
 
 
   const wra = {
@@ -84,6 +92,13 @@ function Login() {
 
       >
         <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>账号登录</h2>
+        <Form.Item>
+          <Radio.Group onChange={onChange}>
+            <Radio value={1}>学生</Radio>
+            <Radio value={2}>管理员</Radio>
+          </Radio.Group>
+        </Form.Item>
+        
         <Form.Item
           name="email"
           rules={[

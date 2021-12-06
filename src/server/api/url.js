@@ -1,2 +1,2 @@
-const url = "http://8.134.75.76:8080";
+const url = "http://119.91.73.146:8080/lab";
 export default url;

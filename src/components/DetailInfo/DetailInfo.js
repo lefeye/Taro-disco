@@ -31,7 +31,8 @@ export default function DetailInfo() {
                 'token': sessionStorage.getItem('token')
             }
         }).then(data => {
-            if (data.data.status === 200) {
+            console.log(data)
+            if (data.data.status == 200) {
                 const data1 = data.data.data;
                 console.log(data1);
                 setData(data1);

@@ -38,8 +38,10 @@ const Released = () => {
                 'token': sessionStorage.getItem('token')
             }
         }).then(data => {
-            if (data.data.status === 200) {
+            console.log(data)
+            if (data.data.status == 200) {
                 const data1 = data.data.data;
+                console.log(data1)
                 const data3 = [];
                 for (const item of data1) {
                     data3.unshift(

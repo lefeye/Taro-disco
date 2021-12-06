@@ -36,7 +36,7 @@ const ReleaseCompetition = () => {
                 }
             })
                 .then(value => {
-                    if (value.data.status === 'BS2003') {
+                    if (value.data.status === 'BS2004') {
                         message.info('发布成功！');
                         history.push('/home/personalcenter/released')
                     }
@@ -79,6 +79,7 @@ const ReleaseCompetition = () => {
             <Form
                 onFinish={onSubmit}
                 {...formItemLayout}
+                autoComplete="off"
             >
                 <Form.Item
                     name='title'
