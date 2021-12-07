@@ -49,7 +49,8 @@ function PersonalContest() {
         }).then( data => {
             if(data.data.status==='200'){
                 const detail=data.data.data;
-                if(detail.status==0){
+                console.log(detail);
+                if(detail.status==null){
                     message.info('暂未评分');
                 }
                 if(detail.status==1){
