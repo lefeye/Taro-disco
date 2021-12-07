@@ -14,11 +14,13 @@ import url from '../../server/api/url';
 
 export default function Competition() {
     const history = useHistory()
-    const [load, setLoad] = useState(true);
-    const [total,setTotal] = useState(0)
-    const [element, setElement] = useState([]);
-    const [min,setMIn] = useState(0);
-    const [max,setMax] = useState(10);
+    const [load, setLoad] = useState(true);            //加载中
+    const [total,setTotal] = useState(0)               //列表总数
+    const [element, setElement] = useState([]);        //列表
+    const [min,setMIn] = useState(0);                  //每列第一个 
+    const [max,setMax] = useState(10);                 //每列最后一个
+
+    //请求列表
     useEffect(() => {
         axios({
             method: "GET",
@@ -41,6 +43,7 @@ export default function Competition() {
     },[]
     )
 
+    //更换分页的页数
     const handleChange = value => {
         setMax(value*10);
         setMIn((value-1)*10);

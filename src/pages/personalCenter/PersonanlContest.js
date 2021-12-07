@@ -10,7 +10,6 @@ import competion_1 from '../../imgs/competition_1.jpg'
 function PersonalContest() {
     const competitionData = useRef();
     const [competitionList, setCompetitionList] = useState([]);
-    const [status,setStatus] = useState(0);
     // const userID = store.getState().userInfo.email;
     const style = {
         'width': '90%',
@@ -22,6 +21,8 @@ function PersonalContest() {
         'position':'relative',
         'left':'100%'
     }
+
+    //文件的参数
     const props = {
 
         name: 'file',
@@ -39,6 +40,8 @@ function PersonalContest() {
           }
         },
     };
+
+    //查询分数，没啥想法暂定用notification
     const serachScore = (id) => {
         axios({
             method:'GET',
@@ -66,6 +69,8 @@ function PersonalContest() {
             }
         } ) 
     }
+
+    //请求参加的比赛数据
     useEffect(() => {
         axios({
             method: "GET",

@@ -19,6 +19,8 @@ export default function Home() {
     const history = useHistory()
     const [isLogin, setIsLogin] = useState(store.getState().userInfo.status);
     const { confirm } = Modal;
+
+    //退出登录
     const logout = () => {
         confirm({
             icon: <ExclamationCircleOutlined />,

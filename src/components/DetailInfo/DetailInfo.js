@@ -6,13 +6,14 @@ import {
     Button,
     message,
 } from 'antd'
-// import { useHistory } from 'react-router-dom'
+import { LeftOutlined, } from '@ant-design/icons'
 import './DetailInfo.css'
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 import url from '../../server/api/url';
 
 export default function DetailInfo() {
-    // const history = useHistory();
+    const history = useHistory();
     // const [publishTime, setPublishTime] = useState("")
     const [teamMember, setTeamMember] = useState("")
     const [visible, setVisible] = React.useState(false);
@@ -113,7 +114,14 @@ export default function DetailInfo() {
 
     return (
         <div>
-            <h3 class="content-title">{data.title}</h3>
+            <Button
+            onClick={ ()=>{ history.goBack() } } 
+            type='link' 
+            icon={<LeftOutlined />}
+            >
+                返回
+            </Button>
+            <h3 className="content-title">{data.title}</h3>
             {/* <h5 class="content-date">发布时间：{publishTime ? publishTime : "---"}</h5> */}
             <hr></hr>
             <p className="content-body">
