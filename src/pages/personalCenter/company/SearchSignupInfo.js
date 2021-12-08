@@ -12,8 +12,8 @@ const SearchSignupInfo = () => {
     const history = useHistory()
     const [visible, setVisible] = useState(false);      //modal可视化
     const [load, setLoad] = useState(true);
-    const [submit,setSubmit] = useState(false);
-    const [email,setEmail] = useState(''); 
+    const [submit,setSubmit] = useState(false);         //提交评价时禁用按钮
+    const [email,setEmail] = useState('');              //存放正在点击的用户的email
     const [form] = Form.useForm();                      //表单对象
     const [element,setElement] = useState([]);          //数据存放
     const columns = [
@@ -22,12 +22,34 @@ const SearchSignupInfo = () => {
         { title: '学院', dataIndex: 'stu_college', key:'3'},
         { title: '学号', dataIndex: 'stu_no', key:'4'},
         { title: '作品链接', dataIndex: 'work_link', key:'5',
-        render:(text,record) => <a href={text}>{record.stu_name}的作品</a>},
+            render:(text,record) => 
+                <div>
+                    {
+                        text.indexOf('null')!==-1?
+                        <p>未提交作品</p>:
+                        <a onClick = { () => { loadFile(text) } } download={record.stu_name}>
+                        {record.stu_name}的作品</a>
+                    }
+                </div>
+        },
         { title: '状态', dataIndex: 'status', key:'7',
-        render:text => <p>{text?'已评价':'未评价'}</p>},
+            render:text => 
+                <div>
+                    {
+                        text?
+                        <p style={{color:"lightgreen"}}>已评价</p>:<p style={{color:"red"}}>未评价</p>
+                    }
+                </div>
+        },
         { title: '评价作品', dataIndex: 'comment',key:'6',
         render:(a,b) => <Button onClick={()=>{handleSetView(b.stu_email)}}>评价</Button>},
     ];
+
+    //下载文件
+    const loadFile = url => {
+        let Url=`http://${url}`
+        window.open(Url,'_blank');
+    }
 
     //获取比赛数据
     useEffect(()=>{
@@ -145,7 +167,13 @@ const SearchSignupInfo = () => {
                         { required: true, message: '请输入得分！' }
                     ]}
                     >
-                    <InputNumber min={0} max={100}/>
+                    <InputNumber min={0} max={100} placeholder='0~100'/>
+                    </Form.Item>
+                    <Form.Item
+                    name="beizhu"
+                    label='*注'
+                    >
+                    <p>第二次评价会修改之前的评价</p>
                     </Form.Item>
                 </Form>
             </Modal> 

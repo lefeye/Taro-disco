@@ -33,20 +33,18 @@ function Info() {
     return (
 
         <div>
-            {/* {load == false ? <div>
-                <Spin indicator={spin} tip='loading' style={{ margin: '30px auto' }} />
-            </div>
-                : <div>
-
-                </div>
-            } */}
-            <Descriptions title="个人信息" className='useInformation'>
-                <Descriptions.Item label="用户姓名">Zhou Maomao</Descriptions.Item>
-                <Descriptions.Item label="用户学号">1810000000</Descriptions.Item>
-                <Descriptions.Item label="学院">Hangzhou, Zhejiang</Descriptions.Item>
-                <Descriptions.Item label="年级">empty</Descriptions.Item>
-                <Descriptions.Item label="邮箱">1262698283@qq.com</Descriptions.Item>
-                <Descriptions.Item label="密码">******</Descriptions.Item>
+            <Descriptions
+            title="个人信息"
+            bordered
+            layout="vertical"
+            column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
+            >
+            <Descriptions.Item label="姓名">abc</Descriptions.Item>
+            <Descriptions.Item label="邮箱">halomai@163.com</Descriptions.Item>
+            <Descriptions.Item label="学号">201830581343</Descriptions.Item>
+            <Descriptions.Item label="学院">计算机科学与工程学院</Descriptions.Item>
+            <Descriptions.Item label="年级">18级</Descriptions.Item>
+            <Descriptions.Item label="密码">******</Descriptions.Item>
             </Descriptions>
         </div>
     )

@@ -11,8 +11,10 @@ import './DetailInfo.css'
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import url from '../../server/api/url';
+import store from '../../redux/store'
 
 export default function DetailInfo() {
+    const userType = store.getState().userInfo.typeofUser;
     const history = useHistory();
     // const [publishTime, setPublishTime] = useState("")
     const [teamMember, setTeamMember] = useState("")
@@ -44,20 +46,25 @@ export default function DetailInfo() {
     }, [])
 
     useEffect(() => {
-        axios({
+        if(userType==='user'){
+            axios({
             method: "GET",
             url: `${url}/api/v1/user/own/competition`,
             headers: {
                 'token': sessionStorage.getItem('token')
             }
-        }).then(data => {
-            console.log(data.data.data)
-            data.data.data.forEach(element => {
-                if (element["id"] == compId) {
-                    setIfparticipate(true);
-                }
-            });
-        })
+            }).then(data => {
+                console.log(data.data.data)
+                data.data.data.forEach(element => {
+                    if (element["id"] == compId) {
+                        setIfparticipate(true);
+                    }
+                });
+            }).catch( e => {
+                console.log(e);
+            })
+        }
+        
     }, [ifSignUp])
 
     const showModal = () => {
@@ -154,7 +161,7 @@ export default function DetailInfo() {
                         textAlign: 'center'
                     }}>
                     (您已报名)
-                </Button> : <>
+                </Button> :userType!=='admin'? <>
 
                     <div style={{ textAlign: 'center' }}>
                         <Button type="primary" onClick={showModal} >
@@ -182,7 +189,7 @@ export default function DetailInfo() {
                                 <Input.TextArea showCount maxLength={100} placeholder="请输入队伍队员信息，例如201830600444-张三，如有多个请按行写" />
                             </Form.Item>
                         </Form>
-                    </Modal></>
+                    </Modal></>:<></>
             }
         </div >
     )
