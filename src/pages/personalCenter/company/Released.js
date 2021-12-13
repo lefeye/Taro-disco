@@ -76,7 +76,6 @@ const Released = () => {
     //点击按钮展开比赛信息
     const viS = item => {
         setVisible(true)
-        console.log(item);
         setCurrentId(item.id);
         form.setFieldsValue({
             title: item.title,
@@ -150,7 +149,13 @@ const Released = () => {
                         element.slice(min,max)
                         
                         : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description='暂无数据' />}
-                <Pagination  style={{marginLeft:'80%'}} defaultCurrent={1} total={element.length} pageSize={6} hideOnSinglePage onChange={handlePageChange}/>
+                <Pagination  
+                style={{marginLeft:'80%'}} 
+                defaultCurrent={1} 
+                total={element.length} 
+                pageSize={6} 
+                hideOnSinglePage 
+                onChange={handlePageChange}/>
             </Row>
             <Drawer
                 title="查看/修改比赛数据"

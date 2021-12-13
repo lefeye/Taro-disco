@@ -34,7 +34,6 @@ export default function Home() {
                 sessionStorage.clear();
                 store.dispatch(action)
                 setIsLogin(false)
-                console.log('OK');
                 history.push('/home/homepage');
             },
             onCancel() {

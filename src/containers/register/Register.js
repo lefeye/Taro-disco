@@ -55,11 +55,9 @@ const RegistrationForm = () => {
       }
     }
     store.dispatch(action);
-    console.log('redux')
   }
 
   const onFinish = (values) => {
-    console.log('Received values of form: ', values);
     axios.post(`${url}/register`, {
       stu_no: values.stu_no,
       stu_email: values.email,
@@ -74,7 +72,6 @@ const RegistrationForm = () => {
           email: values.email,
           password: values.password
         }).then(data => {
-          console.log(data)
           if (data.data.status === 'BS2001') {
             sessionStorage.setItem(`token`, data.data.data.token)
             //向redux的store中传递用户名和用户类型
@@ -94,7 +91,6 @@ const RegistrationForm = () => {
           message.error('登录失败，网络错误！');
         })
       }
-      console.log(data)
     }).catch(err => {
       console.log(err)
     })

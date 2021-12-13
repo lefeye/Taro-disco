@@ -32,7 +32,6 @@ function PersonalContest() {
         },
         maxCount:1,
         onChange(info) {
-          console.log(info.files)
           if (info.file.status === 'done') {
             message.success(`${info.file.name} 文件上传成功`);
           } else if (info.file.status === 'error') {
@@ -52,7 +51,6 @@ function PersonalContest() {
         }).then( data => {
             if(data.data.status==='200'){
                 const detail=data.data.data;
-                console.log(detail);
                 if(detail.status==null){
                     message.info('暂未评分');
                 }
@@ -81,7 +79,6 @@ function PersonalContest() {
         }).then( data => {
             competitionData.current = data.data.data
             let data1 = []
-            console.log(competitionData.current)
             competitionData.current.forEach(e => {
                 data1.push(
                     <Card

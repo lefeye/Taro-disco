@@ -25,9 +25,7 @@ function Login() {
       email:values.email,
       password: values.password
     }).then(data => {
-      console.log(data)
       if (data.data.status === 'BS2001') {
-        console.log('success')
         sessionStorage.setItem(`token`, data.data.data.token)
         setLoading(false);
         //向redux的store中传递用户名和用户类型
@@ -64,14 +62,12 @@ function Login() {
       }
     }
     store.dispatch(action);
-    console.log('redux')
   }
   const onChange = (e) =>{
     const value = e.target.value;
     if(value === 2){
       setUrl(`${url}/admin/login`);
     }
-    console.log(Url);
   }
 
 

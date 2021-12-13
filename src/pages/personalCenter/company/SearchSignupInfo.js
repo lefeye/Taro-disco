@@ -60,7 +60,6 @@ const SearchSignupInfo = () => {
                 'token': sessionStorage.getItem('token')
             }
         }).then(data => {
-            console.log(data)
             if (data.data.status == 200) {
                 const data1 = data.data.data;
                 setLoad(false);//把加载中图标取消掉
@@ -95,9 +94,9 @@ const SearchSignupInfo = () => {
                 score:value.score,
             }
         }).then( data => {
-            console.log(data);
             if(data.data.status==='200'){
-                message.info('评价已上传，如想查看评价后的状态请刷新页面')
+                message.info('评价已上传，如想查看评价后的状态请刷新页面');
+                //window.location.reload();
                 setVisible(false);
                 setSubmit(false)
             }

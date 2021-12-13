@@ -34,10 +34,8 @@ export default function DetailInfo() {
                 'token': sessionStorage.getItem('token')
             }
         }).then(data => {
-            console.log(data)
             if (data.data.status == 200) {
                 const data1 = data.data.data;
-                console.log(data1);
                 setData(data1);
             }
         }).catch(e => {
@@ -54,7 +52,6 @@ export default function DetailInfo() {
                 'token': sessionStorage.getItem('token')
             }
             }).then(data => {
-                console.log(data.data.data)
                 data.data.data.forEach(element => {
                     if (element["id"] == compId) {
                         setIfparticipate(true);
@@ -76,8 +73,6 @@ export default function DetailInfo() {
     };
 
     const onFinish = (teamMember) => {
-        console.log(' token ', sessionStorage.getItem('token'));
-        // console.log('Received stu_id of form: ', values.student_id);
         axios({
             method: "POST",
             url: `${url}/api/v1/user/competition/sign-up`,
@@ -90,7 +85,6 @@ export default function DetailInfo() {
             }
         })
             .then(res => {
-                console.log(res)
                 if (res.data.status === '200'){
                     message.info('报名成功')
                     setIfparticipate(true);
@@ -98,7 +92,6 @@ export default function DetailInfo() {
 
                 else {
                     message.error('报名失败，请检查是否登录')
-                    console.log(res)
                 }
             }).catch(e => console.log(e))
     };
@@ -115,7 +108,6 @@ export default function DetailInfo() {
     };
 
     const handleCancel = () => {
-        console.log('Clicked cancel button');
         setVisible(false);
     };
 

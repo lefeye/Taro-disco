@@ -29,11 +29,9 @@ export default function Competition() {
                 'token': sessionStorage.getItem('token')
             }
         }).then(data => {
-            console.log(data)
             if (data.data.status == 200) {
                 const data1 = data.data.data.reverse();
                 setTotal(data1.length);
-                console.log(data.data)
                 setLoad(false);//把加载中图标取消掉
                 setElement(data1);
             }
