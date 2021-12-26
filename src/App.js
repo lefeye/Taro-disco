@@ -1,10 +1,10 @@
 import './App.css';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Route, Switch } from 'react-router-dom'
 import Home from './containers/home'
 import Login from './containers/Login/Login'
 import Register from './containers/Register/Register'
-import { useHistory, Redirect } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import { message } from 'antd';
 
 function App() {

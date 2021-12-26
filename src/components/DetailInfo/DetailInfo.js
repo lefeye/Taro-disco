@@ -21,7 +21,7 @@ export default function DetailInfo() {
     const [data, setData] = useState({});
     const compId = sessionStorage.getItem('compId');
     const [ifparticipate, setIfparticipate] = React.useState(false);
-    const [ifSignUp, setIfSignUp] = React.useState(false);
+    
 
     useEffect(() => {
         axios({
@@ -51,12 +51,12 @@ export default function DetailInfo() {
         }).then(data => {
             console.log(data.data.data)
             data.data.data.forEach(element => {
-                if (element["id"] == compId) {
+                if (element["id"] === compId) {
                     setIfparticipate(true);
                 }
             });
         })
-    }, [ifSignUp])
+    }, [])
 
     const showModal = () => {
         if (sessionStorage.getItem('token'))

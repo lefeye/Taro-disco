@@ -54,8 +54,10 @@ export default function Home() {
                 {isLogin ? <Button type="link" onClick={logout}>退出登录</Button> : ''}
             </div>
             <header className="App-header">
+                <div >
+                    <img src={imgleft} alt="logo_left" style={{ width:'30vw',height:'14vh' }} />
+                </div>
                 <div className="club_title">
-                    <img src={imgleft} alt="logo_left" style={{ height: '20%' }} />
                     智能系统未来创新实验室
                 </div>
             </header >

@@ -14,6 +14,7 @@
 .top{
   /* background-color: #b7c7fd; */
   text-align:right;
+  z-index: 100;
   background-color: #EEEEEE;
 }
 .top a{
@@ -24,11 +25,10 @@
   /* background-color: #a1b6face; */
   background-image: url("./imgs/logo_right.jpg");
   /* min-height: 30vh; */
-  height: 14vh;
   display: flex;
   flex-direction:row;
-  align-items: flex-end;
-  justify-content:flex-start;
+  align-items: center;
+  flex-wrap: wrap;
   font-size: calc(8px + 2vmin);
 }
 
@@ -52,8 +52,9 @@
   height: 20vh;
 }
 .club_title{
+  max-width: 40vw;
   float: left;
-  font-size: 48px;
+  font-size: 3.5vw;
   font-style:inherit;
   font-weight: bolder;
   font-family:"KaiTi";

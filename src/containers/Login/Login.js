@@ -20,16 +20,16 @@ function Login() {
   const onFinish = (values) => {
     setLoading(true);
     axios.post(`${url}/login`, {
-      email: values.email,
+      account: values.account,
       password: values.password
     }).then(data => {
       console.log(data)
-      if (data.data.status === 'BS2001') {
+      if (data.data.code === 200) {
         console.log('success')
         sessionStorage.setItem(`token`, data.data.data.token)
         setLoading(false);
         //向redux的store中传递用户名和用户类型
-        handleUserInfo(values.email, data.data.data.role);
+        handleUserInfo(values.account, data.data.data.role);
         // store.dispatch(ChangeUserInfo);
         // sessionStorage.setItem('status', 'true');
         // sessionStorage.setItem('role', `${data.data.data.role}`)
@@ -43,20 +43,20 @@ function Login() {
       }
     }).catch(err => {
       console.log(err)
+      message.error(err.response.data.msg);
       setLoading(false);
       // message.destroy();
-      message.error('登录失败，网络错误！');
     })
   };
 
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
-  const handleUserInfo = (email, role) => {
+  const handleUserInfo = (account, role) => {
     const action = {
       type: 'change_userInfo',
       data: {
-        email: email,
+        account: account,
         status: true,
         typeofUser: role
       }
@@ -85,13 +85,13 @@ function Login() {
       >
         <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>账号登录</h2>
         <Form.Item
-          name="email"
+          name="account"
           rules={[
             { required: true, message: '请输入账号！' }
           ]}
         >
           <Input
-            placeholder="邮箱"
+            placeholder="学号/工号"
             id='username'
           />
         </Form.Item>

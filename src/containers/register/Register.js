@@ -1,6 +1,7 @@
 // eslint-disable-next-line
 import './Register.css'
-import axios from 'axios';
+// import axios from 'axios';
+import axios from '../../server/api/axios'
 import React from 'react';
 import { useState } from 'react';
 import url from '../../server/api/url';
@@ -13,7 +14,8 @@ import {
   Radio,
   Row,
   Col,
-  message
+  message,
+  Select
 } from 'antd';
 
 const formItemLayout = {
@@ -44,12 +46,25 @@ const RegistrationForm = () => {
   const history = useHistory()
   const [form] = Form.useForm();
   const [value, setValue] = useState(1);
+  const { Option } = Select;
 
-  const handleUserInfo = (email, role) => {
+  const getCaptcha = () => {
+    const value=form.getFieldsValue(true);
+    console.log(value);
+    axios.post(`${url}/send-verification-code`,{
+      email:value.email
+    }).then( data => {
+      console.log(data)
+    }).catch( e =>{
+      console.log(e.response)
+    })
+  }
+
+  const handleUserInfo = (account, role) => {
     const action = {
       type: 'change_userInfo',
       data: {
-        email: email,
+        account: account,
         status: true,
         typeofUser: role
       }
@@ -61,24 +76,28 @@ const RegistrationForm = () => {
   const onFinish = (values) => {
     console.log('Received values of form: ', values);
     axios.post(`${url}/register`, {
-      stu_no: values.stu_no,
+      account: values.stu_no,
       email: values.email,
-      stu_college: values.stu_college,
+      college: values.stu_college,
       name: values.name,
       password: values.password,
-      stu_grade: values.stu_grade,
+      grade: values.stu_grade,
+      telephone:values.telephone,
+      degree:values.degree,
+      identity:value===1?'student':'teacher',
+      code:values.confirmcode
     }).then(data => {
-      if (data.data.status === 'BS2002') {
+      if (data.data.code === 200) {
         message.info('注册成功，为您自动登录！');
         axios.post(`${url}/login`, {
-          email: values.email,
+          account: values.stu_no,
           password: values.password
         }).then(data => {
           console.log(data)
-          if (data.data.status === 'BS2001') {
+          if (data.data.code === 200) {
             sessionStorage.setItem(`token`, data.data.data.token)
             //向redux的store中传递用户名和用户类型
-            handleUserInfo(values.email, data.data.data.role);
+            handleUserInfo(values.stu_no, data.data.data.role);
             // store.dispatch(ChangeUserInfo);
             // sessionStorage.setItem('status', 'true');
             // sessionStorage.setItem('role', `${data.data.data.role}`)
@@ -96,17 +115,24 @@ const RegistrationForm = () => {
       }
       console.log(data)
     }).catch(err => {
-      console.log(err)
+      console.log(err.response)
+      message.error(err.response.data.msg);
     })
   };
 
 
-  const company = (<><Form.Item
-    name="stu_college"
-    label="学院"
-  >
-    <Input />
-  </Form.Item>
+  const company = (
+  <>
+
+    <Form.Item
+    name="degree"
+    label="学位"
+    >
+      <Select>
+        <Option value='本科生'>本科生</Option>
+        <Option value='研究生'>研究生</Option>
+      </Select>
+    </Form.Item>
 
     <Form.Item
       name="stu_grade"
@@ -114,16 +140,7 @@ const RegistrationForm = () => {
     >
       <Input placeholder='18级/19级/20级/21级' />
     </Form.Item>
-
-    <Form.Item
-      name="name"
-      rules={[
-        { required: true, message: '请输入姓名！' }
-      ]}
-      label='姓名'
-    >
-      <Input placeholder='请尽量输入真名' />
-    </Form.Item></>)
+  </>)
 
   const onChange = (e) => {
     setValue(e.target.value)
@@ -137,6 +154,7 @@ const RegistrationForm = () => {
         name="register"
         onFinish={onFinish}
         scrollToFirstError
+        autoComplete='off'
       >
         <Form.Item
           name="radio"
@@ -147,7 +165,7 @@ const RegistrationForm = () => {
         >
           <Radio.Group onChange={onChange} value={value}>
             <Radio value={1}>学生</Radio>
-            <Radio value={2}>企业</Radio>
+            <Radio value={2}>教师</Radio>
           </Radio.Group>
         </Form.Item>
 
@@ -183,25 +201,53 @@ const RegistrationForm = () => {
               </Form.Item>
             </Col>
             <Col span={8}>
-              <Button style={{ width: '70px' }}>获取</Button>
+              <Button style={{ width: '70px' }} onClick={getCaptcha} >获取</Button>
             </Col>
           </Row>
         </Form.Item>
 
         <Form.Item
-          name="stu_no"
-          label={value === 1 ? '学号' : '公司名称'}
-          rules={[
-            {
-              required: true,
-              message: `请输入${value === 1 ? '学号' : '公司名称'}`
-            }
-          ]}>
+        name="telephone"
+        label='手机'
+        rules={[
+          { required: true, message: '请输入手机号码！' }
+        ]}
+        >
           <Input />
         </Form.Item>
 
+        <Form.Item
+          name="stu_no"
+          label={value === 1 ? '学号' : '工号'}
+          rules={[
+            {
+              required: true,
+              message: `请输入${value === 1 ? '学号' : '工号'}`
+            }
+          ]}>
+          <Input placeholder='一旦注册不可修改'/>
+        </Form.Item>
+
+        <Form.Item
+        name="stu_college"
+        label="学院"
+        >
+          <Select>
+            <Option value='计算机科学与工程学院'>计算机科学与工程学院</Option>
+            <Option value='软件学院'>软件学院</Option>
+          </Select>
+        </Form.Item>
         {value === 1 ? company : ''}
 
+        <Form.Item
+        name="name"
+        rules={[
+          { required: true, message: '请输入姓名！' }
+        ]}
+        label='姓名'
+        >
+          <Input placeholder='请输入真实名字' />
+        </Form.Item>
 
         <Form.Item
           name="password"
@@ -245,6 +291,7 @@ const RegistrationForm = () => {
           <Button type="primary" htmlType="submit" style={{ width: '200px', borderRadius: '5px' }} >
             注册
           </Button>
+          <div>已有账号，去<Button type='link' onClick={ ()=>{history.push('/login')} }>登录</Button> </div>
         </Form.Item>
       </Form>
 
