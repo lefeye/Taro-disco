@@ -24,7 +24,7 @@ function Login() {
       password: values.password
     }).then(data => {
       console.log(data)
-      if (data.data.code === 200) {
+      if (data.data.code === '200') {
         console.log('success')
         sessionStorage.setItem(`token`, data.data.data.token)
         setLoading(false);
@@ -42,8 +42,12 @@ function Login() {
         setLoading(false);
       }
     }).catch(err => {
-      console.log(err)
-      message.error(err.response.data.msg);
+      if(err.response){
+        message.error(err.response.data.msg);
+      }
+      else{
+        message.error('登录失败，服务器错误')
+      }
       setLoading(false);
       // message.destroy();
     })

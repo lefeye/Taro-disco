@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Input, InputNumber, Select, Form, Typography, message } from 'antd';
+import { Table, Input, InputNumber, Select, Form, Typography, message, Tag } from 'antd';
 import new_axios from '../../../server/api/axios';
 import url from '../../../server/api/url';
 
@@ -49,13 +49,8 @@ const EditableTable = () => {
   const [form] = Form.useForm();                                        //表单对象
   const [data, setData] = useState([]);                                 //数据源
   const [id,setId] = useState(-1);                                      //选中的数据id
+  const [total,setTotal] = useState(0);
   const [editingKey, setEditingKey] = useState('');                     //正在修改的数据
-  // const [name,setName] = useState('');
-  // const [account,setAccount] = useState('');
-  // const [identity,setIdentity] = useState('');
-  // const [college,setCollege] = useState('');
-  // // const [degree,setDgree] = useState('');
-  // const [grade,setGrade] = useState('');
   const { Option } = Select;
 
   const isEditing = (record) => record.account === editingKey;
@@ -66,8 +61,9 @@ const EditableTable = () => {
           url:`${url}/api/v1/setting/user/get-list?limit=10&page=1`
       }).then( data => {
           console.log(data);
-          if(data.data.code === 200 ){
-            setData(data.data.data);
+          if(data.data.code === '200' ){
+            setData(data.data.data.users);
+            setTotal(data.data.data.total)
           }
       } ).catch( e => {
           console.log(e.response);
@@ -75,17 +71,29 @@ const EditableTable = () => {
   }, [])
 
   //发送筛选请求
-  const searchDetailInfo = () => {
+  const searchDetailInfo = (page) => {
+    let URL=`${url}/api/v1/setting/user/get-list?limit=10&page=${page}`;
+    if(account)     URL+=`&account=${account}`
+    if(identity)    URL+=`&identity=${identity}`
+    if(college)     URL+=`&college=${college}`
+    if(grade)       URL+=`&grade=${grade}`
+    if(degree)      URL+=`&degree=${degree}`
+    if(name)        URL+=`&name=${name}`  
     new_axios({
       method:'GET',
-      url:`${url}/api/v1/setting/user/get-list?limit=10&page=1&account=${account}&identity=${identity}
-      &college=${college}&grade=${grade}&degree=${degree}&name=${name}`,
+      url:URL,
     }).then( data => {
-        if(data.data.code === 200 ){
-          setData(data.data.data);
+        if(data.data.code === '200' ){
+          setData(data.data.data.users);
+          setTotal(data.data.data.total);
         }
     } ).catch( e => {
-      message.info(e.response.data.msg)
+      if(e.response){
+        message.info(e.response.data.msg)
+      }
+      else{
+        message.info('网络错误，获取失败')
+      }
     })
   }
 
@@ -95,7 +103,7 @@ const EditableTable = () => {
       identity = value;
     }
     else identity = '';
-    searchDetailInfo();
+    searchDetailInfo(1);
   }
 
   //学院筛选
@@ -104,7 +112,7 @@ const EditableTable = () => {
       college=value;
     }
     else college = '';
-    searchDetailInfo();
+    searchDetailInfo(1);
   }
 
   //学位筛选
@@ -113,7 +121,7 @@ const EditableTable = () => {
       degree = value;
     }
     else degree = '';
-    searchDetailInfo();
+    searchDetailInfo(1);
   }
 
   //年级筛选
@@ -122,20 +130,20 @@ const EditableTable = () => {
       grade = value;
     }
     else grade = '';
-    searchDetailInfo();
+    searchDetailInfo(1);
   }
 
   //姓名查找
   const searchName = (value) => {
     name=value;
-    searchDetailInfo();
+    searchDetailInfo(1);
   }
 
   //学号查找
   const searchAccount = (value) => {
     console.log(value);
     account=value;
-    searchDetailInfo();
+    searchDetailInfo(1);
   }
 
   //编辑
@@ -147,18 +155,23 @@ const EditableTable = () => {
     setEditingKey(record.account);
   };
 
+  //取消编辑
   const cancel = () => {
     setEditingKey('');
   };
 
+  //页数变化
+  const pageChange = page => {
+    setEditingKey('');
+    searchDetailInfo(page);
+  }
   //编辑完成保存信息并发送请求
   const save = async (account) => {
       console.log(account)
     try {
       const row = await form.validateFields();
-      const newData = [...data];
+      // const newData = [...data];
       // const index = newData.findIndex((item) => account === item.account);
-      console.log(row);
       new_axios({
         method:'PUT',
         url:`${url}/api/v1/setting/user/update-info/${id}`,
@@ -170,10 +183,10 @@ const EditableTable = () => {
             "college":row.college,
             "degree":row.degree,
             "grade":row.grade,
-            "enable":row.enable    // enable的值为1或者0
+            "enable":row.enable === 1 ? true : false    // enable的值为1或者0
         }
       }).then( data => {
-          if(data.data.code===200){
+          if( data.data.code === '200' ){
               message.info(data.data.msg);
               setTimeout( ()=>{ window.location.reload() } ,300)
           }
@@ -231,6 +244,12 @@ const EditableTable = () => {
         dataIndex: 'identity',
         width: '8%',
         editable: true,
+        render:item => {
+          let color = item === 'student' ? 'green' : 'geekblue'
+          return (
+            <Tag color={color}>{item}</Tag>
+          ) 
+        }
     },
     {
         title: '学位',
@@ -249,6 +268,11 @@ const EditableTable = () => {
         dataIndex: 'enable',
         width: '5%',
         editable: true,
+        render:item => {
+          return(
+            item === true ?<Tag color='green'>正常</Tag>:<Tag color="red">禁用</Tag>
+          )
+        }
     },
     {
       title: '操作',
@@ -295,7 +319,7 @@ const EditableTable = () => {
     <div>
       <h2>用户列表</h2>
       <p style={{ color:'red' }}>请勿轻易修改用户的学号、邮箱和电话信息，修改前请通知用户</p>
-      <p>（备注：用户身份暂时无法更改，状态只能为1或0，当为0的时候用户无法登录）</p>
+      <p>（注：用户身份暂时无法更改，状态表示用户账号是否能使用，修改状态时，1表示正常，0表示禁用）</p>
       <span>筛选条件：  </span>
       <Select size='large' style={{ width: 120,marginRight:'30px' }} onChange={handleChangeIdentity} placeholder='身份'>
         <Option value="unlimited">不限</Option>
@@ -346,7 +370,9 @@ const EditableTable = () => {
           rowKey='account'
           columns={mergedColumns}
           pagination={{
-            onChange: cancel,
+            onChange: pageChange,
+            total:total,
+            pageSize:10
           }}
         />
       </Form>

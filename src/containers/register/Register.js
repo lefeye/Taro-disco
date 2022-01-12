@@ -87,14 +87,14 @@ const RegistrationForm = () => {
       identity:value===1?'student':'teacher',
       code:values.confirmcode
     }).then(data => {
-      if (data.data.code === 200) {
+      if (data.data.code === '200') {
         message.info('注册成功，为您自动登录！');
         axios.post(`${url}/login`, {
           account: values.stu_no,
           password: values.password
         }).then(data => {
           console.log(data)
-          if (data.data.code === 200) {
+          if (data.data.code === '200') {
             sessionStorage.setItem(`token`, data.data.data.token)
             //向redux的store中传递用户名和用户类型
             handleUserInfo(values.stu_no, data.data.data.role);

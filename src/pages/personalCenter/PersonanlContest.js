@@ -26,7 +26,6 @@ function PersonalContest() {
         }).then(data => {
             competitionData.current = data.data.data
             let data1 = []
-            console.log(competitionData.current)
             competitionData.current.forEach(e => {
                 data1.push(
                     <Card

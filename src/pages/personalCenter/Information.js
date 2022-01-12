@@ -23,10 +23,11 @@ function Info() {
             method: "GET",
             url: `${url}/api/v1/get-info`,
         }).then(data => {
-            if (data.data.code === 200) {
+            if (data.data.code === '200') {
                 const userInformation = data.data.data;
+                sessionStorage.setItem('account',userInformation.account);
+                sessionStorage.setItem('email',userInformation.email);
                 setUser(userInformation);
-                console.log(userInformation);
                 form.setFieldsValue({
                     account:userInformation.account,
                     email:userInformation.email,
@@ -38,15 +39,14 @@ function Info() {
                 })
             }
             else {
-                console.error('查询个人信息失败！')
+                message.error('查询个人信息失败！')
             }
         }).catch(e => {
-            console.log(e)
+            message.error(e.response.data.msg)
         })
     } ,[])
     
     const submitInfo = (userInformation) => {
-        console.log(userInformation);
         axios(
             {
                 method:'PUT',

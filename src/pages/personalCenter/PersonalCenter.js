@@ -5,12 +5,15 @@ import PersonalContest from './PersonanlContest';
 import MyNavLink from '../../components/MyNavLink';
 import ReleaseCompetition from './company/ReleaseCompetition';
 import Released from './company/Released';
+import TeamManage from './student/TeamManage';
 import { Menu } from 'antd';
 import EditableTable from './superManager/Management';
 import {
     IdcardOutlined,
     CalendarOutlined,
-    DatabaseOutlined
+    DatabaseOutlined,
+    TeamOutlined,
+    UserOutlined
 } from '@ant-design/icons';
 import { Route, Switch } from 'react-router-dom';
 import store from '../../redux/store';
@@ -22,11 +25,9 @@ const PersonalCenter = () => {
         const path=window.location.pathname;
         if(path.indexOf('information')!==-1){
             setKey('1');
-            console.log(key);
         }
         if(path.indexOf('personalcontest')!==-1){
             setKey('2');
-            console.log(key);
         }
         if(path.indexOf('competition')!==-1){
             setKey('3');
@@ -36,6 +37,9 @@ const PersonalCenter = () => {
         }
         if(path.indexOf('management')!==-1){
             setKey('5');
+        }
+        if(path.indexOf('teammanage')!==-1){
+            setKey('6');
         }
     } )
     return (
@@ -47,6 +51,7 @@ const PersonalCenter = () => {
                     <Route path='/home/personalcenter/competition' component={ReleaseCompetition} />
                     <Route path='/home/personalcenter/released' component={Released} />
                     <Route path='/home/personalcenter/management' component={EditableTable} />
+                    <Route path='/home/personalcenter/teammanage' component={TeamManage} />
                 </Switch>
             </div>
             <div className="menu">
@@ -59,12 +64,16 @@ const PersonalCenter = () => {
                     <Menu.Item key="1" icon={<IdcardOutlined />}>
                         <MyNavLink to='/home/personalcenter/information'>个人信息</MyNavLink>
                     </Menu.Item>
-                    <Menu.Item key="5" icon={<IdcardOutlined />}>
+                    <Menu.Item key="5" icon={<UserOutlined /> }>
                         <MyNavLink to='/home/personalcenter/management'>人员管理</MyNavLink>
                     </Menu.Item>
                     {typeofUser === "user" ? <><Menu.Item key="2" icon={<CalendarOutlined />}>
                         <MyNavLink to='/home/personalcenter/personalcontest' >比赛信息</MyNavLink>
-                    </Menu.Item></> : ''}
+                    </Menu.Item>
+                    <Menu.Item key='6' icon={<TeamOutlined />}>
+                    <MyNavLink to='/home/personalcenter/teammanage' >团队管理</MyNavLink>
+                    </Menu.Item>
+                    </> : ''}
 
                     {typeofUser !== "user" ?
                         <>

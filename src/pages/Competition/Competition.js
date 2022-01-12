@@ -27,7 +27,7 @@ export default function Competition() {
                 'token': sessionStorage.getItem('token')
             }
         }).then(data => {
-            if (data.data.status === 200) {
+            if (data.data.status === '200') {
                 const data1 = data.data.data.reverse();
                 setTotal(data1.length);
                 console.log(data.data)
