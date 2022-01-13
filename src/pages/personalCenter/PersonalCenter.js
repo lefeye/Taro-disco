@@ -8,6 +8,7 @@ import Released from './company/Released';
 import TeamManage from './student/TeamManage';
 import { Menu } from 'antd';
 import EditableTable from './superManager/Management';
+import SuTeamManage from './superManager/SuTeamManage';
 import {
     IdcardOutlined,
     CalendarOutlined,
@@ -41,6 +42,9 @@ const PersonalCenter = () => {
         if(path.indexOf('teammanage')!==-1){
             setKey('6');
         }
+        if(path.indexOf('suteam')!==-1){
+            setKey('7');
+        }
     } )
     return (
         <div className="father">
@@ -52,6 +56,7 @@ const PersonalCenter = () => {
                     <Route path='/home/personalcenter/released' component={Released} />
                     <Route path='/home/personalcenter/management' component={EditableTable} />
                     <Route path='/home/personalcenter/teammanage' component={TeamManage} />
+                    <Route path='/home/personalcenter/suteam' component={SuTeamManage} />
                 </Switch>
             </div>
             <div className="menu">
@@ -66,6 +71,9 @@ const PersonalCenter = () => {
                     </Menu.Item>
                     <Menu.Item key="5" icon={<UserOutlined /> }>
                         <MyNavLink to='/home/personalcenter/management'>人员管理</MyNavLink>
+                    </Menu.Item>
+                    <Menu.Item key='7' icon={<TeamOutlined />}>
+                    <MyNavLink to='/home/personalcenter/suteam' >管理员端团队管理</MyNavLink>
                     </Menu.Item>
                     {typeofUser === "user" ? <><Menu.Item key="2" icon={<CalendarOutlined />}>
                         <MyNavLink to='/home/personalcenter/personalcontest' >比赛信息</MyNavLink>

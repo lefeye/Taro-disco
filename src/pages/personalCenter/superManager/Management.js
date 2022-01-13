@@ -62,7 +62,7 @@ const EditableTable = () => {
       }).then( data => {
           console.log(data);
           if(data.data.code === '200' ){
-            setData(data.data.data.users);
+            setData(data.data.data.data);
             setTotal(data.data.data.total)
           }
       } ).catch( e => {
@@ -84,7 +84,7 @@ const EditableTable = () => {
       url:URL,
     }).then( data => {
         if(data.data.code === '200' ){
-          setData(data.data.data.users);
+          setData(data.data.data.data);
           setTotal(data.data.data.total);
         }
     } ).catch( e => {
@@ -170,8 +170,6 @@ const EditableTable = () => {
       console.log(account)
     try {
       const row = await form.validateFields();
-      // const newData = [...data];
-      // const index = newData.findIndex((item) => account === item.account);
       new_axios({
         method:'PUT',
         url:`${url}/api/v1/setting/user/update-info/${id}`,
@@ -193,16 +191,6 @@ const EditableTable = () => {
       } ).catch( e => {
           message.error(e.response.data.msg);
       } )
-    //   if (index > -1) {
-    //     const item = newData[index];
-    //     newData.splice(index, 1, { ...item, ...row });
-    //     setData(newData);
-    //     setEditingKey('');
-    //   } else {
-    //     newData.push(row);
-    //     setData(newData);
-    //     setEditingKey('');
-    //   }
     } catch (errInfo) {
       console.log('Validate Failed:', errInfo);
     }
