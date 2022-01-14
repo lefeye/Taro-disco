@@ -4,18 +4,22 @@ import {
     Spin, Empty, Drawer,
     Form, Input,
     DatePicker,
-    Pagination
+    Pagination,
+    Select,InputNumber
 } from "antd";
 import 'moment/locale/zh-cn';
 import locale from 'antd/lib/date-picker/locale/zh_CN';
 import { LoadingOutlined } from '@ant-design/icons';
-import axios from "axios";
+import new_axios from "../../../server/api/axios";
 import React, { useEffect, useState } from "react";
 import './Released.css'
 import url from "../../../server/api/url";
 import moment from "moment";
 import { useHistory } from "react-router-dom";
 import '../../../server/api/dateChange'
+
+let mi;
+let ma;
 const Released = () => {
     const [load, setLoad] = useState(true);                            //加载中
     const [element, setElement] = useState([]);                        //展开成react对象后的数组
@@ -25,21 +29,24 @@ const Released = () => {
     const history = useHistory();                                      //路由操作 
     const [min,setMIn] = useState(0);
     const [max,setMax] = useState(6);
+    const [isteam,setIsTeam] = useState(false);
+    const [mmin,setMmin] = useState(0);
+    const [mmax,setMmax] = useState(0);
+    const { RangePicker } = DatePicker;
+    const { Option } = Select;
     message.config({
         maxCount: 1
     })
 
     useEffect(() => {
         //获取比赛数据
-        axios({
+        new_axios({
             method: "GET",
-            url: `${url}/api/v1/setting/competition/get-list`,
-            headers: {
-                'token': sessionStorage.getItem('token')
-            }
+            url: `${url}/api/v1/setting/contest/get-list`,
         }).then(data => {
-            if (data.data.status === 200) {
-                const data1 = data.data.data;
+            console.log(data)
+            if (data.data.code === '200') {
+                const data1 = data.data.data.data;
                 const data3 = [];
                 for (const item of data1) {
                     data3.unshift(
@@ -49,13 +56,12 @@ const Released = () => {
                                 className='card'
                                 extra={<Button type='link' onClick={() => { viS(item) }}>详情</Button>}
                             >
-
-                                <p>简介：{item.description}</p>
-                                <p>比赛要求：{item.entry_requirement}</p>
-                                <p>作品要求：{item.work_requirement}</p>
-                                <p>奖励：{item.reward}</p>
-                                <p>报名截止时间：{item.signup_deadline}</p>
-                                <p>比赛截止时间：{item.submit_deadline}</p>
+                                <p>主办方:{item.sponsor}</p>
+                                <p>发布时间：{item.created_at}</p>
+                                <p>上次修改时间：{item.updated_at}</p>
+                                <p>参赛要求：{item.condition}</p>
+                                <p>赛制：{item.attribute}</p>
+                                <p style={ { fontWeight:'bold' } }>更多信息请在比赛详情页面查看</p>
                                 <Button onClick={() => { searchSignupInfo(item) }}>查看报名情况</Button>
                             </Card>
                         </Col>
@@ -78,14 +84,21 @@ const Released = () => {
         setVisible(true)
         console.log(item);
         setCurrentId(item.id);
+        if(item.attribute === 'team'){
+            setIsTeam(true);
+        }
+        setMmax(item.max_num);
+        setMmin(item.min_num)
         form.setFieldsValue({
             title: item.title,
-            description: item.description,
-            entry_requirement: item.entry_requirement,
-            work_requirement: item.work_requirement,
-            reward: item.reward,
-            signup_deadline: moment(item.signup_deadline),
-            submit_deadline: moment(item.submit_deadline)
+            brief: item.brief,
+            entry_requirement: item.condition,
+            award: item.award,
+            attribute:item.attribute,
+            signup_deadline: [moment(item.begin_signup),moment(item.end_signup)],
+            submit_deadline: [moment(item.begin_submit),moment(item.end_submit)],
+            min:item.min_num,
+            max:item.max_num
         })
     }
 
@@ -95,32 +108,44 @@ const Released = () => {
         history.push('/home/searchsignupinfo');
     }
 
+    //改变参赛人数
+    const attributeChange = value => {
+        if( value === 'team' ){
+            setIsTeam(true);
+        }
+        else {
+            setIsTeam(false);
+        }
+    }
     //修改比赛
     const handleSubmit = () => {
         const values = form.getFieldsValue(true);
-        let firstTime = values.signup_deadline._d.Format("yyyy-MM-dd hh:mm:ss");
-        let secondTime = values.submit_deadline._d.Format("yyyy-MM-dd hh:mm:ss");
+        console.log(values);
+        let firstTime = values.signup_deadline[1]._d.Format("yyyy-MM-dd hh:mm:ss");
+        let secondTime = values.submit_deadline[0]._d.Format("yyyy-MM-dd hh:mm:ss");
         if (firstTime > secondTime) {
-            message.error('比赛截止时间早于报名截止时间，请检查时间设定！');
+            message.error('比赛开始时间早于报名截止时间，请检查时间设定！');
         }
         else {
-            axios({
+            new_axios({
                 method: "PUT",
-                url: `${url}/api/v1/setting/competition/${currentId}`,
-                headers: {
-                    'token': sessionStorage.getItem('token')
-                },
+                url: `${url}/api/v1/setting/contest/${currentId}`,
                 data: {
                     title: values.title,
-                    description: values.description,
-                    reward: values.reward,
-                    entry_requirement: values.entry_requirement,
-                    work_requirement: values.work_requirement,
-                    signup_deadline: firstTime,
-                    submit_deadline: secondTime
+                    brief: values.brief,
+                    award: values.award,
+                    attribute:values.attribute,
+                    min_num:isteam ? mi: null,
+                    max_num:isteam ? ma: null,
+                    condition: values.entry_requirement,
+                    begin_signup:values.signup_deadline[0]._d.Format("yyyy-MM-dd hh:mm:ss"),
+                    end_signup:firstTime,
+                    begin_submit: secondTime,
+                    end_submit: values.submit_deadline[1]._d.Format("yyyy-MM-dd hh:mm:ss"),
+                    
                 },
             }).then(data => {
-                if (data.data.status === 'BS2004') {
+                if (data.data.code === '200') {
                     message.info('更新比赛成功！');
                     setVisible(false);
                     window.location.reload();
@@ -139,6 +164,29 @@ const Released = () => {
         setMax(value*6);
     }
 
+    const changeMin = value => {
+        mi = value;
+    }
+    const changeMax = value => {
+        ma = value;
+    }
+    const numbers = (
+        <div>
+            <Form.Item
+            label='人数'
+            name='min'>
+                <InputNumber min={1} max={10} value={ mmin } onChange={ changeMin }></InputNumber>~
+                <Form.Item
+                name='max'
+                noStyle>
+                    <InputNumber min={1} max={10} value={ mmax } onChange={ changeMax }></InputNumber>人（最多10人）
+                </Form.Item>
+            </Form.Item>
+            
+        </div>
+        
+    )
+
     const spin = (<LoadingOutlined style={{ fontSize: 24 }} spin />);
 
     return (
@@ -153,31 +201,31 @@ const Released = () => {
                 <Pagination  style={{marginLeft:'80%'}} defaultCurrent={1} total={element.length} pageSize={6} hideOnSinglePage onChange={handlePageChange}/>
             </Row>
             <Drawer
-                title="查看/修改比赛数据"
-                width={720}
-                visible={visible}
-                onClose={() => { setVisible(false) }}
-                bodyStyle={{ paddingBottom: 80 }}
-                extra={
-                    <Form.Item>
-                        <Button type="primary" onClick={handleSubmit}>
-                            修改
-                        </Button>
-                    </Form.Item>
+            title="查看/修改比赛数据"
+            width={720}
+            visible={visible}
+            onClose={() => { setVisible(false) }}
+            bodyStyle={{ paddingBottom: 80 }}
+            extra={
+                <Form.Item>
+                    <Button type="primary" onClick={handleSubmit}>
+                        修改
+                    </Button>
+                </Form.Item>
 
-                }
+            }
 
             >
                 <Form layout="vertical" hideRequiredMark
-                    form={form}
-                    onFinish={handleSubmit}
+                form={form}
+                onFinish={handleSubmit}
                 >
                     <Row gutter={16}>
                         <Col span={12}>
                             <Form.Item
-                                name="title"
-                                label="比赛标题"
-                                rules={[{ required: true, message: '标题不能为空' }]}
+                            name="title"
+                            label="比赛标题"
+                            rules={[{ required: true, message: '标题不能为空' }]}
                             >
                                 <Input />
                             </Form.Item>
@@ -186,62 +234,72 @@ const Released = () => {
                     <Row gutter={16}>
                         <Col span={24}>
                             <Form.Item
-                                name="description"
-                                label="比赛描述"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: '比赛描述不能为空',
-                                    },
-                                ]}
+                            name="brief"
+                            label="简介"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: '比赛描述不能为空',
+                                },
+                            ]}
                             >
-                                <Input.TextArea rows={4} />
+                                <Input.TextArea rows={3} />
                             </Form.Item>
                         </Col>
                     </Row>
                     <Row gutter={16}>
                         <Col span={24}>
                             <Form.Item
-                                name="entry_requirement"
-                                label="比赛要求"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: '比赛要求不能为空',
-                                    },
-                                ]}
+                            name="entry_requirement"
+                            label="参赛条件"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: '参赛条件不能为空',
+                                },
+                            ]}
                             >
-                                <Input.TextArea rows={3} placeholder='例如：参赛队员不能少于3人或多于5人' />
+                                <Input.TextArea rows={2} placeholder='例如：参赛队员不能少于3人或多于5人' />
                             </Form.Item>
                         </Col>
                     </Row>
                     <Row gutter={16}>
                         <Col span={24}>
                             <Form.Item
-                                name="work_requirement"
-                                label="作品要求"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: '作品要求不能为空',
-                                    },
-                                ]}
+                            name="attribute"
+                            label="参赛形式"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: '作品要求不能为空',
+                                },
+                            ]}
                             >
-                                <Input.TextArea rows={3} placeholder='例如：以压缩文件提交' />
+                                <Select onChange={ attributeChange } placeholder='单人或组队' >
+                                    <Option value="single">单人</Option>
+                                    <Option value="team">组队</Option>
+                                </Select>
                             </Form.Item>
                         </Col>
                     </Row>
                     <Row gutter={16}>
                         <Col span={24}>
+                            {
+                                isteam ? numbers : <></>
+                            }
+                        </Col>
+                    </Row>
+                    <Row gutter={16}>
+                        <Col span={24}>
                             <Form.Item
-                                name="reward"
-                                label="比赛奖励"
-                                // rules={[
-                                //     {
-                                //         required: true,
-                                //         message: 'please enter url description',
-                                //     },
-                                // ]}
+                            name="award"
+                            label="比赛奖励"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: '比赛奖励不能为空',
+                                },
+                            ]}
                             >
                                 <Input.TextArea rows={2} />
                             </Form.Item>
@@ -250,11 +308,11 @@ const Released = () => {
                     <Row gutter={16}>
                         <Col span={12}>
                             <Form.Item
-                                name="signup_deadline"
-                                label="报名截止时间"
-                                rules={[{ required: true, message: '报名截止时间不能为空' }]}
+                            name="signup_deadline"
+                            label="报名起止时间"
+                            rules={[{ required: true, message: '报名截止时间不能为空' }]}
                             >
-                                <DatePicker
+                                <RangePicker
                                     style={{ width: '100%' }}
                                     format="YYYY-MM-DD HH:mm"
                                     showTime={{ format: 'HH:mm' }}
@@ -265,16 +323,16 @@ const Released = () => {
                         </Col>
                         <Col span={12}>
                             <Form.Item
-                                name="submit_deadline"
-                                label="比赛截止时间"
-                                rules={[{ required: true, message: '比赛截止时间不能为空' }]}
+                            name="submit_deadline"
+                            label="比赛起止时间"
+                            rules={[{ required: true, message: '比赛截止时间不能为空' }]}
                             >
-                                <DatePicker
-                                    style={{ width: '100%' }}
-                                    locale={locale}
-                                    // getPopupContainer={trigger => trigger.parentElement}
-                                    format="YYYY-MM-DD HH:mm"
-                                    showTime={{ format: 'HH:mm' }}
+                                <RangePicker
+                                style={{ width: '100%' }}
+                                locale={locale}
+                                // getPopupContainer={trigger => trigger.parentElement}
+                                format="YYYY-MM-DD HH:mm"
+                                showTime={{ format: 'HH:mm' }}
                                 />
                             </Form.Item>
                         </Col>
