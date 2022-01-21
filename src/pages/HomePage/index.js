@@ -1,6 +1,7 @@
 import React from 'react'
 import MyCarousel from '../../components/MyCarousel'
 import './index.css'
+import beian from '../../imgs/beian.png'
 export default function Home() {
     return (
         <div>
@@ -24,6 +25,11 @@ export default function Home() {
             <div className="home-content">
                 <span>  </span>
             </div> */}
+            <footer style={{height:'50px',textAlign:'center',backgroundColor:'#EEEEEE'}}>
+                <img src={beian}></img>
+                <a href="http://www.beian.gov.cn" target="_blank">公网安备 44011302003329号   </a>
+                <a href="http://beian.miit.gov.cn" target="_blank">琼ICP备2021009023号</a>
+            </footer>
         </div>
     )
 }

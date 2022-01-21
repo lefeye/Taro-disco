@@ -73,8 +73,12 @@ const MyTeam = () => {
     }).then( data => {
         if( data.data.code === '200' ){
           message.info(data.data.msg);
+          setState(1);
         }
-        setState(1);
+        else {
+          message.error(data.data.msg);
+        }
+        
     } ).catch( e => {
         message.error(e.response.data.msg);
     } )

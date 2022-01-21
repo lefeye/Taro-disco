@@ -4,12 +4,13 @@ import {
     List,
     Spin,
     Empty,
-    Pagination
+    Pagination,
+    message
 } from 'antd'
 import { LoadingOutlined } from '@ant-design/icons'
 import { useHistory } from 'react-router-dom'
 import './index.css'
-import axios from 'axios';
+import new_axios from '../../server/api/axios'
 import url from '../../server/api/url';
 
 export default function Competition() {
@@ -20,19 +21,19 @@ export default function Competition() {
     const [min,setMIn] = useState(0);
     const [max,setMax] = useState(10);
     useEffect(() => {
-        axios({
+        new_axios({
             method: "GET",
-            url: `${url}/api/v1/user/competition/get-list`,
-            headers: {
-                'token': sessionStorage.getItem('token')
-            }
+            url: `${url}/api/v1/setting/contest/get-list`,
         }).then(data => {
-            if (data.data.status === '200') {
-                const data1 = data.data.data.reverse();
+            if (data.data.code === '200') {
+                const data1 = data.data.data.data.reverse();
                 setTotal(data1.length);
                 console.log(data.data)
                 setLoad(false);//把加载中图标取消掉
                 setElement(data1);
+            }
+            else{
+                message.error(data.data.msg);
             }
         }).catch(e => {
             console.log(e)
@@ -48,7 +49,7 @@ export default function Competition() {
     return (
         <div>
             {load === true ?
-                    <Spin indicator={spin} tip='loading' style={{ margin: '0 auto' }} />
+                    <Spin indicator={spin} tip='loading' size='large' style={{ marginLeft: '49%',marginTop:'20%' }} />
                     : element.length > 0 ?
                     <List className="list"
                     itemLayout="horizontal"
@@ -59,13 +60,12 @@ export default function Competition() {
                         <List.Item>
                             <List.Item.Meta
                                 title={
-                                    <Button
-                                        type='link'
+                                    <a
                                         onClick={() => { history.push('/home/detail'); sessionStorage.setItem('compId', `${item.id}`) }}>
                                         {item.title}
-                                    </Button>
+                                    </a>
                                 }
-                                description={<p>奖励：{item.reward}</p>}
+                                description={<p>发布时间：{item.created_at}</p>}
                             />
                         </List.Item>
                     )}

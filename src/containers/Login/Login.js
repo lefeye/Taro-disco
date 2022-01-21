@@ -36,9 +36,7 @@ function Login() {
         history.push('/home/homepage');
       }
       else {
-        if (data.data.msg === 'record not found') {
-          message.error('登录失败,用户未注册');
-        }
+        message.error(data.data.msg);
         setLoading(false);
       }
     }).catch(err => {

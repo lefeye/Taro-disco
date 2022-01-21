@@ -60,8 +60,8 @@ const Released = () => {
                                 <p>发布时间：{item.created_at}</p>
                                 <p>上次修改时间：{item.updated_at}</p>
                                 <p>参赛要求：{item.condition}</p>
-                                <p>赛制：{item.attribute}</p>
-                                <p style={ { fontWeight:'bold' } }>更多信息请在比赛详情页面查看</p>
+                                <p>赛制：{item.attribute === 'single' ? '单人' : '组队' }</p>
+                                <p style={ { fontWeight:'bold' } }>更多信息请在右上角比赛详情页面查看</p>
                                 <Button onClick={() => { searchSignupInfo(item) }}>查看报名情况</Button>
                             </Card>
                         </Col>
@@ -151,7 +151,7 @@ const Released = () => {
                     window.location.reload();
                 }
                 else {
-                    message.error('更新失败')
+                    message.error(data.data.msg);
                 }
             }).catch(e => {
                 console.log(e);

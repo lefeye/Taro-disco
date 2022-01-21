@@ -157,8 +157,11 @@ function TeamNews() {
             url:url+`/api/v1/team/ack/${teamId}`,
         }).then( data => {
             if( data.data.code === '200' ) {
-                message.info(data.data.msg);
+                message.info('加入成功');
                 setTimeout( () =>{ window.location.reload() }, 300 );
+            }
+            else{
+                message.error(data.data.msg);
             }
         } ).catch( e => {
             message.error(e.response.data.msg?e.response.data.msg:'网络错误');
@@ -185,6 +188,7 @@ function TeamNews() {
                 form={form} 
                 onFinish={onFinish}
                 >
+                    <p>队名：</p>
                     <Form.Item
                     name='teamName'
                     rules={[
@@ -192,6 +196,7 @@ function TeamNews() {
                     ]}>
                         <Input/>
                     </Form.Item>
+                    <p>宣言：</p>
                     <Form.Item
                     name='declaration'
                     rules={[
@@ -206,7 +211,7 @@ function TeamNews() {
                             {foundingTeam.map(item => (
                                 <div>
                                     <Space>
-                                        <span>队员{item.id}</span>
+                                        <span>队员{item.name}</span>
                                         <span>状态：</span>
                                         { 
                                             item.acked === 'yes' ?

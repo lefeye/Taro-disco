@@ -171,7 +171,6 @@ function SuTeamManage() {
 
     const columns = [
         { title: '队名', dataIndex: 'name', key: 'name' },
-        { title: '人数', dataIndex: 'number', key: 'number' },
         { title: '状态', dataIndex: 'status', key: 'status', 
         render:item => { 
             return(
@@ -183,6 +182,7 @@ function SuTeamManage() {
         }},
         { title: '联系方式', dataIndex: 'email', key: 'email' },
         { title: '队长', dataIndex: 'leader', key: 'leader' },
+        { title: '人数', dataIndex: 'number', key: 'number' },
         { title: '已同意人数', dataIndex: 'ack_number', key: 'ack_number' },
         { title: '操作', key: 'operation', 
         render: (record) => 
