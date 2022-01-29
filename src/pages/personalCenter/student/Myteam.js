@@ -1,19 +1,72 @@
-import { Form, Input, Button, Space, message, Card, Empty,Spin } from 'antd';
+import { Form, Input, Button, Space, message, Card, Empty,Spin,notification,Modal } from 'antd';
 import { MinusCircleOutlined, PlusOutlined,LoadingOutlined } from '@ant-design/icons';
 import url from '../../../server/api/url';
 import new_axios from '../../../server/api/axios';
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 const MyTeamStyle = {
     margin:'0 auto',
     width:'80%',
     marginTop:'20px'
 }
-
+notification.config({
+  maxCount:1
+})
 const MyTeam = () => {
   const [form] = Form.useForm();
+  const history = useHistory();
   const [loading,setLoading] = useState(true);
   const [state,setState] = useState(1);
   const [teamInfo,setTeamInfo] = useState([]);
+  const [visible,setVisible] = useState(false);
+  const [list,setList] = useState([]);
+  const [title,setTitle] = useState('');
+
+  //展开内容
+  const viewModal = contest => {
+    console.log(contest)
+    setList(contest);
+    setTitle(contest.contest.title);
+    setVisible(true);
+  }
+
+  //点击查看比赛按钮
+  const contestList = team => {
+    new_axios({
+      method:'GET',
+      url:url+`/api/v1/contest/team/get-list?team_id=${team.id}`
+    }).then( res => {
+      const data1=[];
+      if( res.data.code === '200' ){
+        if(res.data.data.length===0){
+          message.info('暂无参加的比赛')
+        }
+        else{
+          res.data.data.map( item =>{
+            console.log(item)
+            
+            data1.unshift(
+              <a onClick={ ()=>{viewModal(item)} } key={item.id}>{item.contest.title}</a>
+            )
+          } )
+          notification.open({
+            message: <p>团队<span style={{fontWeight:'bold'}}>《{team.name}》</span>参加的比赛：</p>,
+            duration:10,
+            description:
+              <div>
+                {data1}
+              </div>,
+          });
+        }
+      }
+      else{
+        message.error(res.data.msg);
+      }
+    } ).catch( e => {
+      console.log(e);
+    } )
+    
+  }
 
   //获取已创建的队伍信息
   useEffect( () => {
@@ -36,7 +89,10 @@ const MyTeam = () => {
                 style={{marginBottom:'10px'}} 
                 hoverable
                 key={eteam.id}
-                extra={<p>身份：{sessionStorage.getItem('account') === eteam.leader ? '队长' : '队员'}</p>}
+                extra={<Space align='center'>
+                  <span>身份：{sessionStorage.getItem('account') === eteam.leader ? '队长' : '队员'}</span>
+                    <Button onClick={ () => { contestList(eteam) } } >查看团队参赛情况</Button>
+                  </Space>}
                 >
                   <Space>
                     <h4>队长：{ eteam.leader }</h4>
@@ -167,6 +223,23 @@ const MyTeam = () => {
         </div>
         : foundTeam
       }
+      <Modal
+      visible={visible}
+      footer={null}
+      keyboard
+      maskClosable
+      onCancel={()=>{setVisible(false)}}
+      >
+        <p>比赛题目：
+          <Button type='link'
+          onClick={ () =>{ history.push('/home/detail'); sessionStorage.setItem('compId', `${list.contest.id}`);notification.destroy() } }>
+          {title}
+          </Button>
+        </p>
+        <p>作品链接：{list.work_link?list.work_link:'暂未提交作品'}</p>
+        <p>评分：{list.score}</p>
+        <p>评语：{list.comment?list.comment:'暂无评语'}</p>
+      </Modal>
       
     </div>
     

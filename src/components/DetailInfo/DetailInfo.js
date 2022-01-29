@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import {
-    Form,
-    Input,
     Modal,
     Button,
     message,
@@ -18,7 +16,6 @@ let teamID;
 export default function DetailInfo() {
     // const history = useHistory();
     // const [publishTime, setPublishTime] = useState("")
-    const [teamMember, setTeamMember] = useState("")
     const [team,setTeam] = useState([]);
     const [visible, setVisible] = React.useState(false);
     const [confirmLoading, setConfirmLoading] = React.useState(false);

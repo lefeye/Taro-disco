@@ -1,30 +1,47 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, } from 'react';
 import 'antd/dist/antd.css';
-import { Card, Button } from 'antd';
+import { Card, Button, Space,Upload,message } from 'antd';
 import url from '../../server/api/url';
-import axios from 'axios';
-import competion_1 from '../../imgs/competition_1.jpg'
+import new_axios from '../../server/api/axios';
+import { useHistory } from 'react-router-dom';
+import { UploadOutlined } from '@ant-design/icons';
 // import store from '../../redux/store';
 
 function PersonalContest() {
     const competitionData = useRef();
     const [competitionList, setCompetitionList] = useState([]);
+    const history = useHistory
     // const userID = store.getState().userInfo.email;
     const style = {
-        'width': '90%',
-        'display': 'flex',
+        'width': '80%',
         'margin': '0 auto',
-        'margin-top': '10px'
+        'marginTop': '10px'
     }
+
+    //文件的参数
+    const props = {
+
+        name: 'file',
+        headers: {
+          'X-Requested-With':null,
+          Authorization:'Bearer '+sessionStorage.getItem('token'),
+        },
+        maxCount:1,
+        onChange(info) {
+          if (info.file.status === 'done') {
+            message.success(`${info.file.name} 文件上传成功`);
+          } else if (info.file.status === 'error') {
+            message.error(`${info.file.name} 文件上传失败`);
+          }
+        },
+    };
     useEffect(() => {
-        axios({
+        new_axios({
             method: "GET",
-            url: `${url}/api/v1/user/own/competition`,
-            headers: {
-                'token': sessionStorage.getItem('token')
-            }
+            url: `${url}/api/v1/contest/single/get-list`,
         }).then(data => {
             competitionData.current = data.data.data
+            console.log(competitionData.current);
             let data1 = []
             competitionData.current.forEach(e => {
                 data1.push(
@@ -32,18 +49,28 @@ function PersonalContest() {
                         key={e.id}
                         hoverable
                         style={style}
-                        cover={<img alt="比赛" src={competion_1} />}
-                        className="personalCompetitonList"
                     >
-                        <div>
-                            <div><p >队长：{e.title}</p></div>
-                            <div><p >比赛名称：{e.title}</p></div>
-                            <div><p >作品提交截至日期：{e.submit_deadline}</p></div>
-                            <div><p >队伍信息：{'null'}</p></div>
+                        <div style={{ float:'left' }}>
+                        <p>比赛题目：
+                            <Button type='link'
+                            onClick={ () =>{ history.push('/home/detail'); sessionStorage.setItem('compId', `${e.contest.id}`) } }>
+                            {e.contest.title}
+                            </Button>
+                            <span>作品链接：{e.work_link?e.work_link:'暂未提交作品'}</span>
+                            </p>
+                            <p>评分：{e.score}</p>
+                            <p>评语：{e.comment?e.comment:'暂无评语'}</p>
                         </div>
+                        <div style={{ float:'right' }}>
+
                         <div>
-                            <Button>上传作品</Button>
-                            <Button>修改报名信息</Button>
+                            <Upload {...props}
+                            action={`${url}/api/v1/contest/submit?signup_id=${e.id}`}
+                            >
+                            <Button icon={<UploadOutlined />}>点击上传文件</Button>
+                            </Upload>
+                        </div>
+                            
                         </div>
                     </Card>
                 )
@@ -56,6 +83,8 @@ function PersonalContest() {
     if (competitionList.length)
         return (
             <div>
+                <h2>比赛列表</h2>
+                <p>该版仅可查看个人比赛，团队比赛请到“团队管理-我的团队-查看团队参赛情况”中查看</p>
                 {competitionList}
             </div>
 
