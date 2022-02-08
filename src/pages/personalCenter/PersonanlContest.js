@@ -10,7 +10,8 @@ import { UploadOutlined } from '@ant-design/icons';
 function PersonalContest() {
     const competitionData = useRef();
     const [competitionList, setCompetitionList] = useState([]);
-    const history = useHistory
+    const history = useHistory();
+    const [ss,setSs] = useState(false);
     // const userID = store.getState().userInfo.email;
     const style = {
         'width': '80%',
@@ -28,26 +29,45 @@ function PersonalContest() {
         },
         maxCount:1,
         onChange(info) {
+            console.log(info.file)
           if (info.file.status === 'done') {
-            message.success(`${info.file.name} 文件上传成功`);
+              if(info.file.response){
+                if(info.file.response.code==='200'){
+                    message.success(`${info.file.name} 文件上传成功`);
+                }
+                else{
+                    message.error(info.file.response.msg)
+                }
+              }
+            else{
+                message.error(`${info.file.name} 文件上传失败`);
+            }
+            setSs(!ss);
           } else if (info.file.status === 'error') {
             message.error(`${info.file.name} 文件上传失败`);
           }
         },
     };
+
+    //下载文件
+    const loadFile = link => {
+        new_axios({
+            method:'GET',
+            url:url+`/api/v1/contest/download?url=${link}`
+        })
+    }
+
     useEffect(() => {
         new_axios({
             method: "GET",
             url: `${url}/api/v1/contest/single/get-list`,
         }).then(data => {
             competitionData.current = data.data.data
-            console.log(competitionData.current);
             let data1 = []
             competitionData.current.forEach(e => {
                 data1.push(
                     <Card
                         key={e.id}
-                        hoverable
                         style={style}
                     >
                         <div style={{ float:'left' }}>
@@ -56,7 +76,9 @@ function PersonalContest() {
                             onClick={ () =>{ history.push('/home/detail'); sessionStorage.setItem('compId', `${e.contest.id}`) } }>
                             {e.contest.title}
                             </Button>
-                            <span>作品链接：{e.work_link?e.work_link:'暂未提交作品'}</span>
+                            <span>作品链接：{e.work_link?
+                            <a  onClick={ () => { loadFile(e.work_link) } }>点击下载</a>:
+                            `暂未提交作品，请在${e.contest.begin_submit}至${e.contest.end_submit}间提交`}</span>
                             </p>
                             <p>评分：{e.score}</p>
                             <p>评语：{e.comment?e.comment:'暂无评语'}</p>
@@ -79,7 +101,7 @@ function PersonalContest() {
         }).catch(e => {
             console.log(e)
         })
-    }, [])
+    }, [ss])
     if (competitionList.length)
         return (
             <div>

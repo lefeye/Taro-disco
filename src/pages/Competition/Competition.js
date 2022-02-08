@@ -60,7 +60,7 @@ export default function Competition() {
                         <List.Item>
                             <List.Item.Meta
                                 title={
-                                    <a
+                                    <a style={{ fontWeight:'bold' }}
                                         onClick={() => { history.push('/home/detail'); sessionStorage.setItem('compId', `${item.id}`) }}>
                                         {item.title}
                                     </a>

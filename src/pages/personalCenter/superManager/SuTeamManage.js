@@ -20,7 +20,6 @@ function SuTeamManage() {
             method:'GET',
             url:url+`/api/v1/setting/team/get-list?limit=10&page=1`
         }).then( res => {
-            console.log(res);
             if( res.data.code === '200' ){
                 setTeamsData(res.data.data.data);
                 setTotal(res.data.data.total);

@@ -60,7 +60,6 @@ const EditableTable = () => {
           method:'GET',
           url:`${url}/api/v1/setting/user/get-list?limit=10&page=1`
       }).then( data => {
-          console.log(data);
           if(data.data.code === '200' ){
             setData(data.data.data.data);
             setTotal(data.data.data.total)
@@ -181,7 +180,7 @@ const EditableTable = () => {
             "college":row.college,
             "degree":row.degree,
             "grade":row.grade,
-            "enable":row.enable === 1 ? true : false    // enable的值为1或者0
+            "enable":row.enable    // enable的值为1或者0
         }
       }).then( data => {
           if( data.data.code === '200' ){

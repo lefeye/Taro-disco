@@ -2,10 +2,10 @@ import {
     Card, Col, Row,
     Button, message,
     Spin, Empty, Drawer,
-    Form, Input,
+    Form, Input,Modal,
     DatePicker,
     Pagination,
-    Select,InputNumber
+    Select,InputNumber, Space, Tag
 } from "antd";
 import 'moment/locale/zh-cn';
 import locale from 'antd/lib/date-picker/locale/zh_CN';
@@ -29,14 +29,38 @@ const Released = () => {
     const history = useHistory();                                      //路由操作 
     const [min,setMIn] = useState(0);
     const [max,setMax] = useState(6);
-    const [isteam,setIsTeam] = useState(false);
+    const [isteam,setIsTeam] = useState(false);                        //是否是团队赛制
     const [mmin,setMmin] = useState(0);
     const [mmax,setMmax] = useState(0);
+    const [teachers,setTeachers] = useState([]);                       //存放所有教师的信息
+    const [judges,setJudges] = useState([]);                           //存放所有评委的信息
+    const [modalVisible,setModalVisible] = useState(false);            //Modal可视
     const { RangePicker } = DatePicker;
     const { Option } = Select;
+    const [state,setState] = useState(false);
+    const [id,setId] = useState(0);
     message.config({
         maxCount: 1
     })
+
+    let cptJudges = [];                                              //存放选择的评委                                                  //添加评委的比赛的id 
+    //获取教师列表
+    useEffect( () => {
+        new_axios({
+            method:"GET",
+            url:url+'/api/v1/setting/user/get-list?identity=teacher'
+        }).then( res => {
+            console.log(res);
+            if( res.data.code === '200' ){
+                setTeachers(res.data.data.data);
+            }
+            else{
+                message.error('教师信息获取失败');
+            }
+        } ).catch( e => {
+            console.loh(e);
+        } )
+    } , [state] )
 
     useEffect(() => {
         //获取比赛数据
@@ -44,7 +68,6 @@ const Released = () => {
             method: "GET",
             url: `${url}/api/v1/setting/contest/get-list`,
         }).then(data => {
-            console.log(data)
             if (data.data.code === '200') {
                 const data1 = data.data.data.data;
                 const data3 = [];
@@ -62,7 +85,11 @@ const Released = () => {
                                 <p>参赛要求：{item.condition}</p>
                                 <p>赛制：{item.attribute === 'single' ? '单人' : '组队' }</p>
                                 <p style={ { fontWeight:'bold' } }>更多信息请在右上角比赛详情页面查看</p>
-                                <Button onClick={() => { searchSignupInfo(item) }}>查看报名情况</Button>
+                                <Space>
+                                    <Button onClick={() => { searchSignupInfo(item) }}>查看报名情况</Button>
+                                    <Button onClick={ ()=>{selectJudges(item.id)} }>添加评委</Button>
+                                </Space>
+                                
                             </Card>
                         </Col>
                     )
@@ -77,7 +104,30 @@ const Released = () => {
         }).catch(e => {
             console.log(e)
         })
-    }, [])
+    }, [state])
+
+    //选择评委&保存比赛的id
+    const sendMessage = id => {
+        new_axios({
+            method:'GET',
+            url:url+`/api/v1/setting/judge/get?contest_id=${id}`
+        }).then( res => {
+            console.log(res)
+            if( res.data.code === '200' ){
+                setJudges(res.data.data)
+            }
+            else{
+                message.error(res.data.msg);
+            }
+        } ).catch( e => {
+            console.log(e);
+        } )
+    }
+    const selectJudges = id => {
+        sendMessage(id)
+        setModalVisible(true);
+        setId(id)
+    }
 
     //点击按钮展开比赛信息
     const viS = item => {
@@ -148,11 +198,11 @@ const Released = () => {
                 if (data.data.code === '200') {
                     message.info('更新比赛成功！');
                     setVisible(false);
-                    window.location.reload();
                 }
                 else {
                     message.error(data.data.msg);
                 }
+                setState(!state);
             }).catch(e => {
                 console.log(e);
                 message.error("网络错误");
@@ -185,6 +235,64 @@ const Released = () => {
             
         </div>
         
+    )
+
+    //选择评委
+    const handleJudgesChange = value => {
+        cptJudges=value;
+    }
+    
+    //隐藏Modal
+    const handleCancel = () =>{
+        setModalVisible(false);
+        
+    }
+
+    //提交Modal的数据
+    const handleOk = () => {
+        new_axios({
+            method:'POST',
+            url:url+'/api/v1/setting/judge/add',
+            data:{
+                
+                judges:cptJudges,
+                contest_id:id
+            }
+        }).then( res => {
+            console.log(res)
+            if( res.data.code === '200' ){
+                message.info(res.data.msg);
+                sendMessage(id);
+            }
+            else{
+                message.error(res.data.msg)
+            }
+        } ).catch( e => {
+            console.log(e);
+        } )
+    }
+    const options = (
+        <Select mode="multiple" onChange={handleJudgesChange} placeholder='添加评委' style={{ width:'300px' }}>
+            {
+                teachers.map( item => 
+                    <Option value={item.id} key={item.id}>
+                        <Space size='large' >
+                            {item.name}
+                            {item.enable===true?<></>:<Tag color={'red'}>帐号被禁用</Tag>}
+                        </Space>
+                    </Option>
+             )
+            }
+        </Select>
+    )
+    const judgeView = (
+        <Space>
+            <span>已有评委：</span>
+            { judges?
+            judges.map( item =>
+                <Tag key={item.id}style={{fontSize:'14px',fontWeight:'bold' }}>{item.name}</Tag>
+            ):'暂无评委' }
+        </Space>
     )
 
     const spin = (<LoadingOutlined style={{ fontSize: 24 }} spin />);
@@ -339,6 +447,18 @@ const Released = () => {
                     </Row>
                 </Form>
             </Drawer>
+            <Modal
+            destroyOnClose
+            title="选择评委"
+            visible={modalVisible}
+            okText='提交'
+            cancelText='取消'
+            onOk={handleOk}
+            // confirmLoading={confirmLoading}
+            onCancel={handleCancel}
+            >
+                <Space direction="vertical">{ judgeView }{ options }</Space>
+            </Modal>
         </div>
     )
 }

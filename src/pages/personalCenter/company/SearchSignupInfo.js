@@ -22,14 +22,15 @@ const SearchSignupInfo = () => {
             console.log(data)
             if (data.data.code === '200') {
                 const data1 = data.data.data;
-
-                if( data.data.data[0].target_type === 'team' ){
+                if(data1){
+                    if( data1[0].target_type === 'team' ){
                     setType('team')
+                    }
                 }
-                console.log(data.data.data[0].target_type);
-                setLoad(false);//把加载中图标取消掉
+                
                 setElement(data1);
             }
+            setLoad(false);//把加载中图标取消掉
         }).catch(e => {
             console.log(e)
         })

@@ -42,7 +42,7 @@ function Info() {
                 message.error('查询个人信息失败！')
             }
         }).catch(e => {
-            message.error(e.response.data.msg)
+            console.log(e);
         })
     } ,[])
     

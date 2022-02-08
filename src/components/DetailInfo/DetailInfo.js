@@ -18,7 +18,7 @@ export default function DetailInfo() {
     // const [publishTime, setPublishTime] = useState("")
     const [team,setTeam] = useState([]);
     const [visible, setVisible] = React.useState(false);
-    const [confirmLoading, setConfirmLoading] = React.useState(false);
+    // const [confirmLoading, setConfirmLoading] = React.useState(false);
     // const [form] = Form.useForm();
     const [data, setData] = useState({});
     const compId = sessionStorage.getItem('compId');
@@ -204,7 +204,7 @@ export default function DetailInfo() {
                         title="报名确认"
                         visible={visible}
                         onOk={handleOk}
-                        confirmLoading={confirmLoading}
+                        // confirmLoading={confirmLoading}
                         onCancel={handleCancel}
                     >
                         {/* <Form onChange={(value) => setTeamMember(value.target.value)}>

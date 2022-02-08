@@ -1,5 +1,5 @@
-import { Form, Input, Button, Space, message, Card, Empty,Spin,notification,Modal } from 'antd';
-import { MinusCircleOutlined, PlusOutlined,LoadingOutlined } from '@ant-design/icons';
+import { Form, Input, Button, Space, message, Card, Empty,Spin,notification,Modal,Upload } from 'antd';
+import { MinusCircleOutlined, PlusOutlined,LoadingOutlined,UploadOutlined } from '@ant-design/icons';
 import url from '../../../server/api/url';
 import new_axios from '../../../server/api/axios';
 import React, { useEffect, useState } from 'react';
@@ -67,6 +67,35 @@ const MyTeam = () => {
     } )
     
   }
+
+  //文件的参数
+  const props = {
+
+    name: 'file',
+    headers: {
+      'X-Requested-With':null,
+      Authorization:'Bearer '+sessionStorage.getItem('token'),
+    },
+    maxCount:1,
+    onChange(info) {
+        console.log(info.file)
+      if (info.file.status === 'done') {
+          if(info.file.response){
+            if(info.file.response.code==='200'){
+                message.success(`${info.file.name} 文件上传成功`);
+            }
+            else{
+                message.error(info.file.response.msg)
+            }
+          }
+        else{
+            message.error(`${info.file.name} 文件上传失败`);
+        }
+      } else if (info.file.status === 'error') {
+        message.error(`${info.file.name} 文件上传失败`);
+      }
+    },
+};
 
   //获取已创建的队伍信息
   useEffect( () => {
@@ -236,7 +265,17 @@ const MyTeam = () => {
           {title}
           </Button>
         </p>
-        <p>作品链接：{list.work_link?list.work_link:'暂未提交作品'}</p>
+        <Space>
+          <p>作品链接：{list.work_link?list.work_link:'暂未提交作品'}</p>
+          <div>
+            <Upload {...props}
+            // action={`${url}/api/v1/contest/submit?signup_id=${list.contest.id}`}
+            >
+            <Button icon={<UploadOutlined />}>点击上传文件</Button>
+            </Upload>
+          </div>
+        </Space>
+        
         <p>评分：{list.score}</p>
         <p>评语：{list.comment?list.comment:'暂无评语'}</p>
       </Modal>
