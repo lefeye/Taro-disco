@@ -1,6 +1,6 @@
 import { useHistory } from 'react-router-dom';
 import React from 'react';
-import { Button, Table,Spin } from 'antd';
+import { Button, Table, Spin, Modal, Form,Input,InputNumber, message } from 'antd';
 import {LeftOutlined, LoadingOutlined} from '@ant-design/icons'
 import './SearchSignupInfo.css'
 import { useEffect } from 'react';
@@ -13,6 +13,12 @@ const SearchSignupInfo = () => {
     const [load, setLoad] = useState(true); 
     const [element,setElement] = useState([]);
     const [type,setType] = useState('single');
+    const [visible,setVisible] = useState(false);
+    const [id,setId] = useState(0);
+    const [Fform] = Form.useForm();
+    const [submit,setSubmit] = useState(false);         //提交评价时禁用按钮
+    const [state,setState] = useState(false)
+
     useEffect(()=>{
         //获取比赛数据
         new_axios({
@@ -34,7 +40,7 @@ const SearchSignupInfo = () => {
         }).catch(e => {
             console.log(e)
         })
-    },[])
+    },[state])
     const columns1 = [
         { title: '姓名', dataIndex: ['user','name'], key: 'name' },
         { title: '学号', dataIndex: ['user','account'], key: 'account' },
@@ -60,6 +66,8 @@ const SearchSignupInfo = () => {
                     }
                 </div>
         },
+        { title: '评价作品',key:'7',
+            render:(a,b) => <Button onClick={()=>{handleSetView(b.id)}}>评价</Button>},
         ];
         const columns2 = [
             { title: '队名', dataIndex: ['team','name'], key: 'name' },
@@ -76,17 +84,50 @@ const SearchSignupInfo = () => {
                         }
                     </div>
             },
-            { title: '状态', dataIndex: 'status', key:'7',
+            { title: '状态', dataIndex: 'status', key:'6',
                 render:text => 
                     <div>
                         {
                             text?
-                            <p style={{color:"lightgreen"}}>已评价</p>:<p style={{color:"red"}}>未评价</p>
+                            <span style={{color:"lightgreen"}}>已评价</span>:<span style={{color:"red"}}>未评价</span>
                         }
                     </div>
             },
+            { title: '评价作品',key:'7',
+            render:(a,b) => <Button disabled={ b.work_link === ''? true : false } onClick={()=>{handleSetView(b.id)} }>评价</Button>},
             ];
         
+        const handleSetView = (id) =>{
+            setVisible(true);
+            setId(id)
+        }
+
+        const onOK = () => {
+            const value = Fform .getFieldsValue(true);
+            setSubmit(true);
+            new_axios({
+                method:'POST',
+                url:url+'/api/v1/judge/contest',
+                data:{
+                    id:id,
+                    score:value.score,
+                    comment:value.comment
+                }
+            }).then( data => {
+                if(data.data.code === '200'){
+                    message.info(data.data.msg);
+                    setState(!state);
+                }
+                else{
+                    message.error(data.data.msg)
+                }
+                setSubmit(false);
+                setVisible(false);
+            } ).catch( e => {
+                console.log(e);
+            })
+        }
+
         const spin = (<LoadingOutlined style={{ fontSize: 24 }} spin />);
         
         return (
@@ -98,7 +139,7 @@ const SearchSignupInfo = () => {
                 >
                     返回上一级 
                 </Button>
-                <h2>参赛人员列表</h2>
+                <h2>参赛人员列表{type === 'single'?'（单人比赛）':'（团队比赛）'}</h2>
                 {
                     load?<Spin indicator={spin} tip='loading' style={{margin:'0 50%'}}/>:
 
@@ -116,6 +157,48 @@ const SearchSignupInfo = () => {
                     dataSource={element}/>
                 }
                 
+                <Modal 
+                width='600px'
+                title='评价'
+                cancelText={<span>取消</span>}
+                okText={<span>提交</span>}
+                onOk={onOK}
+                confirmLoading={submit}
+                onCancel={()=>{setVisible(false)}}
+                visible={visible}
+                >
+                    <Form 
+                    labelCol={{span:3}}
+                    form={Fform}
+                    >
+                        <Form.Item
+                        name="score"
+                        label="分数"
+                        rules={[
+                            { required: true, message: '请输入得分！' }
+                        ]}
+                        >
+                            <InputNumber min={0} max={100} placeholder='0~100'/>
+                        </Form.Item>
+
+                        <Form.Item
+                        name="comment"
+                        label='评语'
+                        >
+                            <Input.TextArea/>
+                        </Form.Item>
+
+                        <Form.Item
+                        name="beizhu"
+                        label='注'
+                        rules={[
+                            { required: true }
+                        ]}
+                        >
+                        <span>第二次评价会修改之前的评价</span>
+                        </Form.Item>
+                    </Form>
+                </Modal> 
                 
             </div>
             

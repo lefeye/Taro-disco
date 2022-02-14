@@ -58,7 +58,7 @@ const Released = () => {
                 message.error('教师信息获取失败');
             }
         } ).catch( e => {
-            console.loh(e);
+            console.log(e);
         } )
     } , [state] )
 

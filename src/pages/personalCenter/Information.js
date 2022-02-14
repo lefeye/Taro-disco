@@ -27,6 +27,7 @@ function Info() {
                 const userInformation = data.data.data;
                 sessionStorage.setItem('account',userInformation.account);
                 sessionStorage.setItem('email',userInformation.email);
+                sessionStorage.setItem('identity',userInformation.identity);
                 setUser(userInformation);
                 form.setFieldsValue({
                     account:userInformation.account,

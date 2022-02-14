@@ -9,6 +9,7 @@ import TeamManage from './student/TeamManage';
 import { Menu } from 'antd';
 import EditableTable from './superManager/Management';
 import SuTeamManage from './superManager/SuTeamManage';
+import ContestList from './teacher/ContestList';
 import {
     IdcardOutlined,
     CalendarOutlined,
@@ -45,6 +46,9 @@ const PersonalCenter = () => {
         if(path.indexOf('suteam')!==-1){
             setKey('7');
         }
+        if(path.indexOf('contestlist')!==-1){
+            setKey('8');
+        }
     } )
     return (
         <div className="father">
@@ -57,6 +61,7 @@ const PersonalCenter = () => {
                     <Route path='/home/personalcenter/management' component={EditableTable} />
                     <Route path='/home/personalcenter/teammanage' component={TeamManage} />
                     <Route path='/home/personalcenter/suteam' component={SuTeamManage} />
+                    <Route path='/home/personalcenter/contestlist' component={ContestList} />
                 </Switch>
             </div>
             <div className="menu">
@@ -82,14 +87,20 @@ const PersonalCenter = () => {
                     <MyNavLink to='/home/personalcenter/teammanage' >团队管理</MyNavLink>
                     </Menu.Item>
                     </> : ''}
-
+                    {
+                        sessionStorage.getItem('identity') === 'teacher' ?
+                        <Menu.Item key='8' icon={<TeamOutlined />}>
+                        <MyNavLink to='/home/personalcenter/contestlist' >评审比赛</MyNavLink>
+                        </Menu.Item>:
+                        <></>
+                    }
                     {typeofUser !== "user" ?
                         <>
                             <Menu.Item key="3" icon={<CalendarOutlined />}>
                                 <MyNavLink to='/home/personalcenter/competition'>发布比赛</MyNavLink>
                             </Menu.Item>
                             <Menu.Item key="4" icon={<DatabaseOutlined />}>
-                                <MyNavLink to='/home/personalcenter/released'>已发布</MyNavLink>
+                                <MyNavLink to='/home/personalcenter/released'>已发布比赛</MyNavLink>
                             </Menu.Item>
                         </> : ''}
 
