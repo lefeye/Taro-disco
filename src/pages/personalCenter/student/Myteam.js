@@ -46,7 +46,7 @@ const MyTeam = () => {
             console.log(item)
             
             data1.unshift(
-              <a onClick={ ()=>{viewModal(item)} } key={item.id}>{item.contest.title}</a>
+              <a onClick={ ()=>{viewModal(item)} } key={item.id}>《{item.contest.title}》</a>
             )
           } )
           notification.open({
@@ -54,7 +54,9 @@ const MyTeam = () => {
             duration:10,
             description:
               <div>
-                {data1}
+                <Space >
+                  {data1}
+                </Space>
               </div>,
           });
         }
