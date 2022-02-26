@@ -59,7 +59,6 @@ export default function Home() {
             url:url+'/api/v1/policy/get-all-roles'
         }).then( res => {
             if( res.data.code === '200' ){
-                console.log(res)
                 setAllRoles(res.data.data)
             }
             else{
@@ -69,6 +68,7 @@ export default function Home() {
             console.log(e);
         } )
     } ,[state])
+
     const changeRoleName = value =>{
         setRoleName(value);
     }
@@ -124,6 +124,7 @@ export default function Home() {
         </Select>
     )
     const ChangeRole = () => {
+        Modal.destroyAll();
         confirm({
             content:
             <div>
@@ -155,6 +156,7 @@ export default function Home() {
         });
     }
     const editRole = () => {
+        Modal.destroyAll();
         confirm({
             content:
             <div>
@@ -206,6 +208,7 @@ export default function Home() {
         });
     }
     const editRoleList = () => {
+        Modal.destroyAll();
         confirm({
             content:
             <div>

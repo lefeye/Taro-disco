@@ -12,6 +12,7 @@ import {
     message,
 } from 'antd'
 
+let info 
 function Info() {
     const [user, setUser] = useState({});
     const [oldPassword,setOldPassword]=useState('')
@@ -24,7 +25,9 @@ function Info() {
             url: `${url}/api/v1/get-info`,
         }).then(data => {
             if (data.data.code === '200') {
+                console.log(data.data.data.role)
                 const userInformation = data.data.data;
+                info=userInformation;
                 sessionStorage.setItem('account',userInformation.account);
                 sessionStorage.setItem('email',userInformation.email);
                 sessionStorage.setItem('identity',userInformation.identity);
@@ -139,6 +142,7 @@ function Info() {
             <Descriptions.Item label="学院" span={3}>{user.college}</Descriptions.Item>
             <Descriptions.Item label="年级" span={3}>{user.grade}</Descriptions.Item>
             <Descriptions.Item label="学位" span={3}>{user.degree}</Descriptions.Item>
+            {/* <Descriptions.Item label="当前角色" span={3}>{info.role.id}</Descriptions.Item> */}
             <Descriptions.Item label="密码" span={3}>******
             <Popover 
             title='密码修改'
