@@ -19,6 +19,7 @@ function Info() {
     const [newPassword,setNewPassword]=useState('')
     const [form] = Form.useForm();
     const [state, setState] = useState(1);  //加载中
+    const [role,setRole] = useState({})
     useEffect( () =>{
         axios({
             method: "GET",
@@ -26,6 +27,7 @@ function Info() {
         }).then(data => {
             if (data.data.code === '200') {
                 console.log(data.data.data.role)
+                setRole(data.data.data.role)
                 const userInformation = data.data.data;
                 info=userInformation;
                 sessionStorage.setItem('account',userInformation.account);
@@ -135,14 +137,14 @@ function Info() {
             bordered
             extra={<Button size='middle' onClick={ () => { setState(2) } }>修改信息</Button>}
             >
-            <Descriptions.Item label="学号/账号" span={3} style={{ color:'red' }} >{user.account}</Descriptions.Item>
+            <Descriptions.Item label="学号/账号" span={3} style={{ color:'red',fontWeight:'bold' }} >{user.account}</Descriptions.Item>
+            <Descriptions.Item label="当前角色" span={3}style={{ fontWeight:'bold' }}>{role.name}</Descriptions.Item>
             <Descriptions.Item label="姓名" span={3}>{user.name}</Descriptions.Item>
             <Descriptions.Item label="邮箱" span={3}>{user.email}</Descriptions.Item>
             <Descriptions.Item label="电话号码" span={3}>{user.telephone}</Descriptions.Item>
             <Descriptions.Item label="学院" span={3}>{user.college}</Descriptions.Item>
             <Descriptions.Item label="年级" span={3}>{user.grade}</Descriptions.Item>
             <Descriptions.Item label="学位" span={3}>{user.degree}</Descriptions.Item>
-            {/* <Descriptions.Item label="当前角色" span={3}>{info.role.id}</Descriptions.Item> */}
             <Descriptions.Item label="密码" span={3}>******
             <Popover 
             title='密码修改'

@@ -50,7 +50,6 @@ const Released = () => {
             method:"GET",
             url:url+'/api/v1/setting/user/get-list?identity=teacher'
         }).then( res => {
-            console.log(res);
             if( res.data.code === '200' ){
                 setTeachers(res.data.data.data);
             }
@@ -112,7 +111,6 @@ const Released = () => {
             method:'GET',
             url:url+`/api/v1/setting/judge/get?contest_id=${id}`
         }).then( res => {
-            console.log(res)
             if( res.data.code === '200' ){
                 setJudges(res.data.data)
             }
@@ -278,7 +276,7 @@ const Released = () => {
                     <Option value={item.id} key={item.id}>
                         <Space size='large' >
                             {item.name}
-                            {item.enable===true?<></>:<Tag color={'red'}>帐号被禁用</Tag>}
+                            {item.enable===1?<></>:<Tag color={'red'}>帐号被禁用</Tag>}
                         </Space>
                     </Option>
              )

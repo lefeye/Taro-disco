@@ -53,8 +53,7 @@ export default function Competition() {
                     : element.length > 0 ?
                     <List className="list"
                     itemLayout="horizontal"
-                    header={<h2 style={{textAlign:'center'}}>比赛列表</h2>}
-                    bordered
+                    header={<h1 style={{textAlign: 'center',fontWeight: 'bold'}}>比赛列表</h1>}
                     dataSource={element.slice(min,max)}
                     renderItem={item => (
                         <List.Item>

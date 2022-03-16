@@ -19,6 +19,8 @@ h3{
     font-weight: bold;
 }
 .content-title{
+    margin-top:-10px;
+    margin-bottom: 0;
     color: #0C7ED9;
     text-align: center;
 }

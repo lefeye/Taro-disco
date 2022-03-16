@@ -1,31 +1,72 @@
-import React from 'react'
-import { message,Upload, Button, } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import React, { useEffect, useState } from 'react'
+import { message,List } from 'antd';
 import url from '../../server/api/url';
+import new_axios from '../../server/api/axios';
+import './Notice.css';
+import moment from 'moment';
 export default function Download() {
-    const props = {
-
-    name: 'file',
-    action: `${url}/api/v1/user/competition/post-work?competition_id=${1}`,
-    headers: {
-      'token':sessionStorage.getItem('token'),
-      'X-Requested-With':null
-    },
-    onChange(info) {
-      console.log(info.file)
-      if (info.file.status === 'done') {
-        message.success(`${info.file.name} file uploaded successfully`);
-      } else if (info.file.status === 'error') {
-        message.error(`${info.file.name} file upload failed.`);
-      }
-    },
-    };
+    const [noticeList,setNoticeList] = useState([]);
+    const [total,setTotal] = useState(0);
+    useEffect( () => {
+      new_axios({
+        method:'GET',
+        url:url+'/api/v1/announcement/get-list?limit=10&page=1'
+      }).then( res => {
+        if(res.data.code === '200'){
+          let arr = [];
+          res.data.data.data.forEach( item => {
+            arr.unshift(item);
+          } )
+          setNoticeList(arr);
+          setTotal(res.data.data.total);
+        }
+        else{
+          message.error(res.data.msg);
+        }
+      } ).catch( e => {
+        console.log(e);
+      } )
+    } ,[])
+    const pageChange = page => {
+      new_axios({
+        method:'GET',
+        url:url+`/api/v1/announcement/get-list?limit=10&page=${page}`
+      }).then( res => {
+        if(res.data.code === '200') {
+          setNoticeList(res.data.data.data)
+        }
+        else{
+          message.error(res.data.msg);
+        }
+      } )
+    }
+    const keepInfo = value => {
+      sessionStorage.setItem('title',value.title);
+      sessionStorage.setItem('content',value.content);
+      sessionStorage.setItem('create',moment(value.created_at).format('l'));
+    }
     return (
-        <div>
-            <p>测试页面</p>
-            <Upload {...props}>
-        <Button icon={<UploadOutlined />}>点击上传文件</Button>
-        </Upload>
+        <div className='bo'>
+          <h1>通知公告</h1>
+            <List
+            style={ { fontWeight:'bold' } }
+            dataSource={noticeList}
+            pagination={
+              {
+                pageSize:10,
+                total:total,
+                onChange:pageChange
+              }
+            }
+            renderItem={item => (
+                <List.Item>
+                    <List.Item.Meta
+                    title={<a style={{ fontWeight:'bold'}} href='/home/detailnotice'onClick={() => { keepInfo(item) }}>{item.title}</a>}
+                    />
+                      <div>{moment(item.created_at).format('l')}</div>
+                </List.Item>
+            )}
+            />
         </div>
         
     )

@@ -24,4 +24,27 @@ i{
 }
 .home-content{
     text-align: center;
+    margin:0 auto;
+}
+.home-content2{
+    display: flex;
+    overflow: hidden;
+    justify-content: center;
+}
+.foot{
+    height:50px;
+    text-align:center;
+    background-color:#EEEEEE;
+}
+.more{
+    float:right;
+    font-size: 20px;
+    font-weight: bold;
+}
+.avatar{
+    font-size:18px;
+    background-color:lightgrey;
+    width:60px;
+    text-align:center;
+    font-weight: 1000;
 }

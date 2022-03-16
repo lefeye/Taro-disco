@@ -6,50 +6,51 @@ import MyNavLink from '../../components/MyNavLink';
 import ReleaseCompetition from './company/ReleaseCompetition';
 import Released from './company/Released';
 import TeamManage from './student/TeamManage';
-import { Menu } from 'antd';
+import { Menu,message } from 'antd';
 import EditableTable from './superManager/Management';
 import SuTeamManage from './superManager/SuTeamManage';
 import ContestList from './teacher/ContestList';
-import {
-    IdcardOutlined,
-    CalendarOutlined,
-    DatabaseOutlined,
-    TeamOutlined,
-    UserOutlined
-} from '@ant-design/icons';
+import RoleManagement from './superManager/RoleManagement';
+import url from '../../server/api/url';
 import { Route, Switch } from 'react-router-dom';
 import store from '../../redux/store';
+import new_axios from '../../server/api/axios';
 
 const PersonalCenter = () => {
-    const [key,setKey] = useState('1')
-    const typeofUser = store.getState().userInfo.typeofUser
+    const [key,setKey] = useState('1');
+    const [menuItem,setMenuItem] = useState([]);
+    const typeofUser = store.getState().userInfo.typeofUser;
     useEffect( () => {
         const path=window.location.pathname;
-        if(path.indexOf('information')!==-1){
-            setKey('1');
-        }
-        if(path.indexOf('personalcontest')!==-1){
-            setKey('2');
-        }
-        if(path.indexOf('competition')!==-1){
-            setKey('3');
-        }
-        if(path.indexOf('released')!==-1){
-            setKey('4');
-        }
-        if(path.indexOf('management')!==-1){
-            setKey('5');
-        }
-        if(path.indexOf('teammanage')!==-1){
-            setKey('6');
-        }
-        if(path.indexOf('suteam')!==-1){
-            setKey('7');
-        }
-        if(path.indexOf('contestlist')!==-1){
-            setKey('8');
-        }
-    } )
+        setKey(path)
+    })
+    useEffect( () => {
+        new_axios({
+            method:'GET',
+            url:url+`/api/v1/policy/get-menus-by-role?roleId=${localStorage.getItem('userId')}`
+        }).then( res => {
+            console.log(res)
+            if(res.data.code==='200'){
+                const item = [];
+                if(res.data.data){
+                    res.data.data.forEach( element => {
+                        item.push(
+                            <Menu.Item key={element.path} >
+                                <MyNavLink to={element.path}>{element.description}</MyNavLink>
+                            </Menu.Item>
+                        )
+                    });
+                    setMenuItem(item);
+                }
+            }
+            else{
+                message.error(res.data.msg);
+            }
+            } )
+            .catch( e => {
+                console.log(e);
+        })
+    } ,[])
     return (
         <div className="father">
             <div className="info">
@@ -62,6 +63,7 @@ const PersonalCenter = () => {
                     <Route path='/home/personalcenter/teammanage' component={TeamManage} />
                     <Route path='/home/personalcenter/suteam' component={SuTeamManage} />
                     <Route path='/home/personalcenter/contestlist' component={ContestList} />
+                    <Route path='/home/personalcenter/role' component={RoleManagement} />
                 </Switch>
             </div>
             <div className="menu">
@@ -71,38 +73,10 @@ const PersonalCenter = () => {
                     mode='vertical'
                     theme='light'
                 >
-                    <Menu.Item key="1" icon={<IdcardOutlined />}>
+                    <Menu.Item key="/home/personalcenter/information">
                         <MyNavLink to='/home/personalcenter/information'>个人信息</MyNavLink>
                     </Menu.Item>
-                    <Menu.Item key="5" icon={<UserOutlined /> }>
-                        <MyNavLink to='/home/personalcenter/management'>人员管理</MyNavLink>
-                    </Menu.Item>
-                    <Menu.Item key='7' icon={<TeamOutlined />}>
-                    <MyNavLink to='/home/personalcenter/suteam' >管理员端团队管理</MyNavLink>
-                    </Menu.Item>
-                    {typeofUser === "user" ? <><Menu.Item key="2" icon={<CalendarOutlined />}>
-                        <MyNavLink to='/home/personalcenter/personalcontest' >比赛信息</MyNavLink>
-                    </Menu.Item>
-                    <Menu.Item key='6' icon={<TeamOutlined />}>
-                    <MyNavLink to='/home/personalcenter/teammanage' >团队管理</MyNavLink>
-                    </Menu.Item>
-                    </> : ''}
-                    {
-                        sessionStorage.getItem('identity') === 'teacher' ?
-                        <Menu.Item key='8' icon={<TeamOutlined />}>
-                        <MyNavLink to='/home/personalcenter/contestlist' >评审比赛</MyNavLink>
-                        </Menu.Item>:
-                        <></>
-                    }
-                    {typeofUser !== "user" ?
-                        <>
-                            <Menu.Item key="3" icon={<CalendarOutlined />}>
-                                <MyNavLink to='/home/personalcenter/competition'>发布比赛</MyNavLink>
-                            </Menu.Item>
-                            <Menu.Item key="4" icon={<DatabaseOutlined />}>
-                                <MyNavLink to='/home/personalcenter/released'>已发布比赛</MyNavLink>
-                            </Menu.Item>
-                        </> : ''}
+                    {menuItem}
 
                 </Menu>
             </div>

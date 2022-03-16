@@ -25,7 +25,6 @@ function Login() {
     }).then(data => {
       console.log(data)
       if (data.data.code === '200') {
-        console.log('success')
         sessionStorage.setItem(`token`, data.data.data.token)
         setLoading(false);
         //向redux的store中传递用户名和用户类型

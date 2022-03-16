@@ -7,7 +7,6 @@ import { useHistory } from 'react-router-dom';
 const MyTeamStyle = {
     margin:'0 auto',
     width:'80%',
-    marginTop:'20px'
 }
 notification.config({
   maxCount:1
@@ -42,13 +41,11 @@ const MyTeam = () => {
           message.info('暂无参加的比赛')
         }
         else{
-          res.data.data.map( item =>{
-            console.log(item)
-            
+          res.data.data.map( item =>
             data1.unshift(
               <a onClick={ ()=>{viewModal(item)} } key={item.id}>《{item.contest.title}》</a>
             )
-          } )
+           )
           notification.open({
             message: <p>团队<span style={{fontWeight:'bold'}}>《{team.name}》</span>参加的比赛：</p>,
             duration:10,
@@ -117,9 +114,9 @@ const MyTeam = () => {
               every.unshift(
                 <Card 
                 title={<h4>{eteam.name}</h4>} 
-                style={{marginBottom:'10px'}} 
                 hoverable
                 key={eteam.id}
+                style={{ marginTop:'10px' }}
                 extra={<Space align='center'>
                   <span>身份：{sessionStorage.getItem('account') === eteam.leader ? '队长' : '队员'}</span>
                     <Button onClick={ () => { contestList(eteam) } } >查看团队参赛情况</Button>
@@ -240,8 +237,25 @@ const MyTeam = () => {
 
   return (
     <div style={MyTeamStyle}>
-      
       {
+        //判断是否要创建队伍的状态
+        state === 1 ?
+        <div>
+          <Space direction='vertical'>
+            <Button type='primary'onClick={() => { setState(2) }}>创建团队</Button>
+          </Space>
+            {
+              //判断团队数量
+              loading ? <Spin indicator={ <LoadingOutlined /> } size='large' tip='加载中' style={{ marginLeft:'45%' } }></Spin> :
+              teamInfo.length === 0 ? <Empty description='暂无团队' /> :  teamInfo
+            }
+          
+          
+        </div>
+        : foundTeam
+      }
+      
+      {/* {
         //判断是否要创建队伍的状态
         state === 1 ?
         <div>
@@ -253,7 +267,7 @@ const MyTeam = () => {
           }
         </div>
         : foundTeam
-      }
+      } */}
       <Modal
       visible={visible}
       footer={null}

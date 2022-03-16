@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, } from 'react';
 import 'antd/dist/antd.css';
-import { Card, Button, Space,Upload,message } from 'antd';
+import { Card, Button, Upload, message } from 'antd';
 import url from '../../server/api/url';
 import new_axios from '../../server/api/axios';
 import { useHistory } from 'react-router-dom';
@@ -29,7 +29,6 @@ function PersonalContest() {
         },
         maxCount:1,
         onChange(info) {
-            console.log(info.file)
           if (info.file.status === 'done') {
               if(info.file.response){
                 if(info.file.response.code==='200'){

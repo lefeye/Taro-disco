@@ -7,7 +7,8 @@ import {
     Space,
 } from 'antd'
 // import { useHistory } from 'react-router-dom'
-import './DetailInfo.css'
+import './DetailInfo.css';
+import GoBack from '../GoBack';
 import new_axios from '../../server/api/axios';
 import url from '../../server/api/url';
 
@@ -81,31 +82,6 @@ export default function DetailInfo() {
         }
     };
 
-    // const onFinish = (teamMember) => {
-    //     console.log(' token ', sessionStorage.getItem('token'));
-    //     // console.log('Received stu_id of form: ', values.student_id);
-    //     new_axios({
-    //         method: "POST",
-    //         url: `${url}/api/v1/user/competition/sign-up`,
-    //         data: {
-    //             competition_id: parseInt(compId),
-    //             remark: teamMember
-    //         },
-    //     })
-    //         .then(res => {
-    //             console.log(res)
-    //             if (res.data.status === '200'){
-    //                 message.info('报名成功')
-    //                 setIfparticipate(true);
-    //             }
-
-    //             else {
-    //                 message.error('报名失败，请检查是否登录')
-    //                 console.log(res)
-    //             }
-    //         }).catch(e => console.log(e))
-    // };
-
     const handleOk = () => {
         // if (teamMember.length) {
         //     onFinish(teamMember);
@@ -160,6 +136,7 @@ export default function DetailInfo() {
     )
     return (
         <div>
+            <GoBack/>
             <h3 class="content-title">{data.title}</h3>
             <h4 class="content-date">主办方：{data.sponsor}</h4>
             <h4 class="content-date">发布时间：{data.created_at}</h4>
@@ -207,20 +184,6 @@ export default function DetailInfo() {
                         // confirmLoading={confirmLoading}
                         onCancel={handleCancel}
                     >
-                        {/* <Form onChange={(value) => setTeamMember(value.target.value)}>
-                            <Form.Item
-                                name="teamMember"
-                                label=""
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: '本赛事以组队形式参加，请务必填写队员信息',
-                                    },
-                                ]}
-                            >
-                                <Input.TextArea showCount maxLength={100} placeholder="请输入队伍队员信息，例如201830600444-张三，如有多个请按行写" />
-                            </Form.Item>
-                        </Form> */}
                         { data.attribute==='team'?option:'请确认是否报名' }
                     </Modal></>
             }

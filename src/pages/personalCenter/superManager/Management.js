@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Input, InputNumber, Select, Form, Typography, message, Tag } from 'antd';
+import { Table, Input, InputNumber, Select, Form, Typography, message, Tag, Popover, Space, Button, Modal } from 'antd';
+import { SwapOutlined,UnorderedListOutlined,EditOutlined }  from '@ant-design/icons';
 import new_axios from '../../../server/api/axios';
 import url from '../../../server/api/url';
 
@@ -23,12 +24,13 @@ const EditableCell = ({
           style={{
             margin: 0,
           }}
-          rules={[
-            {
+          rules={
+            record.identity==='teacher'&&(title==='学位'||title==='年级')?[]:
+            [{
               required: true,
               message: `Please Input ${title}!`,
-            },
-          ]}
+            }]
+          }
         >
           {inputNode}
         </Form.Item>
@@ -44,6 +46,7 @@ let identity = '';
 let college = '';
 let grade = '';
 let name = '';
+let roleList=[];
 
 const EditableTable = () => {
   const [form] = Form.useForm();                                        //表单对象
@@ -52,6 +55,9 @@ const EditableTable = () => {
   const [total,setTotal] = useState(0);
   const [editingKey, setEditingKey] = useState('');                     //正在修改的数据
   const { Option } = Select;
+  const { confirm } = Modal;
+  const [state,setState] = useState(false);
+  const [AllRoles,setAllRoles] = useState([])
 
   const isEditing = (record) => record.account === editingKey;
   
@@ -65,10 +71,27 @@ const EditableTable = () => {
             setTotal(data.data.data.total)
           }
       } ).catch( e => {
-          console.log(e.response);
+          console.log(e);
       } )
-  }, [])
+  }, [state])
 
+  useEffect(() => {
+    new_axios({
+      method:'GET',
+      url:url+'/api/v1/policy/get-all-roles'
+    }).then( res => {
+
+      if(res.data.code === '200'){
+        setAllRoles(res.data.data.data)
+        
+      }
+      else{
+        message.error(res.data.msg)
+      }
+    } ).catch( e => {
+      console.log(e);
+    } )
+  },[state])
   //发送筛选请求
   const searchDetailInfo = (page) => {
     let URL=`${url}/api/v1/setting/user/get-list?limit=10&page=${page}`;
@@ -140,7 +163,6 @@ const EditableTable = () => {
 
   //学号查找
   const searchAccount = (value) => {
-    console.log(value);
     account=value;
     searchDetailInfo(1);
   }
@@ -164,9 +186,59 @@ const EditableTable = () => {
     setEditingKey('');
     searchDetailInfo(page);
   }
+  
+  //角色组修改
+  const editRoleList = record => {
+    const k=[];
+    record.roles.forEach( item => {
+      k.push(item.id);
+    } )
+    Modal.destroyAll();
+    confirm({
+        content:
+        <div>
+            <Space direction='vertical'>
+                <span>
+                    更改账号所拥有的角色列表：
+                </span>
+                <Select mode="multiple" allowClear style={{ width:'150px' }} onChange={value=> {roleList=value}} defaultValue={k}>
+                  {
+                      AllRoles.map( item => 
+                          <Option value={item.id} key={item.id} >{ item.name } </Option> )
+                  }
+                </Select>
+            </Space>
+        </div>,
+        onOk() {
+           new_axios({
+               method:"POST",
+               url:url+'/api/v1/policy/set-user-roles',
+               data:{
+                user_id:record.id,
+                role_ids:roleList
+               }
+           }).then( res => {
+            if(res.data.code==='200'){
+                message.info(res.data.msg);
+                setState(!state);
+            }
+            else{
+                message.error(res.data.msg);
+            }
+        } ).catch( e => {
+            console.log(e);
+        } ) 
+        },
+        onCancel() {
+        },
+        okText: "确认",
+        closable:true,
+        cancelText: "取消"
+    });
+}
   //编辑完成保存信息并发送请求
-  const save = async (account) => {
-      console.log(account)
+  const save = async record => {
+    
     try {
       const row = await form.validateFields();
       new_axios({
@@ -257,7 +329,7 @@ const EditableTable = () => {
         editable: true,
         render:item => {
           return(
-            item === true ?<Tag color='green'>正常</Tag>:<Tag color="red">禁用</Tag>
+            item === 1 ?<Tag color='green'>正常</Tag>:<Tag color="red">禁用</Tag>
           )
         }
     },
@@ -269,7 +341,7 @@ const EditableTable = () => {
         return editable ? (
           <span>
             <Typography.Link
-              onClick={() => save(record.account)}
+              onClick={() => save(record)}
               style={{
                 marginRight: 8,
               }}
@@ -279,9 +351,22 @@ const EditableTable = () => {
               <a onClick={ cancel }>取消</a>
           </span>
         ) : (
-          <Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
-            编辑
-          </Typography.Link>
+          <Popover 
+          content={
+          <div>
+            <Space direction='vertical' className='pop'>
+              <Button onClick={() => { edit(record)}} type='link' icon={<EditOutlined />}>修改用户资料</Button>
+              <Button type='link' icon={<UnorderedListOutlined />} onClick={()=>{editRoleList(record)}}>编辑用户角色组</Button>
+            </Space>
+          </div>
+          } 
+          trigger='hover' 
+          placement='topLeft'>
+            <Typography.Link disabled={editingKey !== ''}>
+              编辑
+            </Typography.Link>
+          </Popover>
+          
         );
       },
     },

@@ -9,6 +9,7 @@ import MyNavLink from '../components/MyNavLink'
 import PersonalCenter from '../pages/personalCenter/PersonalCenter'
 import store from '../redux/store'
 import imgleft from '../imgs/logo_left.png'
+import DetailNotice from '../components/DetailNotice'
 import { Modal, Button,Popover,Space,Input, message, Select } from 'antd'
 import SearchSignupInfo from '../pages/personalCenter/company/SearchSignupInfo'
 import DetailInfo from '../components/DetailInfo/DetailInfo'
@@ -17,16 +18,16 @@ import new_axios from '../server/api/axios';
 import url from '../server/api/url'
 
 let role=0;
-let roles=[];
 let new_name='',new_remark='';
 export default function Home() {
     const history = useHistory();
     const [rolename,setRoleName] = useState('');
     const [remark,setRemark] = useState('');
-    const [AllRoles,setAllRoles] = useState([])
+    const [myRoles,setMyRoles] = useState([])
     const [isLogin, setIsLogin] = useState(store.getState().userInfo.status);
     const { confirm } = Modal;
-    const [state,setState] = useState(false)
+    const [state,setState] = useState(false);
+    const [currentRole,setCurrentRole] = useState({});
     const { Option } = Select;
     const logout = () => {
         confirm({
@@ -53,13 +54,44 @@ export default function Home() {
 
         // console.log('logout   ', 'islogin:', store.getState().userInfo.status)
     }
+    
+    //角色列表
+    useEffect(() => {
+        new_axios({
+          method:'GET',
+          url:url+'/api/v1/policy/get-all-roles'
+        }).then( res => {
+    
+          if(res.data.code === '200'){
+            
+            // setRoleList(res.data.data)
+            
+          }
+          else{
+            message.error(res.data.msg)
+          }
+        } ).catch( e => {
+          console.log(e);
+        } )
+      },[state])
     useEffect( () => {
         new_axios({
             method:'GET',
-            url:url+'/api/v1/policy/get-all-roles'
+            url:url+'/api/v1/get-info'
         }).then( res => {
             if( res.data.code === '200' ){
-                setAllRoles(res.data.data)
+                console.log(res.data.data)
+                localStorage.setItem('userId',res.data.data.id);
+                setCurrentRole(res.data.data.role);
+                 const ids=[];
+                if(res.data.data.roles){
+                    setMyRoles(res.data.data.roles);
+                    res.data.data.roles.forEach(element => {
+                        ids.push(element.id);
+                    });
+                }
+                
+
             }
             else{
                 message.error('角色获取失败')
@@ -69,17 +101,18 @@ export default function Home() {
         } )
     } ,[state])
 
-    const changeRoleName = value =>{
-        setRoleName(value);
+    const changeRoleName = e =>{
+        setRoleName(e.target.value);
     }
-    const changeRemark = value => {
-        setRemark(value);
+    const changeRemark = e => {
+        setRemark(e.target.value);
     }
     const handleSubmitRole = () => {
         if(!rolename||!remark){
             message.warn('角色信息未填入，请确认')
         }
         else{
+            console.log(rolename,remark);
             new_axios({
                 method:'POST',
                 url:url+'/api/v1/policy/add-role',
@@ -103,32 +136,27 @@ export default function Home() {
     const handlechange = value => {
         role=value;
     }
-    const handlechange2 = value => {
-        roles=value;
-        console.log(roles)
-    }
+
     const Options=(
-        <Select style={{ width:'150px' }} onChange={handlechange} placeholder='选择角色'>
+        <Select style={{ width:'150px' }} onChange={handlechange} placeholder='选择角色' defaultValue={currentRole.id}>
             {
-                AllRoles.map( item => 
+                myRoles.map( item => 
                     <Option value={item.id} key={item.id} >{ item.name } </Option> )
             }
         </Select>
     )
-    const Options2=(
-        <Select mode="multiple" allowClear style={{ width:'150px' }}onChange={handlechange2}>
-            {
-                AllRoles.map( item => 
-                    <Option value={item.id} key={item.id} >{ item.name } </Option> )
-            }
-        </Select>
-    )
+
     const ChangeRole = () => {
         Modal.destroyAll();
         confirm({
             content:
             <div>
-                {Options}
+                <Space direction='vertical'>
+                    <span>当前：{currentRole.name}</span>
+                    <span>只能切换您角色组内的角色</span>
+                    {Options}
+                </Space>
+                
             </div>,
             onOk() {
                 new_axios({
@@ -139,7 +167,8 @@ export default function Home() {
                     }
                 }).then( res => {
                     if( res.data.code === '200' ){
-                        message.info(res.data.msg)
+                        message.info(res.data.msg);
+                        sessionStorage.setItem('token',res.data.data.token);
                     }
                     else {
                         message.error(res.data.msg);
@@ -207,29 +236,7 @@ export default function Home() {
             cancelText: "取消"
         });
     }
-    const editRoleList = () => {
-        Modal.destroyAll();
-        confirm({
-            content:
-            <div>
-                <Space direction='vertical'>
-                    <span>
-                        更改账号所拥有的角色列表：
-                    </span>
-                    {Options2}
-                </Space>
-            </div>,
-            onOk() {
-                
-            },
-            onCancel() {
-                console.log('Cancel');
-            },
-            okText: "确认",
-            closable:true,
-            cancelText: "取消"
-        });
-    }
+    
     const contentIn = (
         <div>
             <Space direction='vertical'>
@@ -247,7 +254,6 @@ export default function Home() {
                     <Button type='link'icon={<PlusOutlined />}>添加角色</Button>
                 </Popover>
                 <Button type='link'icon={<EditOutlined />} onClick={editRole} >编辑角色</Button>
-                <Button type='link'icon={<UnorderedListOutlined />} onClick={editRoleList} >编辑已有角色列表</Button>
             </Space>
             
         </div>
@@ -278,7 +284,7 @@ export default function Home() {
             <div className="nav">
                 <MyNavLink to="/home/homepage">首页</MyNavLink>
                 <MyNavLink to="/home/competition">比赛资讯</MyNavLink>
-                <MyNavLink to="/home/download">资源下载</MyNavLink>
+                <MyNavLink to="/home/notice">通知公告</MyNavLink>
                 <MyNavLink to="/home/contact">联系我们</MyNavLink>
                 <MyNavLink to="/home/question">更多问题</MyNavLink>
 
@@ -290,11 +296,12 @@ export default function Home() {
                     <Route path='/home/homepage' component={HomePage} />
                     <Route path='/home/competition' component={Competition} />
                     <Route path="/home/question" component={Question} />
-                    <Route path="/home/download" component={Download} />
+                    <Route path="/home/notice" component={Download} />
                     <Route path="/home/contact" component={Contact} />
                     <Route path='/home/searchsignupinfo' component={SearchSignupInfo} />
                     <Route path='/home/detail' component={DetailInfo} />
                     <Route path='/home/personalcenter' component={PersonalCenter} />
+                    <Route path='/home/detailnotice' component={DetailNotice} />
 
                 </Switch>
             </div>

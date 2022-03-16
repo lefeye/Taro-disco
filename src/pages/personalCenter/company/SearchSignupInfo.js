@@ -1,7 +1,7 @@
-import { useHistory } from 'react-router-dom';
+import GoBack from '../../../components/GoBack';
 import React from 'react';
 import { Button, Table, Spin, Modal, Form,Input,InputNumber, message } from 'antd';
-import {LeftOutlined, LoadingOutlined} from '@ant-design/icons'
+import { LoadingOutlined } from '@ant-design/icons';
 import './SearchSignupInfo.css'
 import { useEffect } from 'react';
 import url from '../../../server/api/url';
@@ -9,7 +9,6 @@ import { useState } from 'react';
 import new_axios from '../../../server/api/axios'
 
 const SearchSignupInfo = () => {
-    const history = useHistory()
     const [load, setLoad] = useState(true); 
     const [element,setElement] = useState([]);
     const [type,setType] = useState('single');
@@ -103,7 +102,7 @@ const SearchSignupInfo = () => {
         }
 
         const onOK = () => {
-            const value = Fform .getFieldsValue(true);
+            const value = Fform.getFieldsValue(true);
             setSubmit(true);
             new_axios({
                 method:'POST',
@@ -132,13 +131,7 @@ const SearchSignupInfo = () => {
         
         return (
             <div className='signUpTable'>
-                <Button
-                onClick={ ()=>{ history.goBack() } } 
-                type='link' 
-                icon={<LeftOutlined />}
-                >
-                    返回上一级 
-                </Button>
+                <GoBack/>
                 <h2>参赛人员列表{type === 'single'?'（单人比赛）':'（团队比赛）'}</h2>
                 {
                     load?<Spin indicator={spin} tip='loading' style={{margin:'0 50%'}}/>:
