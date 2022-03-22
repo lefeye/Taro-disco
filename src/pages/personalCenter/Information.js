@@ -19,14 +19,14 @@ function Info() {
     const [newPassword,setNewPassword]=useState('')
     const [form] = Form.useForm();
     const [state, setState] = useState(1);  //加载中
-    const [role,setRole] = useState({})
+    const [role,setRole] = useState({});
+    const [getState,setgetState] = useState(false);
     useEffect( () =>{
         axios({
             method: "GET",
             url: `${url}/api/v1/get-info`,
         }).then(data => {
             if (data.data.code === '200') {
-                console.log(data.data.data.role)
                 setRole(data.data.data.role)
                 const userInformation = data.data.data;
                 info=userInformation;
@@ -34,15 +34,7 @@ function Info() {
                 sessionStorage.setItem('email',userInformation.email);
                 sessionStorage.setItem('identity',userInformation.identity);
                 setUser(userInformation);
-                form.setFieldsValue({
-                    account:userInformation.account,
-                    email:userInformation.email,
-                    telephone:userInformation.telephone,
-                    grade:userInformation.grade,
-                    degree:userInformation.degree,
-                    college:userInformation.college,
-                    name:userInformation.name
-                })
+                
             }
             else {
                 message.error('查询个人信息失败！')
@@ -50,7 +42,7 @@ function Info() {
         }).catch(e => {
             console.log(e);
         })
-    } ,[])
+    } ,[getState])
     
     const submitInfo = (userInformation) => {
         axios(
@@ -72,11 +64,9 @@ function Info() {
             setState(1);
             
         } ).then( () =>{
-            setTimeout(()=>{window.location.reload()}, 200)
-            
-            //window.location.reload()
+            setgetState(!getState);
          }).catch( e => {
-             message.error(e.response.data.msg);
+            console.log(e);
          } )
     }
     const formItemLayout = {
@@ -101,6 +91,19 @@ function Info() {
             },
         },
     };
+
+    const stateChange = () => {
+        setState(2);
+        form.setFieldsValue({
+            account:user.account,
+            email:user.email,
+            telephone:user.telephone,
+            grade:user.grade,
+            degree:user.degree,
+            college:user.college,
+            name:user.name
+        })
+    }
     const oldPass = (e) => {
         setOldPassword(e.target.value);
     }
@@ -131,11 +134,11 @@ function Info() {
     )
     return (
         state === 1 ?
-        <div style={{margin:'0 5%'}}>
+        <div style={{ backgroundColor:'white',marginTop:'1%' }}>
             <Descriptions
             title="个人信息"
             bordered
-            extra={<Button size='middle' onClick={ () => { setState(2) } }>修改信息</Button>}
+            extra={<Button size='large' onClick={ stateChange }>修改信息</Button>}
             >
             <Descriptions.Item label="学号/账号" span={3} style={{ color:'red',fontWeight:'bold' }} >{user.account}</Descriptions.Item>
             <Descriptions.Item label="当前角色" span={3}style={{ fontWeight:'bold' }}>{role.name}</Descriptions.Item>

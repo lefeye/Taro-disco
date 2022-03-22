@@ -83,7 +83,7 @@ export default function Home() {
                 <img src={beian} alt='备案'></img>
                 <a href="http://www.beian.gov.cn" target="_blank" rel="noopener noreferrer">公网安备 44011302003329号   </a>
                 <a href="http://beian.miit.gov.cn" target="_blank" rel="noopener noreferrer">琼ICP备2021009023号</a>
-                <div><span>链接至：</span><a href='https://www.scut.edu.cn/new' target="_blank" rel="noopener noreferrer">华南理工大学官网</a></div>
+                <div><span>链接至：</span><a href='https://www.scut.edu.cn/new' target="_blank" rel="noopener noreferrer">华南理工大学</a></div>
             </footer>
         </div>
     )

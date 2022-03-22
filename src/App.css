@@ -13,6 +13,7 @@
 }
 .top{
   /* background-color: #b7c7fd; */
+  font-size: 2vh;
   text-align:right;
   z-index: 100;
   background-color: #EEEEEE;
@@ -73,7 +74,7 @@
 }
 .nav a{
     margin: 0 30px 0 20px;
-    font-size: 18px;
+    font-size: 3vh;
     line-height: 54px;
     color: #fff;
     height: 54px;
@@ -96,11 +97,4 @@
 }
 .personalCompetitonList .ant-card-body button{
   display: block;
-}
-.pop button{
-  margin: 0 auto;
-  color: black;
-}
-.pop button :hover{
-  color: #1890ff;
 }

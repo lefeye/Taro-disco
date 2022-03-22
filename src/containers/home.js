@@ -10,7 +10,7 @@ import PersonalCenter from '../pages/personalCenter/PersonalCenter'
 import store from '../redux/store'
 import imgleft from '../imgs/logo_left.png'
 import DetailNotice from '../components/DetailNotice'
-import { Modal, Button,Popover,Space,Input, message, Select } from 'antd'
+import { Modal, Button,Popover,Space,Input, message, Select, Layout } from 'antd'
 import SearchSignupInfo from '../pages/personalCenter/company/SearchSignupInfo'
 import DetailInfo from '../components/DetailInfo/DetailInfo'
 import { ExclamationCircleOutlined, SwapOutlined,PlusOutlined,EditOutlined,UnorderedListOutlined } from '@ant-design/icons';
@@ -21,8 +21,6 @@ let role=0;
 let new_name='',new_remark='';
 export default function Home() {
     const history = useHistory();
-    const [rolename,setRoleName] = useState('');
-    const [remark,setRemark] = useState('');
     const [myRoles,setMyRoles] = useState([])
     const [isLogin, setIsLogin] = useState(store.getState().userInfo.status);
     const { confirm } = Modal;
@@ -52,36 +50,15 @@ export default function Home() {
             cancelText: "取消"
         });
 
-        // console.log('logout   ', 'islogin:', store.getState().userInfo.status)
     }
     
-    //角色列表
-    useEffect(() => {
-        new_axios({
-          method:'GET',
-          url:url+'/api/v1/policy/get-all-roles'
-        }).then( res => {
-    
-          if(res.data.code === '200'){
-            
-            // setRoleList(res.data.data)
-            
-          }
-          else{
-            message.error(res.data.msg)
-          }
-        } ).catch( e => {
-          console.log(e);
-        } )
-      },[state])
     useEffect( () => {
         new_axios({
             method:'GET',
             url:url+'/api/v1/get-info'
         }).then( res => {
             if( res.data.code === '200' ){
-                console.log(res.data.data)
-                localStorage.setItem('userId',res.data.data.id);
+                sessionStorage.setItem('userId',res.data.data.role.id);
                 setCurrentRole(res.data.data.role);
                  const ids=[];
                 if(res.data.data.roles){
@@ -101,38 +78,6 @@ export default function Home() {
         } )
     } ,[state])
 
-    const changeRoleName = e =>{
-        setRoleName(e.target.value);
-    }
-    const changeRemark = e => {
-        setRemark(e.target.value);
-    }
-    const handleSubmitRole = () => {
-        if(!rolename||!remark){
-            message.warn('角色信息未填入，请确认')
-        }
-        else{
-            console.log(rolename,remark);
-            new_axios({
-                method:'POST',
-                url:url+'/api/v1/policy/add-role',
-                data:{
-                    name:rolename,
-                    remark:remark
-                }
-            }).then( res => {
-                if(res.data.code === '200'){
-                    message.info(res.data.msg);
-                    setState(!state);
-                }
-                else{
-                    message.error(res.data.msg);
-                }
-            } ).catch( e => {
-                console.log(e);
-            } )
-        }
-    }
     const handlechange = value => {
         role=value;
     }
@@ -169,6 +114,7 @@ export default function Home() {
                     if( res.data.code === '200' ){
                         message.info(res.data.msg);
                         sessionStorage.setItem('token',res.data.data.token);
+                        window.location.reload();
                     }
                     else {
                         message.error(res.data.msg);
@@ -236,23 +182,11 @@ export default function Home() {
             cancelText: "取消"
         });
     }
-    
-    const contentIn = (
-        <div>
-            <Space direction='vertical'>
-                <Input placeholder='角色名称' onChange={changeRoleName}/>
-                <Input placeholder='备注' onChange={changeRemark}/>
-                <Button type='primary' style={{ marginLeft:'60%' }} onClick={handleSubmitRole}>确认</Button>
-            </Space>
-        </div>
-    ) 
+
     const content=(
         <div >
             <Space direction='vertical' className='pop'>
                 <Button type='link'icon={<SwapOutlined />}onClick={ChangeRole}>更换角色</Button>
-                <Popover placement="left"  trigger="hover" content={contentIn}>
-                    <Button type='link'icon={<PlusOutlined />}>添加角色</Button>
-                </Popover>
                 <Button type='link'icon={<EditOutlined />} onClick={editRole} >编辑角色</Button>
             </Space>
             

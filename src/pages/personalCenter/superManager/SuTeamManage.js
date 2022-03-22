@@ -32,7 +32,7 @@ function SuTeamManage() {
     //发送筛选请求
   const searchDetailInfo = (page) => {
     let URL=`${url}/api/v1/setting/team/get-list?limit=10&page=${page}`;
-    if(account)     URL+=`&account=${account}`
+    if(account)     URL+=`&leader=${account}`
     if(status)     URL+=`&status=${status}`
     new_axios({
       method:'GET',

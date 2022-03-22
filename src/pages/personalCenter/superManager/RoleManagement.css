@@ -1,10 +1,12 @@
-
 .roleTable{
     font-weight: bold;
-    margin-top: 2%;
+    margin-top: 10px;
 }
 
 .deleteButton{
     color:#cf222e;
-    
+}
+
+.pop{
+    margin-bottom: 10px;
 }

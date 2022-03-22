@@ -6,7 +6,7 @@ import MyNavLink from '../../components/MyNavLink';
 import ReleaseCompetition from './company/ReleaseCompetition';
 import Released from './company/Released';
 import TeamManage from './student/TeamManage';
-import { Menu,message } from 'antd';
+import { Menu,message, Layout } from 'antd';
 import EditableTable from './superManager/Management';
 import SuTeamManage from './superManager/SuTeamManage';
 import ContestList from './teacher/ContestList';
@@ -19,7 +19,7 @@ import new_axios from '../../server/api/axios';
 const PersonalCenter = () => {
     const [key,setKey] = useState('1');
     const [menuItem,setMenuItem] = useState([]);
-    const typeofUser = store.getState().userInfo.typeofUser;
+    const { Content, Footer, Sider } = Layout;
     useEffect( () => {
         const path=window.location.pathname;
         setKey(path)
@@ -27,7 +27,7 @@ const PersonalCenter = () => {
     useEffect( () => {
         new_axios({
             method:'GET',
-            url:url+`/api/v1/policy/get-menus-by-role?roleId=${localStorage.getItem('userId')}`
+            url:url+`/api/v1/policy/get-menus-by-role?roleId=${sessionStorage.getItem('userId')}`
         }).then( res => {
             console.log(res)
             if(res.data.code==='200'){
@@ -52,36 +52,43 @@ const PersonalCenter = () => {
         })
     } ,[])
     return (
-        <div className="father">
-            <div className="info">
-                <Switch>
-                    <Route path='/home/personalcenter/information' component={Info} />
-                    <Route path='/home/personalcenter/personalcontest' component={PersonalContest} />
-                    <Route path='/home/personalcenter/competition' component={ReleaseCompetition} />
-                    <Route path='/home/personalcenter/released' component={Released} />
-                    <Route path='/home/personalcenter/management' component={EditableTable} />
-                    <Route path='/home/personalcenter/teammanage' component={TeamManage} />
-                    <Route path='/home/personalcenter/suteam' component={SuTeamManage} />
-                    <Route path='/home/personalcenter/contestlist' component={ContestList} />
-                    <Route path='/home/personalcenter/role' component={RoleManagement} />
-                </Switch>
-            </div>
-            <div className="menu">
-                <Menu
-                    style={{ width: 260, height: '100%' }}
-                    selectedKeys={key}
-                    mode='vertical'
-                    theme='light'
-                >
-                    <Menu.Item key="/home/personalcenter/information">
-                        <MyNavLink to='/home/personalcenter/information'>个人信息</MyNavLink>
-                    </Menu.Item>
-                    {menuItem}
-
-                </Menu>
-            </div>
-
-
+        <div style={{ minHeight:'74vh', display:'flex' }}>
+            <Layout hasSider style={{
+                        display:'flex',
+                    }}>
+                    <Sider style={{ flexGorw:1 }}
+                    >
+                    <div className="logo" />
+                    <Menu theme="dark" mode="inline" selectedKeys={key}>
+                        <Menu.Item key="/home/personalcenter/information">
+                            <MyNavLink to='/home/personalcenter/information'>个人信息</MyNavLink>
+                        </Menu.Item>
+                        {menuItem}
+                    </Menu>
+                    </Sider>
+                
+                <Layout className="site-layout">
+                <Content >
+                    <div className="site-layout-background" >
+                    <div style={{ marginLeft:'2%',marginRight:'2%' }}>
+                    
+                        <Switch >
+                        <Route path='/home/personalcenter/information' component={Info} />
+                        <Route path='/home/personalcenter/personalcontest' component={PersonalContest} />
+                        <Route path='/home/personalcenter/competition' component={ReleaseCompetition} />
+                        <Route path='/home/personalcenter/released' component={Released} />
+                        <Route path='/home/personalcenter/management' component={EditableTable} />
+                        <Route path='/home/personalcenter/teammanage' component={TeamManage} />
+                        <Route path='/home/personalcenter/suteam' component={SuTeamManage} />
+                        <Route path='/home/personalcenter/contestlist' component={ContestList} />
+                        <Route path='/home/personalcenter/role' component={RoleManagement} />
+                        </Switch>
+                    </div>
+                    </div>
+                </Content>
+                <Footer className='ant'>Powered By Ant Design 2021-2022 @PortalSystem 占位</Footer>
+                </Layout>
+            </Layout>
         </div>
     );
 };

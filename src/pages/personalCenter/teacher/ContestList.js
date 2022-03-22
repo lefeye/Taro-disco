@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import url from '../../../server/api/url';
 import new_axios from '../../../server/api/axios';
 import { useHistory } from 'react-router-dom';
+import { Empty } from 'antd';
 
 const ContestList = () => {
     const [list,setList] = useState([]);
@@ -29,9 +30,14 @@ const ContestList = () => {
 
     return (
         <div>
-            <ul style={{ fontSize:'24px' }} >
-                {lis}
-            </ul>
+            {
+                lis.length ?
+                <ul style={{ fontSize:'24px' }} >
+                    {lis}
+                </ul> :
+                <Empty description='暂时没有比赛'/>
+            }
+            
        </div>
     )    
 }

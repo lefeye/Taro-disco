@@ -390,8 +390,7 @@ const EditableTable = () => {
   return (
     <div>
       <h2>用户列表</h2>
-      <p style={{ color:'red' }}>请勿轻易修改用户的学号、邮箱和电话信息，修改前请通知用户</p>
-      <p>（注：用户身份暂时无法更改，状态表示用户账号是否能使用，修改状态时，1表示正常，0表示禁用）</p>
+      <p style={{ color:'red' }}>*请勿轻易修改用户的学号、邮箱和电话信息，修改前请通知用户</p>
       <span>筛选条件：  </span>
       <Select size='large' style={{ width: 120,marginRight:'30px' }} onChange={handleChangeIdentity} placeholder='身份'>
         <Option value="unlimited">不限</Option>

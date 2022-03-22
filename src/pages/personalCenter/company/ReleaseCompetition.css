@@ -3,6 +3,7 @@
 .ni{
     border: 2px solid grey;
     width: 80%;
-    margin: 1%;
+    margin: 2%;
     padding: 1%;
+    background-color: white;
 }

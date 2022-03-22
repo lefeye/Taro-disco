@@ -15,7 +15,6 @@ function PersonalContest() {
     // const userID = store.getState().userInfo.email;
     const style = {
         'width': '80%',
-        'margin': '0 auto',
         'marginTop': '10px'
     }
 

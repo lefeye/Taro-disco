@@ -15,12 +15,9 @@ import url from '../../server/api/url';
 let teamID;
 
 export default function DetailInfo() {
-    // const history = useHistory();
-    // const [publishTime, setPublishTime] = useState("")
     const [team,setTeam] = useState([]);
     const [visible, setVisible] = React.useState(false);
     // const [confirmLoading, setConfirmLoading] = React.useState(false);
-    // const [form] = Form.useForm();
     const [data, setData] = useState({});
     const compId = sessionStorage.getItem('compId');
     const [ifparticipate, setIfparticipate] = React.useState(false);

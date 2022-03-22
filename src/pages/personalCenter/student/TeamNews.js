@@ -80,6 +80,7 @@ function TeamNews() {
         }).then( res => {
             console.log(res);
             if( res.data.code === '200' ){
+                console.log(res.data.data)
                 setVisible(true);
                 setTitle(res.data.data.name);
                 setFoundingTeam(res.data.data.members);
@@ -209,7 +210,7 @@ function TeamNews() {
                         {() => (
                         <>
                             {foundingTeam.map(item => (
-                                <div>
+                                <div key={item.id}>
                                     <Space>
                                         <span>队员{item.name}</span>
                                         <span>状态：</span>
