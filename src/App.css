@@ -98,3 +98,10 @@
 .personalCompetitonList .ant-card-body button{
   display: block;
 }
+
+.changeBtn{
+  color: black;
+}
+.changeBtn :hover{
+  color: #1890FF;
+}

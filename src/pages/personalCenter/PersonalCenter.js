@@ -15,6 +15,7 @@ import url from '../../server/api/url';
 import { Route, Switch } from 'react-router-dom';
 import store from '../../redux/store';
 import new_axios from '../../server/api/axios';
+import NoticeManagement from './superManager/NoticeManagement';
 
 const PersonalCenter = () => {
     const [key,setKey] = useState('1');
@@ -22,20 +23,19 @@ const PersonalCenter = () => {
     const { Content, Footer, Sider } = Layout;
     useEffect( () => {
         const path=window.location.pathname;
-        setKey(path)
-    })
+        setKey(path);
+    },[])
     useEffect( () => {
         new_axios({
             method:'GET',
             url:url+`/api/v1/policy/get-menus-by-role?roleId=${sessionStorage.getItem('userId')}`
         }).then( res => {
-            console.log(res)
             if(res.data.code==='200'){
                 const item = [];
                 if(res.data.data){
                     res.data.data.forEach( element => {
                         item.push(
-                            <Menu.Item key={element.path} >
+                            <Menu.Item key={element.path} onClick={ () => { setKey(element.path) } }>
                                 <MyNavLink to={element.path}>{element.description}</MyNavLink>
                             </Menu.Item>
                         )
@@ -60,8 +60,11 @@ const PersonalCenter = () => {
                     >
                     <div className="logo" />
                     <Menu theme="dark" mode="inline" selectedKeys={key}>
-                        <Menu.Item key="/home/personalcenter/information">
+                        <Menu.Item key="/home/personalcenter/information" onClick={() => {setKey('/home/personalcenter/information')}}>
                             <MyNavLink to='/home/personalcenter/information'>个人信息</MyNavLink>
+                        </Menu.Item>
+                        <Menu.Item key="/home/personalcenter/notice" onClick={() => {setKey('/home/personalcenter/notice')}}>
+                            <MyNavLink to='/home/personalcenter/notice'>公告管理</MyNavLink>
                         </Menu.Item>
                         {menuItem}
                     </Menu>
@@ -71,7 +74,6 @@ const PersonalCenter = () => {
                 <Content >
                     <div className="site-layout-background" >
                     <div style={{ marginLeft:'2%',marginRight:'2%' }}>
-                    
                         <Switch >
                         <Route path='/home/personalcenter/information' component={Info} />
                         <Route path='/home/personalcenter/personalcontest' component={PersonalContest} />
@@ -82,11 +84,12 @@ const PersonalCenter = () => {
                         <Route path='/home/personalcenter/suteam' component={SuTeamManage} />
                         <Route path='/home/personalcenter/contestlist' component={ContestList} />
                         <Route path='/home/personalcenter/role' component={RoleManagement} />
+                        <Route path='/home/personalcenter/notice' component={NoticeManagement} />
                         </Switch>
                     </div>
                     </div>
                 </Content>
-                <Footer className='ant'>Powered By Ant Design 2021-2022 @PortalSystem 占位</Footer>
+                <Footer className='ant'>Powered By Ant Design 2021-2022 @PortalSystem</Footer>
                 </Layout>
             </Layout>
         </div>

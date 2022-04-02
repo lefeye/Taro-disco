@@ -5,21 +5,27 @@ import {
     message,
     Select,
     Space,
+    Drawer,
+    Empty
 } from 'antd'
-// import { useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import './DetailInfo.css';
 import GoBack from '../GoBack';
 import new_axios from '../../server/api/axios';
 import url from '../../server/api/url';
+import keepInfo from '../../server/api/keepInfo';
 
 let teamID;
 
 export default function DetailInfo() {
+    const history = useHistory();
     const [team,setTeam] = useState([]);
     const [visible, setVisible] = React.useState(false);
     // const [confirmLoading, setConfirmLoading] = React.useState(false);
     const [data, setData] = useState({});
+    const [drawerVisible,setDrawerVisible] = useState(false);
     const compId = sessionStorage.getItem('compId');
+    const [compNotice,setCompNotice] = useState([])
     const [ifparticipate, setIfparticipate] = React.useState(false);
     const { Option } = Select;
 
@@ -60,7 +66,6 @@ export default function DetailInfo() {
             method:'GET',
             url:url+'/api/v1/team/own/get-list',
         }).then( data => {
-            console.log(data);
             if(data.data.code === '200'){
                 setTeam(data.data.data);
             }
@@ -69,6 +74,18 @@ export default function DetailInfo() {
         } )
     }, [])
 
+    useEffect( () => {
+        new_axios({
+            method:'GET',
+            url:url+`/api/v1/announcement/get-by-contest?contest_id=${compId}`,
+        }).then( data => {
+            if(data.data.code === '200'){
+                setCompNotice(data.data.data.data);
+            }
+        } ).catch( e =>{
+            console.log(e)
+        } )
+    } )
     const showModal = () => {
         if (sessionStorage.getItem('token')){
             setVisible(true);
@@ -107,19 +124,17 @@ export default function DetailInfo() {
     };
 
     const handleCancel = () => {
-        console.log('Clicked cancel button');
         setVisible(false);
     };
 
     const handleTeamChange = value => {
-        console.log(value);
         teamID=value;
     }
     const option = (
         <Select  onChange={handleTeamChange} placeholder='选择队伍' style={{ width:'300px' }}>
             {
                 team.map( item => 
-                    <Option value={item.id} ><Space>{item.name}人数：{item.number}</Space></Option>
+                    <Option value={item.id} key={item.id}><Space>{item.name}人数：{item.number}</Space></Option>
              )
             }
         </Select>
@@ -131,12 +146,28 @@ export default function DetailInfo() {
         </div>
         
     )
+    const competitionNotice =(
+        compNotice.map( item =>
+            <li key={item.id}
+            onClick={ () => { 
+                keepInfo(item);
+                history.push('/home/detailnotice');
+             } }>
+                <a>{item.title}</a>
+            </li>
+        )
+    )
+    const onClose = () => {
+        setDrawerVisible(false);
+    }
     return (
         <div>
             <GoBack/>
-            <h3 class="content-title">{data.title}</h3>
-            <h4 class="content-date">主办方：{data.sponsor}</h4>
-            <h4 class="content-date">发布时间：{data.created_at}</h4>
+            <h3 className="content-title">{data.title}</h3>
+            <h4 className="content-date">主办方：{data.sponsor}</h4>
+            <Space class ="content-date">
+                <h4 >发布时间：{data.created_at} <Button type='link' onClick={() => { setDrawerVisible(true) }}>点击查看比赛公告</Button></h4>
+            </Space>
             <hr></hr>
             <p className="content-body">
                 <span>比赛简介</span>
@@ -184,6 +215,23 @@ export default function DetailInfo() {
                         { data.attribute==='team'?option:'请确认是否报名' }
                     </Modal></>
             }
+            <Drawer 
+            destroyOnClose
+            closable
+            title={'比赛公告列表'} 
+            placement="right" 
+            onClose={onClose} 
+            visible={drawerVisible}
+            >
+                {
+                    compNotice.length?
+                    <ul>
+                        {competitionNotice}
+                    </ul>:
+                    <Empty description='暂时没有该比赛的公告'></Empty>
+                }
+                
+            </Drawer>
         </div >
     )
 }

@@ -28,12 +28,6 @@ const RoleManagement = () => {
   const confirm = Modal.confirm;
   const columns = [
     {
-      title: '角色id',
-      dataIndex: 'id',
-      key: 'id',
-      render: text => <a>{text}</a>,
-    },
-    {
       title: '名称',
       dataIndex: 'name',
       key: 'name',

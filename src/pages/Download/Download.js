@@ -4,6 +4,7 @@ import url from '../../server/api/url';
 import new_axios from '../../server/api/axios';
 import './Notice.css';
 import moment from 'moment';
+import keepInfo from '../../server/api/keepInfo';
 export default function Download() {
     const [noticeList,setNoticeList] = useState([]);
     const [total,setTotal] = useState(0);
@@ -39,11 +40,6 @@ export default function Download() {
           message.error(res.data.msg);
         }
       } )
-    }
-    const keepInfo = value => {
-      sessionStorage.setItem('title',value.title);
-      sessionStorage.setItem('content',value.content);
-      sessionStorage.setItem('create',moment(value.created_at).format('l'));
     }
     return (
         <div className='bo'>

@@ -27,6 +27,9 @@ h3{
 .content-date{
     text-align: center;
 }
+.content-date a{
+    color: black;
+}
 .content-body{
     display: block;
     width: 90%;

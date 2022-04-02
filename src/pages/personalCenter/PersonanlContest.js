@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, } from 'react';
 import 'antd/dist/antd.css';
-import { Card, Button, Upload, message } from 'antd';
+import { Card, Button, Upload, message,Empty } from 'antd';
 import url from '../../server/api/url';
 import new_axios from '../../server/api/axios';
 import { useHistory } from 'react-router-dom';
@@ -111,7 +111,7 @@ function PersonalContest() {
         )
     else
         return (
-            <div>暂无报名比赛</div>
+            <Empty description='暂时没有比赛'/>
         )
 }
 

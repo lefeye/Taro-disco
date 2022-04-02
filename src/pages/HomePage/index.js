@@ -5,6 +5,7 @@ import beian from '../../imgs/beian.png';
 import moment from 'moment';
 import url from '../../server/api/url';
 import new_axios from '../../server/api/axios';
+import keepInfo from '../../server/api/keepInfo';
 import { message, List, Button } from 'antd';
 import { useHistory } from 'react-router-dom';
 export default function Home() {
@@ -31,12 +32,6 @@ export default function Home() {
         } )
     } ,[])
 
-    const keepInfo = value => {
-        sessionStorage.setItem('title',value.title);
-        sessionStorage.setItem('content',value.content);
-        sessionStorage.setItem('create',moment(value.created_at).format('l'));
-      
-    }
     return (
         <div>
             <div className='carousel'>

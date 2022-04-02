@@ -13,18 +13,16 @@ import DetailNotice from '../components/DetailNotice'
 import { Modal, Button,Popover,Space,Input, message, Select, Layout } from 'antd'
 import SearchSignupInfo from '../pages/personalCenter/company/SearchSignupInfo'
 import DetailInfo from '../components/DetailInfo/DetailInfo'
-import { ExclamationCircleOutlined, SwapOutlined,PlusOutlined,EditOutlined,UnorderedListOutlined } from '@ant-design/icons';
+import { ExclamationCircleOutlined, SwapOutlined  } from '@ant-design/icons';
 import new_axios from '../server/api/axios';
 import url from '../server/api/url'
 
 let role=0;
-let new_name='',new_remark='';
 export default function Home() {
     const history = useHistory();
     const [myRoles,setMyRoles] = useState([])
     const [isLogin, setIsLogin] = useState(store.getState().userInfo.status);
     const { confirm } = Modal;
-    const [state,setState] = useState(false);
     const [currentRole,setCurrentRole] = useState({});
     const { Option } = Select;
     const logout = () => {
@@ -58,6 +56,7 @@ export default function Home() {
             url:url+'/api/v1/get-info'
         }).then( res => {
             if( res.data.code === '200' ){
+
                 sessionStorage.setItem('userId',res.data.data.role.id);
                 setCurrentRole(res.data.data.role);
                  const ids=[];
@@ -76,7 +75,7 @@ export default function Home() {
         } ).catch( e => {
             console.log(e);
         } )
-    } ,[state])
+    } ,[])
 
     const handlechange = value => {
         role=value;
@@ -113,8 +112,11 @@ export default function Home() {
                 }).then( res => {
                     if( res.data.code === '200' ){
                         message.info(res.data.msg);
+                        const data = sessionStorage.getItem('persist:root');
+                        sessionStorage.clear();
+                        sessionStorage.setItem('persist:root',data);
                         sessionStorage.setItem('token',res.data.data.token);
-                        window.location.reload();
+                        history.push('/home');
                     }
                     else {
                         message.error(res.data.msg);
@@ -123,74 +125,13 @@ export default function Home() {
                     console.log(e);
                 } )
             },
-            onCancel() {
-                console.log('Cancel');
-            },
             okText: "确认",
-            cancelText: "取消"
-        });
-    }
-    const editRole = () => {
-        Modal.destroyAll();
-        confirm({
-            content:
-            <div>
-                <Space direction='vertical'>
-                    {Options}
-                    <Input 
-                    placeholder='新名称'
-                    onChange={ e=>{ new_name = e.target.value } }
-                    ></Input>
-                    <Input 
-                    placeholder='备注'
-                    onChange={ e=>{ new_remark = e.target.value } }
-                    ></Input>
-                </Space>
-            </div>,
-            onOk() {
-                if(!new_name||!new_remark){
-                    message.warn('角色信息未填入，请确认')
-                }
-                else{
-                    new_axios({
-                        method:'PUT',
-                        url:url+'/api/v1/policy/update-role',
-                        data:{
-                            id:role,
-                            name:new_name,
-                            remark:new_remark
-                        }
-                    }).then( res => {
-                        if(res.data.code==='200'){
-                            message.info(res.data.msg);
-                            setState(!state);
-                        }
-                        else{
-                            message.error(res.data.msg);
-                        }
-                    } ).catch( e => {
-                        console.log(e);
-                    } )
-                }
-                
-            },
-            onCancel() {
-                console.log('Cancel');
-            },
-            okText: "确认",
-            closable:true,
             cancelText: "取消"
         });
     }
 
     const content=(
-        <div >
-            <Space direction='vertical' className='pop'>
-                <Button type='link'icon={<SwapOutlined />}onClick={ChangeRole}>更换角色</Button>
-                <Button type='link'icon={<EditOutlined />} onClick={editRole} >编辑角色</Button>
-            </Space>
-            
-        </div>
+        <Button type='link' className='changeBtn' onClick={ChangeRole}>{<SwapOutlined />}更换角色</Button>
     )
     
 
@@ -236,7 +177,6 @@ export default function Home() {
                     <Route path='/home/detail' component={DetailInfo} />
                     <Route path='/home/personalcenter' component={PersonalCenter} />
                     <Route path='/home/detailnotice' component={DetailNotice} />
-
                 </Switch>
             </div>
         </div>
