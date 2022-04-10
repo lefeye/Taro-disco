@@ -23,7 +23,6 @@ const MyTeam = () => {
 
   //展开内容
   const viewModal = contest => {
-    console.log(contest)
     setList(contest);
     setTitle(contest.contest.title);
     setVisible(true);
@@ -77,7 +76,6 @@ const MyTeam = () => {
     },
     maxCount:1,
     onChange(info) {
-        console.log(info.file)
       if (info.file.status === 'done') {
           if(info.file.response){
             if(info.file.response.code==='200'){

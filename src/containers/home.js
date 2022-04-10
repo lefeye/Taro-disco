@@ -30,6 +30,17 @@ export default function Home() {
             icon: <ExclamationCircleOutlined />,
             content: <p>确认退出登录？</p>,
             onOk() {
+                new_axios({
+                    method:'POST',
+                    url:url+'/logout',
+                }).then( res => {
+                    if(res.data.code === '200'){
+                        message.info('已退出')
+                    }
+                    else{
+                        message.warn('网络不稳定，已为您强制退出')
+                    }
+                } )
                 const action = {
                     type: 'clear_userInfo',
 
@@ -38,11 +49,7 @@ export default function Home() {
                 sessionStorage.clear();
                 store.dispatch(action)
                 setIsLogin(false)
-                console.log('OK');
-                history.push('/home/homepage');
-            },
-            onCancel() {
-                console.log('Cancel');
+                history.push('/home');
             },
             okText: "确认",
             cancelText: "取消"

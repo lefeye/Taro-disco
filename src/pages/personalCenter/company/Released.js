@@ -39,6 +39,7 @@ const Released = () => {
     const { Option } = Select;
     const [state,setState] = useState(false);
     const [id,setId] = useState(0);
+    const [currentPage,setCurrentPage] = useState(1);                   //当前页数
     message.config({
         maxCount: 1
     })
@@ -71,7 +72,7 @@ const Released = () => {
                 const data1 = data.data.data.data;
                 const data3 = [];
                 for (const item of data1) {
-                    data3.unshift(
+                    data3.push(
                         <Col span={8} key={item.id}>
                             <Card
                                 title={item.title}
@@ -130,7 +131,6 @@ const Released = () => {
     //点击按钮展开比赛信息
     const viS = item => {
         setVisible(true)
-        console.log(item);
         setCurrentId(item.id);
         if(item.attribute === 'team'){
             setIsTeam(true);
@@ -168,7 +168,6 @@ const Released = () => {
     //修改比赛
     const handleSubmit = () => {
         const values = form.getFieldsValue(true);
-        console.log(values);
         let firstTime = values.signup_deadline[1]._d.Format("yyyy-MM-dd hh:mm:ss");
         let secondTime = values.submit_deadline[0]._d.Format("yyyy-MM-dd hh:mm:ss");
         if (firstTime > secondTime) {
@@ -208,6 +207,7 @@ const Released = () => {
         }
     }
     const handlePageChange = value => {
+        setCurrentPage(value)
         setMIn((value-1)*6);
         setMax(value*6);
     }
@@ -257,7 +257,6 @@ const Released = () => {
                 contest_id:id
             }
         }).then( res => {
-            console.log(res)
             if( res.data.code === '200' ){
                 message.info(res.data.msg);
                 sendMessage(id);
@@ -304,7 +303,7 @@ const Released = () => {
                         element.slice(min,max)
                         
                         : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description='暂无数据' />}
-                <Pagination  style={{marginLeft:'80%'}} defaultCurrent={1} total={element.length} pageSize={6} hideOnSinglePage onChange={handlePageChange}/>
+                <Pagination  style={{marginLeft:'80%'}} current={currentPage} total={element.length?element.length:0} pageSize={6} hideOnSinglePage onChange={handlePageChange}/>
             </Row>
             <Drawer
             title="查看/修改比赛数据"

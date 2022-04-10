@@ -61,7 +61,6 @@ function SuTeamManage() {
     }
     //学号查找
     const searchAccount = (value) => {
-        console.log(value);
         account=value;
         searchDetailInfo(1);
     }
@@ -71,7 +70,6 @@ function SuTeamManage() {
             teamName:record.name,
             declaration:record.declaration
         })
-        console.log(record)
         setVisible(true);
         setTitle(record.name);
         teamid = record.id;
@@ -81,7 +79,6 @@ function SuTeamManage() {
 
     //提交表单数据
     const onFinish = values => {
-        console.log(values)
         const account = values.users.account;
         const email = values.users.email;
         const name = values.users.name;
@@ -93,7 +90,6 @@ function SuTeamManage() {
         if(values.declaration === dec){
             flag = true;
         }
-        console.log(values.teamName === title)
         for(let i=0;i<foundingTeam.length;i++){
             if(account[i+1] !== foundingTeam[i].account || email[i+1] !== foundingTeam[i].email || name[i+1] !== foundingTeam[i].name){
                 change.push({
@@ -104,9 +100,7 @@ function SuTeamManage() {
                 })
                 flag = true;
             }
-            console.log(i+1);
         }
-        console.log(change);
         if(flag){
             new_axios({
                 method:"PUT",
@@ -117,7 +111,6 @@ function SuTeamManage() {
                     members: change.length > 0 ? change :undefined
                 }
             }).then( res => {
-                console.log(res);
                 if(res.data.code === '200'){
                     message.info('修改成功')
                 }
@@ -145,7 +138,6 @@ function SuTeamManage() {
 
     //内置表单  
     const expandedRowRender = (record) => {
-        console.log(record);
         const columns = [
         { title: '姓名', dataIndex: 'name', key: 'personalName' },
         { title: '学号', dataIndex: 'account', key: 'account' },

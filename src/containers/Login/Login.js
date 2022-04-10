@@ -23,7 +23,6 @@ function Login() {
       account: values.account,
       password: values.password
     }).then(data => {
-      console.log(data)
       if (data.data.code === '200') {
         sessionStorage.setItem(`token`, data.data.data.token)
         setLoading(false);
@@ -63,7 +62,6 @@ function Login() {
       }
     }
     store.dispatch(action);
-    console.log('redux')
   }
 
 

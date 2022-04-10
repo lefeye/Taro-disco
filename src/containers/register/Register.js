@@ -50,13 +50,17 @@ const RegistrationForm = () => {
 
   const getCaptcha = () => {
     const value=form.getFieldsValue(true);
-    console.log(value);
     axios.post(`${url}/send-verification-code`,{
       email:value.email
     }).then( data => {
-      console.log(data)
+      if(data.data.code === '200'){
+        message.info('验证码已发送，请在邮箱查收')
+      }
+      else{
+        message.error('验证码发送失败，网络异常')
+      }
     }).catch( e =>{
-      console.log(e.response)
+      console.log(e)
     })
   }
 
@@ -70,11 +74,9 @@ const RegistrationForm = () => {
       }
     }
     store.dispatch(action);
-    console.log('redux')
   }
 
   const onFinish = (values) => {
-    console.log('Received values of form: ', values);
     axios.post(`${url}/register`, {
       account: values.stu_no,
       email: values.email,
@@ -93,14 +95,10 @@ const RegistrationForm = () => {
           account: values.stu_no,
           password: values.password
         }).then(data => {
-          console.log(data)
           if (data.data.code === '200') {
             sessionStorage.setItem(`token`, data.data.data.token)
             //向redux的store中传递用户名和用户类型
             handleUserInfo(values.stu_no, data.data.data.role);
-            // store.dispatch(ChangeUserInfo);
-            // sessionStorage.setItem('status', 'true');
-            // sessionStorage.setItem('role', `${data.data.data.role}`)
             history.push('/home/homepage')
           }
           else {
@@ -113,10 +111,8 @@ const RegistrationForm = () => {
           message.error('登录失败，网络错误！');
         })
       }
-      console.log(data)
     }).catch(err => {
-      console.log(err.response)
-      message.error(err.response.data.msg);
+      console.log(err)
     })
   };
 

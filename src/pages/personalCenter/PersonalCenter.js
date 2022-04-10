@@ -63,9 +63,6 @@ const PersonalCenter = () => {
                         <Menu.Item key="/home/personalcenter/information" onClick={() => {setKey('/home/personalcenter/information')}}>
                             <MyNavLink to='/home/personalcenter/information'>个人信息</MyNavLink>
                         </Menu.Item>
-                        <Menu.Item key="/home/personalcenter/notice" onClick={() => {setKey('/home/personalcenter/notice')}}>
-                            <MyNavLink to='/home/personalcenter/notice'>公告管理</MyNavLink>
-                        </Menu.Item>
                         {menuItem}
                     </Menu>
                     </Sider>

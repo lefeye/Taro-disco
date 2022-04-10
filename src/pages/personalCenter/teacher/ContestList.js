@@ -12,7 +12,6 @@ const ContestList = () => {
             method:'GET',
             url:url+'/api/v1/judge/contest/get-list'
         }).then( res => {
-            console.log(res);
             if( res.data.code === '200' ){
                 setList(res.data.data)
             }

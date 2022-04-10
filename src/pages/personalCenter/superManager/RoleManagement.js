@@ -44,7 +44,7 @@ const RoleManagement = () => {
       <Space>
         <Button onClick={ () => { drawerView(record.id,record.name) } }>编辑</Button>
         {
-          record.id!==1?
+          record.id!==1 && record.id !== 2 ?
           <Popover 
           content={<Button onClick={ () => { deleteRole(record.id) }}type='primary' style={{ width:'100%' }}>确定</Button>} 
           title="请确认" 
@@ -260,7 +260,6 @@ const RoleManagement = () => {
   //菜单更改
   const menuChange = (value) => {
     const data=[];
-    console.log(value.length)
     if(value.length>0){
       flagCheck=true;
       for(let i=0;i<value.length;i++){
@@ -351,7 +350,6 @@ const RoleManagement = () => {
         message.warn('角色信息未填入，请确认')
     }
     else{
-        console.log(rolename,remark);
         new_axios({
             method:'POST',
             url:url+'/api/v1/policy/add-role',
@@ -439,9 +437,6 @@ const RoleManagement = () => {
                 } )
             }
             
-        },
-        onCancel() {
-            console.log('Cancel');
         },
         okText: "确认",
         closable:true,

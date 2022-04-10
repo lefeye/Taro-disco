@@ -22,7 +22,7 @@ export default function Home() {
                     let i = item;
                     i.created_at = moment(i.created_at);
                     i.updated_at = moment(i.updated_at);
-                    arr.unshift(item);
+                    arr.push(item);
                 } )
                 setNoticeList(arr);
             }

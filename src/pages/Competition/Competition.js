@@ -26,10 +26,9 @@ export default function Competition() {
             url: `${url}/api/v1/setting/contest/get-list`,
         }).then(data => {
             if (data.data.code === '200') {
-                const data1 = data.data.data.data.reverse();
-                setTotal(data1.length);
+                setTotal(data.data.data.data.length);
                 setLoad(false);//把加载中图标取消掉
-                setElement(data1);
+                setElement(data.data.data.data);
             }
             else{
                 message.error(data.data.msg);
@@ -56,15 +55,16 @@ export default function Competition() {
                     dataSource={element.slice(min,max)}
                     renderItem={item => (
                         <List.Item>
-                            <List.Item.Meta
+                            <List.Item.Meta 
                                 title={
-                                    <a style={{ fontWeight:'bold' }}
+                                    <a style={{ fontWeight:'bold',fontSize:'14px' }}
                                         onClick={() => { history.push('/home/detail'); sessionStorage.setItem('compId', `${item.id}`) }}>
                                         {item.title}
                                     </a>
                                 }
                                 description={<p>发布时间：{item.created_at}</p>}
                             />
+                            <div style={{ fontWeight:'bold',fontSize:'14px' }}>{item.attribute === 'single' ? '单人比赛':'团队比赛'}</div>
                         </List.Item>
                     )}
                     />

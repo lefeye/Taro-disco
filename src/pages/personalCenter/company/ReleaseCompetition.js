@@ -46,7 +46,6 @@ const ReleaseCompetition = () => {
                 }
             })
                 .then(value => {
-                    console.log(value);
                     if (value.data.code === '200') {
                         message.info('比赛发布成功！');
                         history.push('/home/personalcenter/released')
@@ -100,11 +99,9 @@ const ReleaseCompetition = () => {
     };
     const changeMin = value => {
         min = value;
-        console.log(min);
     }
     const changeMax = value => {
         max = value;
-        console.log(max);
     }
     const numbers = (
         <div>

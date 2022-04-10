@@ -114,7 +114,7 @@ const Notice = () => {
       key: 'created_at',
     },
     {
-        title: '发布时间',
+        title: '上次修改时间',
         dataIndex: 'updated_at',
         key: 'updated_at',
       },
@@ -186,7 +186,6 @@ const Notice = () => {
       url:url+`/api/v1/announcement/get-all-announcements?limit=10&page=${page}`
     }).then( res => {
       if(res.data.code === '200'){
-          console.log(res.data.data)
         setNoticeList(res.data.data.data)
       }
       else{

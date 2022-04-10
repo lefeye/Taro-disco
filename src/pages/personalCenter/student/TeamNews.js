@@ -78,9 +78,7 @@ function TeamNews() {
             method:"GET",
             url:url+`/api/v1/team/own/${id}`
         }).then( res => {
-            console.log(res);
             if( res.data.code === '200' ){
-                console.log(res.data.data)
                 setVisible(true);
                 setTitle(res.data.data.name);
                 setFoundingTeam(res.data.data.members);
@@ -96,7 +94,6 @@ function TeamNews() {
     }
 
     const onFinish = values => {
-        console.log(values)
         const account = values.users.account;
         const email = values.users.email;
         const name = values.users.name;
@@ -108,7 +105,6 @@ function TeamNews() {
         if(values.declaration === dec){
             flag = true;
         }
-        console.log(values.teamName === title)
         for(let i=0;i<foundingTeam.length;i++){
             if(account[i+1] !== foundingTeam[i].account || email[i+1] !== foundingTeam[i].email || name[i+1] !== foundingTeam[i].name){
                 change.push({
@@ -119,9 +115,7 @@ function TeamNews() {
                 })
                 flag = true;
             }
-            console.log(i+1);
         }
-        console.log(change);
         if(flag){
             new_axios({
                 method:"PUT",
@@ -132,7 +126,6 @@ function TeamNews() {
                     members: change.length > 0 ? change :undefined
                 }
             }).then( res => {
-                console.log(res);
                 if(res.data.code === '200'){
                     message.info('修改成功')
                     setVisible(false)

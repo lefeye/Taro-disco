@@ -14,11 +14,7 @@ export default function Download() {
         url:url+'/api/v1/announcement/get-list?limit=10&page=1'
       }).then( res => {
         if(res.data.code === '200'){
-          let arr = [];
-          res.data.data.data.forEach( item => {
-            arr.unshift(item);
-          } )
-          setNoticeList(arr);
+          setNoticeList(res.data.data.data);
           setTotal(res.data.data.total);
         }
         else{

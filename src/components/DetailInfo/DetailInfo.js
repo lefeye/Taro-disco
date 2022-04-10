@@ -36,7 +36,6 @@ export default function DetailInfo() {
         }).then(data => {
             if (data.data.code === '200') {
                 const data1 = data.data.data;
-                console.log(data1);
                 setData(data1);
             }
             else{
@@ -85,7 +84,7 @@ export default function DetailInfo() {
         } ).catch( e =>{
             console.log(e)
         } )
-    } )
+    } ,[])
     const showModal = () => {
         if (sessionStorage.getItem('token')){
             setVisible(true);

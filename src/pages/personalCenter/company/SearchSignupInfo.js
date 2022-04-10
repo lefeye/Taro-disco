@@ -24,7 +24,6 @@ const SearchSignupInfo = () => {
             method: "GET",
             url:`${url}/api/v1/setting/contest/signup/get-list?contest_id=${sessionStorage.getItem('competition_id')}`,
         }).then(data => {
-            console.log(data)
             if (data.data.code === '200') {
                 const data1 = data.data.data;
                 if(data1){
