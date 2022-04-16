@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import url from '../../../server/api/url';
 import new_axios from '../../../server/api/axios';
 import { useHistory } from 'react-router-dom';
-import { Empty } from 'antd';
+import { Empty, message } from 'antd';
 
 const ContestList = () => {
     const [list,setList] = useState([]);
@@ -14,6 +14,9 @@ const ContestList = () => {
         }).then( res => {
             if( res.data.code === '200' ){
                 setList(res.data.data)
+            }
+            else{
+                message.error(res.data.msg)
             }
         } )
     },[] )

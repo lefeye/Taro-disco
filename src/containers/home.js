@@ -10,7 +10,7 @@ import PersonalCenter from '../pages/personalCenter/PersonalCenter'
 import store from '../redux/store'
 import imgleft from '../imgs/logo_left.png'
 import DetailNotice from '../components/DetailNotice'
-import { Modal, Button,Popover,Space,Input, message, Select, Layout } from 'antd'
+import { Modal, Button,Popover,Space, message, Select } from 'antd'
 import SearchSignupInfo from '../pages/personalCenter/company/SearchSignupInfo'
 import DetailInfo from '../components/DetailInfo/DetailInfo'
 import { ExclamationCircleOutlined, SwapOutlined  } from '@ant-design/icons';
@@ -33,6 +33,9 @@ export default function Home() {
                 new_axios({
                     method:'POST',
                     url:url+'/logout',
+                    headers:{
+                        Authorization:'Bearer '+sessionStorage.getItem('token')
+                    }
                 }).then( res => {
                     if(res.data.code === '200'){
                         message.info('已退出')
@@ -123,6 +126,7 @@ export default function Home() {
                         sessionStorage.clear();
                         sessionStorage.setItem('persist:root',data);
                         sessionStorage.setItem('token',res.data.data.token);
+                        sessionStorage.setItem('userId',res.data.data.role_id);
                         history.push('/home');
                     }
                     else {

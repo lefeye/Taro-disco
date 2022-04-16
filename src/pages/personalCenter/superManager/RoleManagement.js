@@ -47,7 +47,7 @@ const RoleManagement = () => {
           record.id!==1 && record.id !== 2 ?
           <Popover 
           content={<Button onClick={ () => { deleteRole(record.id) }}type='primary' style={{ width:'100%' }}>确定</Button>} 
-          title="请确认" 
+          title="确定删除吗？" 
           trigger="click">
             <Button className='deleteButton'>删除</Button>
           </Popover>

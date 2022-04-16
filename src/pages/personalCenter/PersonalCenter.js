@@ -86,7 +86,7 @@ const PersonalCenter = () => {
                     </div>
                     </div>
                 </Content>
-                <Footer className='ant'>Powered By Ant Design 2021-2022 @PortalSystem</Footer>
+                <Footer className='ant'>Powered by Ant-Design 2022 @PortalSystem</Footer>
                 </Layout>
             </Layout>
         </div>
