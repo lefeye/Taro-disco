@@ -1,0 +1,16 @@
+h1 {
+    color: black;
+}
+
+p {
+    color: black;
+}
+
+.rules {
+    width: 90%;
+    margin: auto;
+}
+
+footer {
+    text-align: right;
+}
