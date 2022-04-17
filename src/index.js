@@ -8,6 +8,8 @@ import { Provider } from "react-redux"
 import store from "./redux/store"
 import { PersistGate } from 'redux-persist/lib/integration/react';
 import { persistor } from './redux/store';
+// import 'bootstrap/dist/css/bootstrap.css';
+// import 'bootstrap/dist/css/bootstrap-theme.css'
 
 ReactDOM.render(
   <React.StrictMode>

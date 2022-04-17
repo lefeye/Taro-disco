@@ -1,0 +1,22 @@
+.title1 {
+    color: rgb(230, 91, 91);
+}
+
+.title2 {
+    color: green;
+}
+
+.title3 {
+    color: rgb(56, 17, 75);
+
+}
+
+.buttonA {
+    margin: 1em;
+    margin-left: 0;
+}
+
+table {
+    margin-bottom: 1em;
+    margin-right: 1em;
+}

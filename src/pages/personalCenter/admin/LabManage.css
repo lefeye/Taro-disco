@@ -1,0 +1,21 @@
+.card{
+    width:330px;
+    height: 360px;
+    
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.card p{
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+.normal{
+    color: blue;
+}
+.breakDow{
+    color: darkgray;
+}
+.style_351{
+    width: 80%;
+    margin: 15px auto;
+}

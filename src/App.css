@@ -11,84 +11,35 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
-.top{
-  /* background-color: #b7c7fd; */
-  text-align:right;
-  background-color: #EEEEEE;
-}
-.top a{
-  font-family: "NSimSun";
-  margin-right: 2em;
-}
-.App-header {
-  /* background-color: #a1b6face; */
-  background-image: url("./imgs/logo_right.jpg");
-  /* min-height: 30vh; */
-  height: 14vh;
-  display: flex;
-  flex-direction:row;
-  align-items: flex-end;
-  justify-content:flex-start;
-  font-size: calc(8px + 2vmin);
-}
+
 
 .App-link {
-  color: #61dafb;
+  color: #cbeffc;
 }
 
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
 }
 
-.App-header a{
-  margin-right: 2em;
-}
-.App-header img{
-  height: 20vh;
-}
-.club_title{
-  float: left;
-  font-size: 48px;
-  font-style:inherit;
-  font-weight: bolder;
-  font-family:"KaiTi";
-  color: rgb(35, 69, 131);
-}
-.router-link{
-  bottom: 5px;
-}
-.nav{
-  background-color: #1890FF;
-  text-align: right;
-}
-.nav a{
-    margin: 0 30px 0 20px;
-    font-size: 18px;
-    line-height: 54px;
-    color: #fff;
-    height: 54px;
-    display: inline-block;
-    /* text-align: right; */
-    /* float: right; */
-}
-.carousel img{
-  height: 100%;
-}
 
-.signUpButton{
+.signUpButton {
   margin: 0 auto;
 }
-.ant-card-bordered .ant-card-cover{
+
+.ant-card-bordered .ant-card-cover {
   width: 20%;
 }
-.personalCompetitonList .ant-card-body{
+
+.personalCompetitonList .ant-card-body {
   display: flex;
 }
-.personalCompetitonList .ant-card-body button{
+
+.personalCompetitonList .ant-card-body button {
   display: block;
 }

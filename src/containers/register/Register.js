@@ -58,19 +58,33 @@ const RegistrationForm = () => {
   }
 
   const onFinish = (values) => {
-    axios.post(`${url}/register`, {
-      stu_no: values.stu_no,
-      stu_email: values.email,
-      stu_college: values.stu_college,
-      stu_name: values.name,
-      stu_password: values.password,
-      stu_grade: values.stu_grade,
+    axios({
+      method: "POST",
+      url: `${url}/register`,
+      data: {
+        stu_no: values.stu_no,
+        stu_email: values.email,
+        stu_college: values.stu_college,
+        stu_name: values.name,
+        stu_password: values.password,
+        stu_grade: values.stu_grade,
+      },
+      headers: {
+        "Authorization": "Bearer " + sessionStorage.getItem('token')
+      }
     }).then(data => {
       if (data.data.status === 'BS2002') {
         message.info('注册成功，为您自动登录！');
-        axios.post(`${url}/login`, {
-          email: values.email,
-          password: values.password
+        axios({
+          method: "POST",
+          url: `${url}/login`,
+          data: {
+            email: values.email,
+            password: values.password
+          },
+          headers: {
+            "Authorization": "Bearer " + sessionStorage.getItem('token')
+          }
         }).then(data => {
           if (data.data.status === 'BS2001') {
             sessionStorage.setItem(`token`, data.data.data.token)

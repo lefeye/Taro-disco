@@ -1,0 +1,17 @@
+.useInformation td {
+    display: block;
+    margin-left: 5em;
+}
+
+.ant-descriptions-title {
+    font-size: 25px;
+}
+
+h2 {
+    color: rgb(39, 39, 39);
+    text-align: center;
+}
+
+table {
+    border-color: rgb(39, 39, 39);
+}

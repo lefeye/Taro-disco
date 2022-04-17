@@ -1,6 +1,6 @@
 // eslint-disable-next-line
 import './Login.css';
-import { Form, Button, Input, message,Radio } from 'antd';
+import { Form, Button, Input, message, Radio } from 'antd';
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
@@ -12,28 +12,28 @@ import store from '../../redux/store';
 
 function Login() {
   const history = useHistory();
-  const [Url,setUrl] = useState(`${url}/login`)
+  const Url = `${url}/login`
   const [loading, setLoading] = useState(false);     //是否点击登录，用于禁用按钮
   message.config({
     maxCount: 1
   })
 
   const onFinish = (values) => {
+    console.log(values)
     setLoading(true);
     axios.post(Url, {
-      username: values.email,
-      email:values.email,
+      account: values.account,
       password: values.password
     }).then(data => {
-      if (data.data.status === 'BS2001') {
+      console.log(data.data)
+      if (data.data.code === '200') {
+        console.log(data.data)
         sessionStorage.setItem(`token`, data.data.data.token)
         setLoading(false);
         //向redux的store中传递用户名和用户类型
-        handleUserInfo(values.email, data.data.data.role);
+        handleUserInfo(values.account, data.data.data.user.role.id);
         // store.dispatch(ChangeUserInfo);
-        // sessionStorage.setItem('status', 'true');
-        // sessionStorage.setItem('role', `${data.data.data.role}`)
-        history.push('/home/homepage');
+        history.push('/home');
       }
       else {
         if (data.data.msg === 'record not found') {
@@ -52,24 +52,17 @@ function Login() {
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
-  const handleUserInfo = (email, role) => {
+  const handleUserInfo = (account, role) => {
     const action = {
       type: 'change_userInfo',
       data: {
-        email: email,
+        account: account,
         status: true,
         typeofUser: role
       }
     }
     store.dispatch(action);
   }
-  const onChange = (e) =>{
-    const value = e.target.value;
-    if(value === 2){
-      setUrl(`${url}/admin/login`);
-    }
-  }
-
 
   const wra = {
     offset: 4, span: 16
@@ -88,23 +81,23 @@ function Login() {
         autoComplete="off"
 
       >
-        <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>账号登录</h2>
-        <Form.Item>
+        <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>用户登录</h2>
+        {/* <Form.Item>
           <Radio.Group onChange={onChange}>
             <Radio value={1}>学生</Radio>
             <Radio value={2}>管理员</Radio>
           </Radio.Group>
-        </Form.Item>
-        
+        </Form.Item> */}
+
         <Form.Item
-          name="email"
+          name="account"
           rules={[
             { required: true, message: '请输入账号！' }
           ]}
         >
           <Input
-            placeholder="邮箱"
-            id='username'
+            placeholder="学号/工号"
+            id='account'
           />
         </Form.Item>
 
@@ -120,9 +113,9 @@ function Login() {
           />
         </Form.Item>
 
-        <Form.Item >
-          <p>忘记密码（先别忘）</p>
-        </Form.Item>
+        {/* <Form.Item >
+          <p>忘记密码（未完成）</p>
+        </Form.Item> */}
 
         <Form.Item >
           <Button type="primary"
@@ -135,12 +128,8 @@ function Login() {
           </Button>
           <div style={{ textAlign: 'center' }}>
             <Button type="link"
-              onClick={() => { history.push('/register') }}
-            >去注册
-            </Button>or
-            <Button type="link"
-              onClick={() => { history.push('/home/homepage') }}
-            >回首页
+              onClick={() => { history.push('/home') }}
+            >返回首页
             </Button>
           </div>
 

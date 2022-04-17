@@ -1,25 +1,25 @@
 import React, { useState } from 'react'
-import { Route, Switch, useHistory } from 'react-router-dom'
+import { Link, Route, Switch, useHistory } from 'react-router-dom'
 import HomePage from '../pages/HomePage/index'
 import Contact from '../pages/Contact/Contact'
-import Download from '../pages/Download/Download'
-import Question from '../pages/Question/Question'
-// import SignUp from '../pages/SignUp/SignUp'
-import Competition from '../pages/Competition/Competition'
+
 import MyNavLink from '../components/MyNavLink'
+import Weather from '../components/Weather/index'
 import PersonalCenter from '../pages/personalCenter/PersonalCenter'
+import SeatReservation from '../pages/seatReservation/index'
+import Monitor from "../pages/Monitor"
 import store from '../redux/store'
-import imgleft from '../imgs/logo_left.png'
 import { Modal, Button } from 'antd'
-import SearchSignupInfo from '../pages/personalCenter/company/SearchSignupInfo'
-import DetailInfo from '../components/DetailInfo/DetailInfo'
+import TemperatureHumidity from '../pages/TemperatureHumidity/index'
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import './home.css';
 
 export default function Home() {
     const history = useHistory()
     const [isLogin, setIsLogin] = useState(store.getState().userInfo.status);
+    const [isAdministrators, setIsAdministrators] = useState(store.getState().userInfo.typeofUser == "1" ? true : false);
     const { confirm } = Modal;
-
+    console.log(store.getState().userInfo.typeofUser)
     //退出登录
     const logout = () => {
         confirm({
@@ -28,13 +28,12 @@ export default function Home() {
             onOk() {
                 const action = {
                     type: 'clear_userInfo',
-
                 }
                 localStorage.clear();
                 sessionStorage.clear();
                 store.dispatch(action)
                 setIsLogin(false)
-                history.push('/home/homepage');
+                history.push('/home');
             },
             onCancel() {
                 console.log('Cancel');
@@ -47,42 +46,39 @@ export default function Home() {
     }
 
     return (
-        <div>
+        <div className='all'>
             <div className="top">
                 {isLogin ? <></> : <MyNavLink to="/login">登录</MyNavLink>}
-                {isLogin ? <></> : <MyNavLink to="/register">注册</MyNavLink>}
-                {isLogin ? <MyNavLink to="/home/personalcenter/information">个人中心</MyNavLink> : ''}
+                {isLogin ? <MyNavLink to="/home/personalcenter/information">个人中心</MyNavLink> : <></>}
                 {isLogin ? <Button type="link" onClick={logout}>退出登录</Button> : ''}
             </div>
+            <Weather className='weather' positive='out' />
+            <Weather className='weather' positive='in' />
             <header className="App-header">
-                <div className="club_title">
-                    <img src={imgleft} alt="logo_left" style={{ height: '20%' }} />
-                    智能系统未来创新实验室
-                </div>
+
+                <span className="club_title">
+                    智能系统未来创新实验室管理系统
+                </span>
+
             </header >
             <div className="nav">
-                <MyNavLink to="/home/homepage">首页</MyNavLink>
-                <MyNavLink to="/home/competition">比赛资讯</MyNavLink>
-                <MyNavLink to="/home/download">资源下载</MyNavLink>
-                <MyNavLink to="/home/contact">联系我们</MyNavLink>
-                <MyNavLink to="/home/question">更多问题</MyNavLink>
-
+                <Link to="/home">首页</Link>
+                <Link to="/home/seatReservation">座位预约</Link>
+                {isAdministrators ? <Link to="/home/temperature_humidity">实验室温湿度</Link> : <></>}
+                <Link to="/home/monitor">监控查看</Link>
+                <Link to="/home/contact">预约规则</Link>
             </div>
             <div className="router-content">
                 <Switch>
-                    {/* <Redirect path='/home' to="/home/homepage" /> */}
                     <Route exact path='/home/' component={HomePage} />
-                    <Route path='/home/homepage' component={HomePage} />
-                    <Route path='/home/competition' component={Competition} />
-                    <Route path="/home/question" component={Question} />
-                    <Route path="/home/download" component={Download} />
-                    <Route path="/home/contact" component={Contact} />
-                    <Route path='/home/searchsignupinfo' component={SearchSignupInfo} />
-                    <Route path='/home/detail' component={DetailInfo} />
+                    <Route path='/home/seatReservation' component={SeatReservation} />
+                    <Route path='/home/temperature_humidity' component={TemperatureHumidity} />
                     <Route path='/home/personalcenter' component={PersonalCenter} />
-
+                    <Route path="/home/contact" component={Contact} />
+                    <Route path="/home/monitor" component={Monitor} />
                 </Switch>
             </div>
+
         </div>
     )
 }

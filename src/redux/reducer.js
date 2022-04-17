@@ -1,12 +1,12 @@
-const OU = "user"
+const OU = "student"
 // const JU = "competition_manager"
-// const AU = "admin"
+const AU = "admin"
 
 let defaultState = {
     userInfo: {
-        email: "",
-        status: false,/*sessionStorage.getItem('status') ? sessionStorage.getItem('status') : *///是否为登录状态
-        typeofUser: OU/*sessionStorage.getItem('role') !== OU ? sessionStorage.getItem('role') : *///用户类型，默认下为普通用户
+        account: "",
+        typeofUser: OU,/*sessionStorage.getItem('role') !== OU ? sessionStorage.getItem('role') : *///用户类型，默认下为普通用户
+        status: false/*sessionStorage.getItem('status') ? sessionStorage.getItem('status') : *///是否为登录状态
     }
 }
 

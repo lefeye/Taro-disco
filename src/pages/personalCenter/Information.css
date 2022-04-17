@@ -5,3 +5,7 @@
 .ant-descriptions-title {
     font-size: 25px;
 }
+.editInfo{
+    display: block;
+    margin: 0 auto;
+}

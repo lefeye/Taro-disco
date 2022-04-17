@@ -1,0 +1,28 @@
+.site-layout-background{
+    font-size: x-large;
+    color: floralwhite;
+    font-weight: 300;
+}
+.platform{
+    font-size: 25px;
+    font-weight: 500;
+    color: rgb(103, 139, 236);
+    width: 15%;
+    height: 40px;
+    line-height: 40px;
+    margin: 15px auto;
+    /* margin-bottom: 20px; */
+    border-style:solid;
+    border-width:3px;
+    border-color: rgb(22, 43, 75);
+    text-align: center;
+    border-color: rgb(78, 78, 80);
+}
+.desktopIcon{
+    font-size: 30px;
+    color:blue
+}
+.desktopIconNo{
+    font-size: 30px;
+    color:rgb(87, 88, 88)
+}

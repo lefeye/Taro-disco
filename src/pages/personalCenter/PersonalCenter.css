@@ -1,26 +1,32 @@
 @import '~antd/dist/antd.css';
 
-.halo{
-    margin:0;
+.halo {
+    margin: 0;
 }
 
-.father{
+.father {
     overflow: hidden;
-    padding-left: 260px;;
+    padding-left: 260px;
+    ;
 }
 
-.menu{
+.menu {
     float: left;
     width: 260px;
     height: 700px;
     margin-left: -100%;
     position: relative;
     left: -260px;
+    text-align: center;
 }
 
-.info{
+
+.info {
     text-align: left;
     float: left;
     width: 100%;
-    /* height: 700px; */
+}
+
+.ant-menu-vertical .ant-menu-item {
+    height: 70px !important;
 }

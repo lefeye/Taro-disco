@@ -1,0 +1,55 @@
+.description{
+    display: flex;
+    justify-content: center;
+    width: 95%;
+    
+}
+.left{
+    display: inline-block;
+    width: 70%;
+    border: 1px solid rgb(129, 128, 128);
+    margin-top: 20px;
+    border-right: white;
+    border-radius:  5px 0 0 5px;
+    padding-top: 1em;
+    padding-left: 1em;
+}
+.status{
+    display: inline-block;
+    width: 30%;
+    text-align: center;
+    font-size: medium;
+    font-weight: 200;
+    color: blue;
+    margin-top: 20px;
+    border: 1px solid rgb(129, 128, 128);
+    border-left: white;
+    border-radius: 0 5px 5px 0;
+    padding-top: 1em;
+}
+.pass{
+    display: inline-block;
+    width: 30%;
+    text-align: center;
+    font-size: medium;
+    font-weight: 200;
+    color: green;
+    margin-top: 20px;
+    border: 1px solid rgb(129, 128, 128);
+    border-left: white;
+    border-radius: 0 5px 5px 0;
+    padding-top: 1em;
+}
+.refuse{
+    display: inline-block;
+    width: 30%;
+    text-align: center;
+    font-size: medium;
+    font-weight: 200;
+    color: rgb(255, 0, 0);
+    margin-top: 20px;
+    border: 1px solid rgb(129, 128, 128);
+    border-left: white;
+    border-radius: 0 5px 5px 0;
+    padding-top: 1em;
+}

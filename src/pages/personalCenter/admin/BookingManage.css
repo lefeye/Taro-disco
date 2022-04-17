@@ -1,0 +1,19 @@
+/* @import '~antd/dist/antd.css'; */
+
+.ni {
+    border: 2px solid grey;
+    width: 80%;
+    margin: 1%;
+    padding: 1%;
+}
+
+.title1 {
+    /* margin-left: 10px; */
+    text-align: center;
+    color: rgb(51, 50, 50);
+}
+
+.table {
+    width: 90%;
+    margin: 0 auto
+}
