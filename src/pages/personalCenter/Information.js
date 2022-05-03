@@ -12,7 +12,6 @@ import {
     message,
 } from 'antd'
 
-let info 
 function Info() {
     const [user, setUser] = useState({});
     const [oldPassword,setOldPassword]=useState('')
@@ -29,7 +28,6 @@ function Info() {
             if (data.data.code === '200') {
                 setRole(data.data.data.role)
                 const userInformation = data.data.data;
-                info=userInformation;
                 sessionStorage.setItem('account',userInformation.account);
                 sessionStorage.setItem('email',userInformation.email);
                 sessionStorage.setItem('identity',userInformation.identity);
@@ -119,9 +117,11 @@ function Info() {
                 new_password:newPassword
             }
         }).then( data => {
+            if(data.data.code === '200')
             message.info(data.data.msg);
+            else message.error(data.data.msg);
         } ).catch( e => {
-            message.error(e.response.data.msg);
+            console.log(e)
         })
     }
     const content=(

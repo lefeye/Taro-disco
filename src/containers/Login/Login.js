@@ -9,6 +9,7 @@ import {
   LoadingOutlined,
 } from '@ant-design/icons';
 import store from '../../redux/store';
+import MyNavLink from '../../components/MyNavLink';
 
 function Login() {
   const history = useHistory();
@@ -107,8 +108,9 @@ function Login() {
           />
         </Form.Item>
 
-        <Form.Item >
-          <p>忘记密码（先别忘）</p>
+        <Form.Item>
+          <MyNavLink to="/home/retrievepassword">忘记密码</MyNavLink>
+          {/* <Button type='link'>忘记密码（先别忘）</Button> */}
         </Form.Item>
 
         <Form.Item >

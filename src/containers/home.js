@@ -16,6 +16,7 @@ import DetailInfo from '../components/DetailInfo/DetailInfo'
 import { ExclamationCircleOutlined, SwapOutlined  } from '@ant-design/icons';
 import new_axios from '../server/api/axios';
 import url from '../server/api/url'
+import Retrieve from '../pages/RetrievePassword/RetrievePassword'
 
 let role=0;
 export default function Home() {
@@ -61,31 +62,35 @@ export default function Home() {
     }
     
     useEffect( () => {
-        new_axios({
-            method:'GET',
-            url:url+'/api/v1/get-info'
-        }).then( res => {
-            if( res.data.code === '200' ){
+        if(isLogin){
+            new_axios({
+                method:'GET',
+                 url:url+'/api/v1/get-info'
+            }).then( res => {
+                if( res.data.code === '200' ){
+                    sessionStorage.setItem('account',res.data.data.account);
+                    sessionStorage.setItem('userId',res.data.data.role.id);
+                    setCurrentRole(res.data.data.role);
+                    const ids=[];
+                    if(res.data.data.roles){
+                        setMyRoles(res.data.data.roles);
+                        res.data.data.roles.forEach(element => {
+                            ids.push(element.id);
+                        });
+                    }
+                    
 
-                sessionStorage.setItem('userId',res.data.data.role.id);
-                setCurrentRole(res.data.data.role);
-                 const ids=[];
-                if(res.data.data.roles){
-                    setMyRoles(res.data.data.roles);
-                    res.data.data.roles.forEach(element => {
-                        ids.push(element.id);
-                    });
                 }
-                
-
-            }
-            else{
-                message.error('角色获取失败')
-            }
-        } ).catch( e => {
-            console.log(e);
-        } )
+                else{
+                    message.error('角色获取失败')
+                }
+            } ).catch( e => {
+                console.log(e);
+            } )
+        }
+        
     } ,[])
+    
 
     const handlechange = value => {
         role=value;
@@ -141,6 +146,26 @@ export default function Home() {
         });
     }
 
+    const jump = () => {
+        let data = {
+            token:sessionStorage.getItem('token'),
+            roleId:sessionStorage.getItem('userId'),
+            account:sessionStorage.getItem('account')
+        };
+        const URL = 'http://8.134.75.76'
+        var iframe = document.createElement("iframe");
+        iframe.src = URL;
+        document.body.append(iframe);
+        // 使用postMessage()方法将token传递给iframe
+        iframe.onload = function () {
+            iframe.contentWindow.postMessage(JSON.stringify(data), URL);
+            window.open(URL,'_blank')
+        }
+        setTimeout(function () {
+            iframe.remove();
+        }, 3000);
+    }
+
     const content=(
         <Button type='link' className='changeBtn' onClick={ChangeRole}>{<SwapOutlined />}更换角色</Button>
     )
@@ -149,6 +174,7 @@ export default function Home() {
     return (
         <div>
             <div className="top">
+                <Button type='link' onClick={jump} >实验室预约平台</Button>
                 {isLogin ? 
                 <Popover placement="bottom"  trigger="hover" content={content}>
                     <a>角色编辑</a>
@@ -173,11 +199,9 @@ export default function Home() {
                 <MyNavLink to="/home/notice">通知公告</MyNavLink>
                 <MyNavLink to="/home/contact">联系我们</MyNavLink>
                 <MyNavLink to="/home/question">更多问题</MyNavLink>
-
             </div>
             <div className="router-content">
                 <Switch>
-                    {/* <Redirect path='/home' to="/home/homepage" /> */}
                     <Route exact path='/home/' component={HomePage} />
                     <Route path='/home/homepage' component={HomePage} />
                     <Route path='/home/competition' component={Competition} />
@@ -188,6 +212,7 @@ export default function Home() {
                     <Route path='/home/detail' component={DetailInfo} />
                     <Route path='/home/personalcenter' component={PersonalCenter} />
                     <Route path='/home/detailnotice' component={DetailNotice} />
+                    <Route path='/home/retrievepassword' component={Retrieve} />
                 </Switch>
             </div>
         </div>

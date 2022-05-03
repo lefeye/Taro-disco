@@ -41,8 +41,51 @@ const tailFormItemLayout = {
   },
 };
 
+const collegeList = [
+  '机械与汽车工程学院',
+  '建筑学院',
+  '土木与交通学院',
+  '电子与信息学院',
+  '材料科学与工程学院',
+  '化学与化工学院',
+  '轻工科学与工程学院',
+  '食品科学与工程学院',
+  '数学学院',
+  '物理与光电学院',
+  '经济与金融学院',
+  '旅游管理系',
+  '电子商务系',
+  '自动化科学与工程学院',
+  '计算机科学与工程学院',
+  '电力学院',
+  '生物科学与工程学院',
+  '环境与能源学院',
+  '软件学院',
+  '工商管理学院',
+  '公共管理学院',
+  '马克思主义学院',
+  '外国语学院',
+  '法学院',
+  '新闻与传播学院',
+  '艺术学院',
+  '体育学院',
+  '设计学院',
+  '医学院',
+  '国际教育学院',
+  '峻德书院',
+  '铭诚书院',
+  '生物医学科学与工程学院',
+  '吴贤铭智能工程学院',
+  '前沿软物质学院',
+  '微电子学院',
+  '未来技术学院',
+  '海洋科学与工程学院',
+  '其他'
+]
+
 const RegistrationForm = () => {
 
+  // const [colleges,setColleges] = useState(collegeList);
   const history = useHistory()
   const [form] = Form.useForm();
   const [value, setValue] = useState(1);
@@ -123,6 +166,9 @@ const RegistrationForm = () => {
     <Form.Item
     name="degree"
     label="学位"
+    rules={[
+      { required: true, message: '请选择学位！' }
+    ]}
     >
       <Select>
         <Option value='本科生'>本科生</Option>
@@ -133,6 +179,9 @@ const RegistrationForm = () => {
     <Form.Item
       name="stu_grade"
       label='年级'
+      rules={[
+        { required: true, message: '请输入年级！' }
+      ]}
     >
       <Input placeholder='18级/19级/20级/21级' />
     </Form.Item>
@@ -141,6 +190,13 @@ const RegistrationForm = () => {
   const onChange = (e) => {
     setValue(e.target.value)
   }
+
+  const collegeOptions = (
+    collegeList.map( item =>
+      <Option key={item} value={item}>{item}</Option>
+      )
+  )
+
   return (
     <div className="register_bg">
 
@@ -163,6 +219,18 @@ const RegistrationForm = () => {
             <Radio value={1}>学生</Radio>
             <Radio value={2}>教师</Radio>
           </Radio.Group>
+        </Form.Item>
+
+        <Form.Item
+          name="stu_no"
+          label={value === 1 ? '学号' : '工号'}
+          rules={[
+            {
+              required: true,
+              message: `请输入${value === 1 ? '学号' : '工号'}`
+            }
+          ]}>
+          <Input placeholder='一旦注册不可修改'/>
         </Form.Item>
 
         <Form.Item
@@ -213,24 +281,16 @@ const RegistrationForm = () => {
         </Form.Item>
 
         <Form.Item
-          name="stu_no"
-          label={value === 1 ? '学号' : '工号'}
-          rules={[
-            {
-              required: true,
-              message: `请输入${value === 1 ? '学号' : '工号'}`
-            }
-          ]}>
-          <Input placeholder='一旦注册不可修改'/>
-        </Form.Item>
-
-        <Form.Item
         name="stu_college"
         label="学院"
+        rules={[
+          { required: true, message: '请选择学院！' }
+        ]}
         >
           <Select>
-            <Option value='计算机科学与工程学院'>计算机科学与工程学院</Option>
-            <Option value='软件学院'>软件学院</Option>
+            {collegeOptions}
+            {/* <Option value='计算机科学与工程学院'>计算机科学与工程学院</Option>
+            <Option value='软件学院'>软件学院</Option> */}
           </Select>
         </Form.Item>
         {value === 1 ? company : ''}

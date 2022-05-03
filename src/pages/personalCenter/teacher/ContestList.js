@@ -23,7 +23,7 @@ const ContestList = () => {
 
     const lis = (
         list.map( item => 
-            <li onClick={ () => {
+            <li key={item.id} onClick={ () => {
                 sessionStorage.setItem('competition_id', `${item.id}`);
                 history.push('/home/searchsignupinfo');
             } }><a>{item.title}</a></li>
@@ -37,7 +37,7 @@ const ContestList = () => {
                 <ul style={{ fontSize:'24px' }} >
                     {lis}
                 </ul> :
-                <Empty description='暂时没有比赛'/>
+                <Empty description='暂时没有需要评审的比赛'/>
             }
             
        </div>

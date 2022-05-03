@@ -43,7 +43,6 @@ const Released = () => {
     message.config({
         maxCount: 1
     })
-
     let cptJudges = [];                                              //存放选择的评委                                                  //添加评委的比赛的id 
     //获取教师列表
     useEffect( () => {
@@ -268,6 +267,39 @@ const Released = () => {
             console.log(e);
         } )
     }
+
+    //删除比赛
+    const deleteContest = () => {
+        console.log(currentId);
+        Modal.confirm({
+            title:'请确认',
+            content:
+                <div style={{color:'red'}}>
+                    警告：您正在试图删除某个比赛，注意删除比赛后，比赛的公告、评委以及用户的报名信息都会被删除，并且会给用户逐个发送邮件
+                </div>,
+            onOk() {
+                new_axios({
+                    method:'DELETE',
+                    url:url+`/api/v1/setting/contest/${currentId}`,
+                }).then( res => {
+                    if(res.data.code==='200'){
+                        message.info(res.data.msg);
+                        setState(!state);
+                    }
+                    else{
+                        message.error(res.data.msg);
+                    }
+                } ).catch( e => {
+                    console.log(e);
+                } )
+                
+            },
+            okText: "确认",
+            closable:true,
+            cancelText: "取消"
+        });
+    }
+
     const options = (
         <Select mode="multiple" onChange={handleJudgesChange} placeholder='添加评委' style={{ width:'300px' }}>
             {
@@ -312,12 +344,12 @@ const Released = () => {
             onClose={() => { setVisible(false) }}
             bodyStyle={{ paddingBottom: 80 }}
             extra={
-                <Form.Item>
-                    <Button type="primary" onClick={handleSubmit}>
-                        修改
-                    </Button>
-                </Form.Item>
-
+                <Space>
+                        <Button type="primary" onClick={handleSubmit}>
+                            修改
+                        </Button>
+                    <Button type="primary" danger onClick={deleteContest}>删除</Button>
+                </Space>       
             }
 
             >

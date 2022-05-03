@@ -30,7 +30,6 @@ const SearchSignupInfo = () => {
         }).then(data => {
             if (data.data.code === '200') {
                 const data1 = data.data.data;
-                console.log(data1)
                 if(data1){
                     if( data1[0].target_type === 'team' ){
                     setType('team')
@@ -131,7 +130,7 @@ const SearchSignupInfo = () => {
                     </div>
             },
             { title: '评价作品',dataIndex:'id',key:'7',
-            render:(a,record) => <Button disabled={ record.work_link === ''? true : false } onClick={()=>{  handleSetView(a,record)} }>评价</Button>
+            render:(a,record) => <Button onClick={()=>{  handleSetView(a,record)} }>评价</Button>
             },
             ];
         

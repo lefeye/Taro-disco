@@ -47,6 +47,7 @@ const Notice = () => {
       } )
   }, [state] )
 
+  //修改公告
   const modifyNotice = target => {
         let new_title = target.title;
         let new_content = target.content;
@@ -101,6 +102,36 @@ const Notice = () => {
             cancelText: "取消"
         });
   }
+  //删除比赛
+  const deleteNotice = id => {
+    Modal.confirm({
+        title:'请确认',
+        content:
+            <div style={{color:'red'}}>
+                警告：您正在试图删除某个公告
+            </div>,
+        onOk() {
+            new_axios({
+                method:'DELETE',
+                url:url+`/api/v1/setting/contest/${id}`,
+            }).then( res => {
+                if(res.data.code==='200'){
+                    message.info(res.data.msg);
+                    setState(!state);
+                }
+                else{
+                    message.error(res.data.msg);
+                }
+            } ).catch( e => {
+                console.log(e);
+            } )
+            
+        },
+        okText: "确认",
+        closable:true,
+        cancelText: "取消"
+    });
+  }
 
   const columns = [
     {
@@ -124,6 +155,7 @@ const Notice = () => {
       render: (_,record)=>
       <Space>
         <Button onClick={ () => { modifyNotice(record) } }>详情</Button>
+        <Button danger type='primary' onClick={() => { deleteNotice(record.id) }}>删除</Button>
       </Space>
       
     },

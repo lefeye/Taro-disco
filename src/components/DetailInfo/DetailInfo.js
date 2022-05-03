@@ -37,30 +37,40 @@ export default function DetailInfo() {
             if (data.data.code === '200') {
                 const data1 = data.data.data;
                 setData(data1);
+                return data.data.data;
             }
             else{
                 message.error(data.data.msg)
             }
-        }).catch(e => {
+        }).then( data => {
+            console.log(data);
+            if(data.attribute === 'single'){
+                new_axios({
+                    method:'GET',
+                    url:url+'/api/v1/contest/single/get-list'
+                }).then( res => {
+                    if(res.data.code === '200'){
+                        const data = res.data.data;
+                        console.log(data);
+                        console.log(compId)
+                        data.forEach( item => {
+                            console.log(item.contest_id)
+                            if(item.contest_id === parseInt(compId)){
+                                setIfparticipate(true);
+                            }
+                        } )
+                    }
+                    else{
+                        message.error(res.data.msg);
+                    }
+                } )
+            }
+        } ).catch(e => {
             console.log(e)
         })
     }, [])
 
     useEffect(() => {
-        // new_axios({
-        //     method: "GET",
-        //     url: `${url}/api/v1/user/own/competition`,
-        //     headers: {
-        //         'token': sessionStorage.getItem('token')
-        //     }
-        // }).then(data => {
-        //     console.log(data.data.data)
-        //     data.data.data.forEach(element => {
-        //         if (element["id"] === compId) {
-        //             setIfparticipate(true);
-        //         }
-        //     });
-        // })
         new_axios({
             method:'GET',
             url:url+'/api/v1/team/own/get-list',
@@ -96,29 +106,21 @@ export default function DetailInfo() {
     };
 
     const handleOk = () => {
-        // if (teamMember.length) {
-        //     onFinish(teamMember);
-        //     setConfirmLoading(true);
-        //     setTimeout(() => {
-        //         setVisible(false);
-        //         setConfirmLoading(false);
-        //     }, 2000);
-        // }
-            new_axios({
-                method:'POST',
-                url:url+'/api/v1/contest/signup',
-                data:{
-                    contest_id:parseInt(compId),
-                    target_id:data.attribute === 'team'? teamID : 0,
-                    target_type:data.attribute === 'team'? 'team' :'single'
-                }
-            }).then( data => {
-                if(data.data.code === '200'){
-                    message.info(data.data.msg);
-                    setVisible(false);
-                }
-                else message.error(data.data.msg);
-            } )
+        new_axios({
+            method:'POST',
+            url:url+'/api/v1/contest/signup',
+            data:{
+                contest_id:parseInt(compId),
+                target_id:data.attribute === 'team'? teamID : 0,
+                target_type:data.attribute === 'team'? 'team' :'single'
+            }
+        }).then( data => {
+            if(data.data.code === '200'){
+                message.info(data.data.msg);
+                setVisible(false);
+            }
+            else message.error(data.data.msg);
+        } )
 
     };
 
@@ -165,7 +167,8 @@ export default function DetailInfo() {
             <h3 className="content-title">{data.title}</h3>
             <h4 className="content-date">主办方：{data.sponsor}</h4>
             <Space class ="content-date">
-                <h4 >发布时间：{data.created_at} <Button type='link' onClick={() => { setDrawerVisible(true) }}>点击查看比赛公告</Button></h4>
+                <h4 >发布时间：{data.created_at} {ifparticipate?
+                <Button type='link' onClick={() => { setDrawerVisible(true) }}>点击查看比赛公告</Button>:''}</h4>
             </Space>
             <hr></hr>
             <p className="content-body">
