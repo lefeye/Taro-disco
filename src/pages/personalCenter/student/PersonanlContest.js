@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState, } from 'react';
 import 'antd/dist/antd.css';
 import { Card, Button, Upload, message,Empty } from 'antd';
-import url from '../../server/api/url';
-import new_axios from '../../server/api/axios';
+import url from '../../../server/api/url';
+import new_axios from '../../../server/api/axios';
 import { useHistory } from 'react-router-dom';
 import { UploadOutlined } from '@ant-design/icons';
 // import store from '../../redux/store';

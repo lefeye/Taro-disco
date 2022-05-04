@@ -1,7 +1,7 @@
 import './PersonalCenter.css'
 import React, { useEffect, useState } from 'react';
 import Info from './Information';
-import PersonalContest from './PersonanlContest';
+import PersonalContest from './student/PersonanlContest';
 import MyNavLink from '../../components/MyNavLink';
 import ReleaseCompetition from './company/ReleaseCompetition';
 import Released from './company/Released';

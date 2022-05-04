@@ -1,4 +1,4 @@
-import { Form, Input, Button, Space, message, Card, Empty,Spin,notification,Modal,Upload } from 'antd';
+import { Form, Input, Button, Space, message, Card, Empty, Spin, Modal, Upload } from 'antd';
 import { MinusCircleOutlined, PlusOutlined,LoadingOutlined,UploadOutlined } from '@ant-design/icons';
 import url from '../../../server/api/url';
 import new_axios from '../../../server/api/axios';
@@ -8,9 +8,28 @@ const MyTeamStyle = {
     margin:'0 auto',
     width:'80%',
 }
-notification.config({
-  maxCount:1
-})
+
+const con = {
+  contest:{
+    id: 0,
+    title: "",
+    brief: "",
+    award: "",
+    condition: "",
+    sponsor: "",
+    begin_signup: "",
+    end_signup: "",
+    begin_submit: "",
+    end_submit: "",
+    attribute: "",
+    min_num: 0,
+    max_num: 0,
+    manager: "",
+    created_at: "",
+    updated_at: ""
+  }
+  
+}
 const MyTeam = () => {
   const [form] = Form.useForm();
   const history = useHistory();
@@ -18,18 +37,22 @@ const MyTeam = () => {
   const [state,setState] = useState(1);
   const [teamInfo,setTeamInfo] = useState([]);
   const [visible,setVisible] = useState(false);
-  const [list,setList] = useState([]);
-  const [title,setTitle] = useState('');
+  const [visible2,setVisible2] = useState(false);
+  const [list,setList] = useState(con);
+  const [lists,setLists] = useState([])
+  const [team,setTeam] = useState('');
 
   //展开内容
   const viewModal = contest => {
     setList(contest);
-    setTitle(contest.contest.title);
+    console.log(contest);
+    // setTitle(contest.contest.title);
     setVisible(true);
   }
 
   //点击查看比赛按钮
   const contestList = team => {
+    setTeam(team)
     new_axios({
       method:'GET',
       url:url+`/api/v1/contest/team/get-list?team_id=${team.id}`
@@ -45,16 +68,8 @@ const MyTeam = () => {
               <a onClick={ ()=>{viewModal(item)} } key={item.id}>《{item.contest.title}》</a>
             )
            )
-          notification.open({
-            message: <p>团队<span style={{fontWeight:'bold'}}>《{team.name}》</span>参加的比赛：</p>,
-            duration:10,
-            description:
-              <div>
-                <Space >
-                  {data1}
-                </Space>
-              </div>,
-          });
+           setLists(data1);
+           setVisible2(true)
         }
       }
       else{
@@ -267,6 +282,7 @@ const MyTeam = () => {
         : foundTeam
       } */}
       <Modal
+      key={1}
       visible={visible}
       footer={null}
       keyboard
@@ -275,15 +291,14 @@ const MyTeam = () => {
       >
         <p>比赛题目：
           <Button type='link'
-          onClick={ () =>{ history.push('/home/detail'); sessionStorage.setItem('compId', `${list.contest.id}`);notification.destroy() } }>
-          {title}
+          onClick={ () =>{ history.push('/home/detail'); sessionStorage.setItem('compId', `${list.contest.id}`)} }>
+          {list.contest.title}
           </Button>
         </p>
         <Space>
-          <p>作品链接：{list.work_link?list.work_link:'暂未提交作品'}</p>
+          <p>作品链接：{list.work_link?list.work_link:`暂未提交作品，请在${list.contest.begin_submit}至${list.contest.end_submit}间提交`}</p>
           <div>
             <Upload {...props}
-            // action={`${url}/api/v1/contest/submit?signup_id=${list.contest.id}`}
             >
             <Button icon={<UploadOutlined />}>点击上传文件</Button>
             </Upload>
@@ -293,7 +308,21 @@ const MyTeam = () => {
         <p>评分：{list.score}</p>
         <p>评语：{list.comment?list.comment:'暂无评语'}</p>
       </Modal>
-      
+      <Modal
+      style={{ minHeight:'400px'}}
+      key={2}
+      visible={visible2}
+      title={<p>团队<span style={{fontWeight:'bold'}}>《{team.name}》</span>参加的比赛：</p>}
+      footer={null}
+      keyboard
+      maskClosable
+      onCancel={()=>{setVisible2(false)}}
+      >
+        <Space direction='vertical'>
+          {lists}
+        </Space>
+        
+      </Modal>
     </div>
     
   );

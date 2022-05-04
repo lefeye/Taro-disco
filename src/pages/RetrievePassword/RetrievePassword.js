@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button, Input, Steps, message, Space, Result } from 'antd';
 import new_axios from '../../server/api/axios';
 import url from '../../server/api/url';
@@ -18,22 +18,22 @@ const Retrieve = () => {
   const [mess2,setmess2] = useState('');
   const [second,setSecond] = useState(se);
   const history = useHistory();
-
+  const timer = useRef(null)
   //获取用户输入的账号
   const getAccount = e => {
     account = e.target.value;
   }
 
   const myinter = () => {
-    setInterval( () => {
+    timer.current = setInterval( () => {
       console.log(second)
       setSecond(--se);
       console.log(se)
     },1000)
   }
   useEffect( () => {
-    
-  } )
+    return () => clearInterval(timer.current);
+  },[] )
    //查询用户是否存在
   const sendAccount = () => {
     if(account){
@@ -56,6 +56,9 @@ const Retrieve = () => {
         console.log(e);
       } )
     }
+    else{
+      message.warn('请输入账号')
+    }
   }
 
   //获取用户输入的邮箱
@@ -65,7 +68,6 @@ const Retrieve = () => {
 
   //给用户发送验证码
   const sendEmail = () => {
-    console.log(keepaccount)
     if(email){
       new_axios({
         method:'POST',
@@ -180,7 +182,6 @@ const Retrieve = () => {
           <div className='children'>
               <Input  key={1} prefix={<UserOutlined/>} placeholder='输入账号' style={{marginBottom: '20px'}} onChange={getAccount}></Input>
               <Button type='primary' onClick={sendAccount}>确定</Button>
-              <>{second}</>
           </div> :
           currentState === 1?
           inputEmail :
