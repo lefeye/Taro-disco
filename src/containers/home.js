@@ -152,18 +152,17 @@ export default function Home() {
             roleId:sessionStorage.getItem('userId'),
             account:sessionStorage.getItem('account')
         };
-        const URL = 'http://8.134.75.76'
+        const URL = 'http://8.134.75.76:3001'
         var iframe = document.createElement("iframe");
         iframe.src = URL;
         document.body.append(iframe);
+        iframe.style.display = 'none';
         // 使用postMessage()方法将token传递给iframe
         iframe.onload = function () {
             iframe.contentWindow.postMessage(JSON.stringify(data), URL);
-            window.open(URL,'_blank')
-        }
-        setTimeout(function () {
+            window.open(URL,'_blank');
             iframe.remove();
-        }, 3000);
+        }
     }
 
     const content=(
@@ -174,7 +173,6 @@ export default function Home() {
     return (
         <div>
             <div className="top">
-                <Button type='link' onClick={jump} >实验室预约平台</Button>
                 {isLogin ? 
                 <Popover placement="bottom"  trigger="hover" content={content}>
                     <a>角色编辑</a>
@@ -198,7 +196,7 @@ export default function Home() {
                 <MyNavLink to="/home/competition">比赛资讯</MyNavLink>
                 <MyNavLink to="/home/notice">通知公告</MyNavLink>
                 <MyNavLink to="/home/contact">联系我们</MyNavLink>
-                <MyNavLink to="/home/question">更多问题</MyNavLink>
+                <a onClick={jump}>实验室预约</a>
             </div>
             <div className="router-content">
                 <Switch>

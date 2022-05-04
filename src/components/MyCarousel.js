@@ -2,7 +2,6 @@ import React from 'react'
 import { Carousel } from 'antd';
 import img1 from '../imgs/lab1.jpg'
 import img2 from '../imgs/scut2.jpg'
-import img3 from '../imgs/gd1.jpg'
 import img4 from '../imgs/dang.jpg'
 
 export default function Mycarousel() {
@@ -23,9 +22,6 @@ export default function Mycarousel() {
                 </div>
                 <div>
                     <h3 style={contentStyle}><img src={img2} alt="2" width='100%'/></h3>
-                </div>
-                <div>
-                    <h3 style={contentStyle}><img src={img3} alt="3" width='100%'/></h3>
                 </div>
                 <div>
                     <h3 style={contentStyle}><img src={img4} alt="4" width='100%'/></h3>
